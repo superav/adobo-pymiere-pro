@@ -32,12 +32,13 @@ def change_saturation(input_img: Image, factor: float) -> Image:
     return output_img
 
 
-def add_watermark_text(input_img: Image, position: int, font: str = 'arial.ttf',
+def add_watermark_text(input_img: Image, text: str, position: tuple, font: str = 'arial.ttf',
                        size: int = 12, color: tuple = (255, 255, 255, 255)) -> Image:
     """
     Args:
         input_img:  The image to be changed
-        position:   Where the watermark is located on the image
+        text:       Text of watermark
+        position:   Tuple (x, y) of where watermark should be placed
         font:       Font of image. Default is Arial.
         size:       Size of text. Default is 12.
         color:      Color (RGBA value) of text. Default is solid white.
@@ -48,7 +49,10 @@ def add_watermark_text(input_img: Image, position: int, font: str = 'arial.ttf',
     # https://www.tutorialspoint.com/python_pillow/python_pillow_creating_a_watermark.htm
     watermark_font = ImageFont.truetype(font, size)
     draw = ImageDraw.Draw(input_img)
-    pass
+
+    draw.text(position, text, fill=color, font=font)
+
+    return input_img
 
 
 def scale_image(input_img: Image, scale: float) -> Image:
