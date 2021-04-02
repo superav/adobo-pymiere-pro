@@ -50,7 +50,7 @@ def add_watermark_text(input_img: Image, text: str, position: tuple, font: str =
     watermark_font = ImageFont.truetype(font, size)
     draw = ImageDraw.Draw(input_img)
 
-    draw.text(position, text, fill=color, font=font)
+    draw.text(position, text, fill=color, font=watermark_font)
 
     return input_img
 
@@ -60,14 +60,30 @@ def scale_image(input_img: Image, scale: float) -> Image:
     Args:
         input_img:  Image to be changed
         scale:      Scale of image. Must be in range [0.0, 1.0]
+
+    Returns:
+        output_img: Scaled down image
     """
     # https://stackoverflow.com/questions/24745857/python-pillow-how-to-scale-an-image
-    pass
+
+    max_size = max(input_img.width * scale, input_img.height * scale)
+    input_img.thumbnail((max_size, max_size), Image.ANTIALIAS)
+
+    return input_img
 
 
 def rotate_image(input_img: Image, angle: float) -> Image:
+    """
+    Args:
+        input_img:  Image to be changed
+        angle:      Angle to be rotated (in degrees)
+
+    Returns:
+        output_img: Rotated image
+    """
     # https://pythonexamples.org/python-pillow-rotate-image-90-180-270-degrees/
-    pass
+
+    return input_img.rotate(angle)
 
 
 def rotate_video():
