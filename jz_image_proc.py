@@ -1,4 +1,5 @@
 from PIL import Image, ImageFilter, ImageEnhance, ImageDraw, ImageFont
+from moviepy import Clip
 
 
 def gaussian_blur(input_img: Image, radius: int) -> Image:
@@ -86,5 +87,18 @@ def rotate_image(input_img: Image, angle: float) -> Image:
     return input_img.rotate(angle)
 
 
-def rotate_video():
+def rotate_video(input_clip: Clip, angle: float):
+    """
+    Args:
+        input_clip: Video clip to be rotated
+        angle:      Angle of rotation (in degrees)
+
+    Returns:
+        output_clip: Rotated video
+    """
+
+    return input_clip.mask.rotate(angle)
+
+
+def import_image():
     pass
