@@ -37,23 +37,25 @@ def add_watermark_text(input_img: Image, text: str, position: tuple, font: str =
                        size: int = 36, color: tuple = (255, 255, 255, 255)) -> Image:
     """
     Args:
-        input_img:  The image to be changed
+        input_img:  The image (PNG) to be changed
         text:       Text of watermark
         position:   Tuple (x, y) of where watermark should be placed
         font:       Font of image. Default is Arial.
-        size:       Size of text. Default is 12.
+        size:       Size of text. Default is 36.
         color:      Color (RGBA value) of text. Default is solid white.
 
     Returns:
         output_img: Watermarked image
     """
     # https://www.tutorialspoint.com/python_pillow/python_pillow_creating_a_watermark.htm
-    output_img = input_img.copy()
-
+    base_img = input_img.copy()
+    text_layer = Image.new("RGBA", base_img.size, (255, 255, 255, 0))
     watermark_font = ImageFont.truetype(font, size)
-    draw = ImageDraw.Draw(output_img)
+    draw = ImageDraw.Draw(text_layer)
 
     draw.text(position, text, fill=color, font=watermark_font)
+
+    output_img = Image.alpha_composite(base_img, text_layer)
 
     return output_img
 
