@@ -34,7 +34,7 @@ def change_saturation(input_img: Image, factor: float) -> Image:
 
 
 def add_watermark_text(input_img: Image, text: str, position: tuple, font: str = 'arial.ttf',
-                       size: int = 12, color: tuple = (255, 255, 255, 255)) -> Image:
+                       size: int = 36, color: tuple = (255, 255, 255, 255)) -> Image:
     """
     Args:
         input_img:  The image to be changed
@@ -48,12 +48,14 @@ def add_watermark_text(input_img: Image, text: str, position: tuple, font: str =
         output_img: Watermarked image
     """
     # https://www.tutorialspoint.com/python_pillow/python_pillow_creating_a_watermark.htm
+    output_img = input_img.copy()
+
     watermark_font = ImageFont.truetype(font, size)
-    draw = ImageDraw.Draw(input_img)
+    draw = ImageDraw.Draw(output_img)
 
     draw.text(position, text, fill=color, font=watermark_font)
 
-    return input_img
+    return output_img
 
 
 def scale_image(input_img: Image, scale: float) -> Image:
@@ -67,10 +69,15 @@ def scale_image(input_img: Image, scale: float) -> Image:
     """
     # https://stackoverflow.com/questions/24745857/python-pillow-how-to-scale-an-image
 
-    max_size = max(input_img.width * scale, input_img.height * scale)
-    input_img.thumbnail((max_size, max_size), Image.ANTIALIAS)
+    if not 0.0 <= scale <= 1.0:
+        return None
 
-    return input_img
+    output_img = input_img.copy()
+
+    max_size = max(input_img.width * scale, input_img.height * scale)
+    output_img.thumbnail((max_size, max_size), Image.ANTIALIAS)
+
+    return output_img
 
 
 def rotate_image(input_img: Image, angle: float) -> Image:
