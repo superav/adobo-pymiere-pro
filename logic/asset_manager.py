@@ -82,9 +82,9 @@ class AssetManager:
         image.save(buffer, 'PNG')
 
         if is_working_copy:
-            location = "/%s/image_projects/%s" % (self.username, image_name)
+            location = "%s/image_projects/%s" % (self.username, image_name)
         else:
-            location = "/%s/image_projects/assets/%s" % (self.username, image_name)
+            location = "%s/image_projects/assets/%s" % (self.username, image_name)
 
         self.s3_client.put_object(Body=buffer.getvalue(), Bucket=BUCKET_NAME, Key=location)
         url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
