@@ -2,6 +2,8 @@ from logic.asset_manager import AssetManager
 import unittest
 import math
 import operator
+import requests
+from io import BytesIO
 from functools import reduce
 from PIL import Image
 
@@ -88,7 +90,7 @@ class TestUploadImages(unittest.TestCase):
     asset_manager = AssetManager('test_user_1')
 
     def test_upload_invalid_image_extension(self):
-        image = Image.open('./test_assets/test_images/test_2.jpg')
+        image = Image.open('./test_assets/test_images/test_2.png')
 
         location_one = 'test_user_1/image_projects/assets/bad'
         location_two = 'test_user_1/image_projects/assets/bad.txt'
@@ -106,8 +108,39 @@ class TestUploadImages(unittest.TestCase):
         image_one = Image.open('./test_assets/test_images/test_2.png')
         image_two = Image.open('./test_assets/test_images/test_3.png')
 
+        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/test_2.png"
+        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/test_3.png"
+
         url_one = self.asset_manager.upload_image_to_s3(image_one, "test_2.png", False)
         url_two = self.asset_manager.upload_image_to_s3(image_two, "test_3.png", False)
 
+        r = requests.get(url_one)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image_one)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url_one, url_one)
+
+        r = requests.get(url_two)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image_two)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url_two, url_two)
+
     def test_upload_valid_working_copy(self):
-        pass
+        image = Image.open('./test_assets/test_images/test_1.png')
+
+        expected_url = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/working_copy.png"
+
+        url = self.asset_manager.upload_image_to_s3(image)
+
+        r = requests.get(url)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url, url)
