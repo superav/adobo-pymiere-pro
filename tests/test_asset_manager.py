@@ -47,10 +47,9 @@ class TestImportImages(unittest.TestCase):
     asset_manager = AssetManager('test_user_1')
 
     def test_import_existing_image(self):
-        location = 'test_user_1/image_projects/assets/test_1.png'
-        expected_image = Image.open('./test_assets/test_images/test_1.png')
+        expected_image = Image.open('./test_assets/test_images/working_copy.png')
 
-        image = self.asset_manager.import_image_from_s3(location)
+        image = self.asset_manager.import_image_from_s3('test_1.png', False)
 
         image.save('./test_assets/output.png')
 
@@ -60,13 +59,13 @@ class TestImportImages(unittest.TestCase):
         self.assertEqual(0, root_mean_square)
 
     def test_import_nonexistent_image(self):
-        location_one = 'this/doesn_t/exist.png'
-        location_two = 'test_user_1/bad_folder/test_1.png'
-        location_three = 'test_user_1/image_projects/assets/bad.png'
+        location_one = 'nope.png'
+        location_two = 'test_1.png'
+        location_three = 'working_copy.png'
 
-        image_one = self.asset_manager.import_image_from_s3(location_one)
+        image_one = self.asset_manager.import_image_from_s3(location_one, False)
         image_two = self.asset_manager.import_image_from_s3(location_two)
-        image_three = self.asset_manager.import_image_from_s3(location_three)
+        image_three = self.asset_manager.import_image_from_s3(location_three, False)
 
         self.assertEqual(None, image_one)
         self.assertEqual(None, image_two)
