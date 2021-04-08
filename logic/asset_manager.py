@@ -40,21 +40,28 @@ class AssetManager:
         self.s3_client = boto3.client('s3')
         self.username = username
 
-    def import_image_from_s3(self, image_location: str) -> Image:
+    def import_image_from_s3(self,
+                             image_name: str = "working_copy.png", is_working_copy: bool = True) -> Image:
         """
         Args:
-            image_location: Location of image in S3 bucket to be read into a buffer. Must have .png extension
+            image_name: Name of image in S3 bucket to be read into a buffer. Must have .png extension
+            is_working_copy: If the image being imported is the working copy of the project
 
         Returns:
             output_image:   A PIL.Image if image exists in bucket. Otherwise, None
         """
 
-        if image_location[-4:] != '.png':
-            print("ERROR (import_image_from_s3): %s must have '.png' extension" % image_location)
+        if image_name[-4:] != '.png':
+            print("ERROR (import_image_from_s3): %s must have '.png' extension" % image_name)
             return None
 
         try:
-            file_byte_string = self.s3_client.get_object(Bucket=BUCKET_NAME, Key=image_location)['Body'].read()
+            if is_working_copy:
+                location = "%s/image_projects/%s" % (self.username, image_name)
+            else:
+                location = "%s/image_projects/assets/%s" % (self.username, image_name)
+
+            file_byte_string = self.s3_client.get_object(Bucket=BUCKET_NAME, Key=location)['Body'].read()
 
             return Image.open(BytesIO(file_byte_string))
 
