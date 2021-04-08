@@ -35,7 +35,7 @@ class AssetManager:
         """
 
         if ' ' in username:
-            return
+            raise Exception("AssetManager: username must not have spaces in it!")
 
         self.s3_client = boto3.client('s3')
         self.username = username
@@ -43,11 +43,15 @@ class AssetManager:
     def import_image_from_s3(self, image_location: str) -> Image:
         """
         Args:
-            image_location: Location of image in S3 bucket to be read into a buffer.
+            image_location: Location of image in S3 bucket to be read into a buffer. Must have .png extension
 
         Returns:
             output_image:   A PIL.Image if image exists in bucket. Otherwise, None
         """
+
+        if image_location[-4:] != '.png':
+            print("ERROR (import_image_from_s3): %s must have '.png' extension" % image_location)
+            return None
 
         try:
             file_byte_string = self.s3_client.get_object(Bucket=BUCKET_NAME, Key=image_location)['Body'].read()
@@ -55,7 +59,7 @@ class AssetManager:
             return Image.open(BytesIO(file_byte_string))
 
         except self.s3_client.exceptions.NoSuchKey as e:
-            print("ERROR (import_image_from_s3): " + e)
+            print("ERROR (import_image_from_s3): " + str(e))
             return None
 
     def upload_image_to_s3(self, image: Image,
@@ -83,6 +87,6 @@ class AssetManager:
             location = "/%s/image_projects/assets/%s" % (self.username, image_name)
 
         self.s3_client.put_object(Body=buffer.getvalue(), Bucket=BUCKET_NAME, Key=location)
-        url = "https://s3.amazonaws.com/%s/%s" % (BUCKET_NAME, location)
+        url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
 
         return url
