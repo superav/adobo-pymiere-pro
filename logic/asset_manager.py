@@ -79,17 +79,17 @@ class AssetManager:
 
             file_byte_string = self.s3_client.get_object(Bucket=BUCKET_NAME, Key=location)['Body'].read()
 
-            return Image.open(BytesIO(file_byte_string))
+            return Image.open(BytesIO(file_byte_string)).convert('RGBA')
 
         except self.s3_client.exceptions.NoSuchKey as e:
             print("ERROR (import_image_from_s3): " + str(e))
             return None
 
-    def upload_image_to_s3(self, image: Image,
+    def upload_image_to_s3(self, input_image: Image,
                            image_name: str = "working_copy.png", is_working_copy: bool = True) -> str:
         """
         Args:
-            image:  A PIL.Image
+            input_image:  A PIL.Image
             image_name:   Name of the image (with the .png extension). Default is "working_copy.png"
             is_working_copy: If the image to be uploaded is the working copy of the project. Default is True
 
@@ -102,6 +102,8 @@ class AssetManager:
             return "Missing \".png\" extension!"
 
         buffer = BytesIO()
+        image = input_image.convert('RGBA')
+
         image.save(buffer, 'PNG')
 
         if is_working_copy:
