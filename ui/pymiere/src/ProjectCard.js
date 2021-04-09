@@ -9,15 +9,29 @@ const extra = (
 )
 
 const ProjectCard = (props) => (
-  <Card
-    id="card"
-    link
-    image={props.image}
-    header={props.header}
-    //meta='Friend'
-    description={props.disc}
-    //extra={extra}
-  />
+  // <Card
+  //   link
+  //   image={props.image}
+  //   header={props.header}
+  //   //meta='Friend'
+  //   description={props.disc}
+  //   //extra={extra}
+  // />
+
+  <Card>
+        <Card.Content header={props.header} />
+        <Card.Content
+          style={{
+            height: "50%",
+            backgroundImage: "/images/new.svg",
+            backgroundSize: "cover",
+          }}
+        >
+          <Card.Description style={{ color: "white" }}>
+            {props.disc}
+          </Card.Description>
+        </Card.Content>
+      </Card>
 )
 
 export default ProjectCard
