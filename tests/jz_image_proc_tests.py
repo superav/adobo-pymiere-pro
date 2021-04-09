@@ -3,6 +3,7 @@ import math
 import operator
 from functools import reduce
 from moviepy.editor import VideoFileClip
+import numpy as np
 
 from logic.jz_image_proc import *
 from logic.asset_manager import AssetManager
@@ -176,135 +177,137 @@ class TestInputValidation(unittest.TestCase):
 
 class TestImageProc(unittest.TestCase):
     def test_gaussian_blur_correct_output(self):
-        input_img = Image.open("test_images/test_1.png")
-
         # Blur radius: 9
-        expected_img = Image.open("test_images/test_1_gaussian_1.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_gaussian_1.png', False)
 
         output = gaussian_blur(input_img, 9)
-        output.save('test_images/output.png')
+        output.save('./test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
         # Blur radius: 2
-        expected_img = Image.open("test_images/test_1_gaussian_2.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_gaussian_1.png', False)
 
         output = gaussian_blur(input_img, 2)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
     def test_saturation_correct_output(self):
-        input_img = Image.open("test_images/test_1.png")
-
         # Saturation: 0.5
-        expected_img = Image.open("test_images/test_1_saturation_1.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_saturation_1.png', False)
 
         output = change_saturation(input_img, 0.5)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(output_img, expected_img)
 
         self.assertEqual(0, root_mean_square)
 
         # Saturation: 1.5
-        expected_img = Image.open("test_images/test_1_saturation_2.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_saturation_1.png', False)
 
         output = change_saturation(input_img, 1.5)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(output_img, expected_img)
 
         self.assertEqual(0, root_mean_square)
 
     def test_watermark_text_correct_output(self):
-        input_img = Image.open("test_images/test_1.png")
+        # Position: (40, 40), Size: 0.5, Opacity: 1.0
+        input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
+        watermark = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_watermark_1.png', False)
 
-        # Text: "Hello", Position: 20, 20
-        expected_img = Image.open("test_images/test_1_watermark_1.png")
+        output = add_watermark_image(input_img, watermark, (40, 40), size=0.5)
+        output.save('test_assets/output.png')
 
-        output = add_watermark_image(input_img, "Hello", (20, 20))
-        output.save('test_images/output.png')
-
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
         # Text: "Hello", Position: (200, 300), font: Dela Gothic Regular, color: (161, 232, 175, 175)
-        expected_img = Image.open("test_images/test_1_watermark_2.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
+        watermark = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_watermark_1.png', False)
 
-        output = add_watermark_image(input_img, (200, 300), size=0.3)
-        output.save('test_images/output.png')
+        output = add_watermark_image(input_img, watermark, (40, 60), opacity=0.1)
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
     def test_scale_image_correct_output(self):
-        input_img = Image.open("test_images/test_1.png")
-
         # 0.1
-        expected_img = Image.open("test_images/test_1_thumbnail_1.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_scale_1.png', False)
 
         output = scale_image(input_img, 0.1)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
         # 0.5
-        expected_img = Image.open("test_images/test_1_thumbnail_2.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_scale_1.png', False)
 
         output = scale_image(input_img, 0.5)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
     def test_rotate_image_correct_output(self):
-        input_img = Image.open("test_images/test_1.png")
-
         # 90 degrees
-        expected_img = Image.open("test_images/test_1_rotate_1.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_1.png', False)
 
         output = rotate_image(input_img, 90)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
 
         # 370 degrees
-        expected_img = Image.open("test_images/test_1_rotate_2.png")
+        input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_2.png', False)
 
         output = rotate_image(input_img, 370)
-        output.save('test_images/output.png')
+        output.save('test_assets/output.png')
 
-        output_img = Image.open('test_images/output.png')
+        output_img = Image.open('test_assets/output.png')
 
         root_mean_square = compare_images(expected_img, output_img)
 
@@ -313,4 +316,32 @@ class TestImageProc(unittest.TestCase):
 
 class TestVideoProc(unittest.TestCase):
     def test_rotate_video_correct_output(self):
-        pass
+        clip = VideoFileClip("./test_assets/videos/video_1.mp4")
+
+        # 45
+        expected_clip = VideoFileClip("./test_assets/videos/video_1_rotate_1.mp4")
+        output_clip = rotate_video(clip, 45)
+
+        output_clip.write_videofile("./test_assets/output.mp4")
+
+        output = VideoFileClip("./test_assets/output.mp4")
+
+        expected_frames = list(expected_clip.iter_frames())
+        output_frames = list(output.iter_frames())
+
+        for expected_frame, output_frame in zip(expected_frames, output_frames):
+            self.assertTrue(np.array_equal(expected_frame, output_frame))
+
+        # -80
+        expected_clip = VideoFileClip("./test_assets/videos/video_1_rotate_2.mp4")
+        output_clip = rotate_video(clip, -80)
+
+        output_clip.write_videofile("./test_assets/output.mp4")
+
+        output = VideoFileClip("./test_assets/output.mp4")
+
+        expected_frames = list(expected_clip.iter_frames())
+        output_frames = list(output.iter_frames())
+
+        for expected_frame, output_frame in zip(expected_frames, output_frames):
+            self.assertTrue(np.array_equal(expected_frame, output_frame))

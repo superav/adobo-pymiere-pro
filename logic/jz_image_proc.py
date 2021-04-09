@@ -104,7 +104,7 @@ def scale_image(input_img: Image, scale: float) -> Image:
     return output_img
 
 
-def rotate_image(input_img: Image, angle: float) -> Image:
+def rotate_image(input_img: Image, angle: int) -> Image:
     """
     Args:
         input_img:  Image to be changed
@@ -115,13 +115,13 @@ def rotate_image(input_img: Image, angle: float) -> Image:
         TypeError:  Thrown if invalid parameter types
     """
 
-    if not (isinstance(input_img, Image.Image) and type(angle) == float):
+    if not (isinstance(input_img, Image.Image) and type(angle) == int):
         raise TypeError("ERROR (rotate_image): Invalid parameter types")
 
-    return input_img.rotate(angle)
+    return input_img.rotate(angle, Image.NEAREST, expand=1)
 
 
-def rotate_video(input_clip: Clip, angle: float) -> Clip:
+def rotate_video(input_clip: Clip, angle: int) -> Clip:
     """
     Args:
         input_clip: Video clip to be rotated
@@ -132,10 +132,10 @@ def rotate_video(input_clip: Clip, angle: float) -> Clip:
         TypeError:   Thrown if parameters are invalid types
     """
 
-    if not (isinstance(input_clip, Clip.Clip) and type(angle) == float):
+    if not (isinstance(input_clip, Clip.Clip) and type(angle) == int):
         raise TypeError("ERROR (rotate_video): Invalid parameter types")
 
-    return input_clip.rotate(angle)
+    return input_clip.rotate(angle, "nearest", expand=True)
 
 
 # HELPER METHOD
