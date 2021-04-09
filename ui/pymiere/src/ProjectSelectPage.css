@@ -20,8 +20,10 @@
     white-space: nowrap;
 }
 
-#card {
+.card {
     display: inline-block;
     white-space: normal;
     margin: 0.5%;
+    width: 1%;
+    height: 1%;
 }
