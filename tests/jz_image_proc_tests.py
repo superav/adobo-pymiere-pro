@@ -2,7 +2,6 @@ import unittest
 import math
 import operator
 from functools import reduce
-from PIL import ImageChops
 from logic.jz_image_proc import *
 
 
@@ -100,7 +99,7 @@ class TestImageProc(unittest.TestCase):
         # Text: "Hello", Position: 20, 20
         expected_img = Image.open("test_images/test_1_watermark_1.png")
 
-        output = add_watermark_text(input_img, "Hello", (20, 20))
+        output = add_watermark_image(input_img, "Hello", (20, 20))
         output.save('test_images/output.png')
 
         output_img = Image.open('test_images/output.png')
@@ -112,10 +111,7 @@ class TestImageProc(unittest.TestCase):
         # Text: "Hello", Position: (200, 300), font: Dela Gothic Regular, color: (161, 232, 175, 175)
         expected_img = Image.open("test_images/test_1_watermark_2.png")
 
-        output = add_watermark_text(input_img, "Hello", (200, 300),
-                                    font='test_fonts/DelaGothicOne-Regular.ttf',
-                                    size=72,
-                                    color=(161, 232, 175, 175))
+        output = add_watermark_image(input_img, (200, 300), size=0.3)
         output.save('test_images/output.png')
 
         output_img = Image.open('test_images/output.png')

@@ -9,8 +9,11 @@ def gaussian_blur(input_img: Image, radius: int) -> Image:
         radius:     The radius of the gaussian blur
 
     Return:
-        output_img: Blurred image
+        output_img: Blurred image. Will throw a TypeError for invalid input
     """
+
+    if not (isinstance(input_img, Image.Image) and type(radius) == int):
+        raise TypeError("ERROR (gaussian_blur): Invalid parameter types")
 
     output_img = input_img.filter(ImageFilter.GaussianBlur(radius))
 
@@ -25,7 +28,11 @@ def change_saturation(input_img: Image, factor: float) -> Image:
 
     Returns:
         output_img: Image with saturation changed
+        TypeError:  Thrown if parameters are invalid types
     """
+
+    if not (isinstance(input_img, Image.Image) and type(factor) == float):
+        raise TypeError("ERROR (change_saturation): Invalid parameter types")
 
     converter = ImageEnhance.Color(input_img)
     output_img = converter.enhance(factor)
@@ -33,31 +40,37 @@ def change_saturation(input_img: Image, factor: float) -> Image:
     return output_img
 
 
-def add_watermark_text(input_img: Image, text: str, position: tuple, font: str = 'arial.ttf',
-                       size: int = 36, color: tuple = (255, 255, 255, 255)) -> Image:
+def add_watermark_image(input_img: Image, watermark: Image, position: tuple,
+                        size: float = 1.0, opacity: float = 1.0) -> Image:
     """
     Args:
         input_img:  The image (PNG) to be changed
-        text:       Text of watermark
+        watermark:  The image (PNG) to be watermarked
         position:   Tuple (x, y) of where watermark should be placed
-        font:       Font of image. Default is Arial.
-        size:       Size of text. Default is 36.
-        color:      Color (RGBA value) of text. Default is solid white.
+        size:       Size of image (scaled downwards).
+                    Must be in range [0.0, 0.1]. Default is 1.0
+        opacity:    Opacity of the image.
+                    Must be in range [0.0, 0.1]. Default is 1.0
 
     Returns:
         output_img: Watermarked image
     """
-    # https://www.tutorialspoint.com/python_pillow/python_pillow_creating_a_watermark.htm
+
+    if not (isinstance(input_img, Image.Image) and isinstance(watermark, Image.Image)
+            and type(size) == float and type(opacity) == float):
+        raise TypeError("ERROR (add_watermark_image): Invalid parameter type")
+
+    if not (0.0 <= size <= 1.0 and 0.0 <= opacity <= 1.0):
+        raise ValueError("ERROR (add_watermark_image): size and opacity must be in range [0.0, 1.0]")
+
     base_img = input_img.copy()
-    text_layer = Image.new("RGBA", base_img.size, (255, 255, 255, 0))
-    watermark_font = ImageFont.truetype(font, size)
-    draw = ImageDraw.Draw(text_layer)
+    watermark_img = scale_image(watermark, size)
+    mask = watermark_img.convert('L').point(lambda x: int(x * opacity))
+    watermark_img.putalpha(mask)
 
-    draw.text(position, text, fill=color, font=watermark_font)
+    base_img.paste(watermark_img, position, watermark_img)
 
-    output_img = Image.alpha_composite(base_img, text_layer)
-
-    return output_img
+    return base_img
 
 
 def scale_image(input_img: Image, scale: float) -> Image:
@@ -69,10 +82,12 @@ def scale_image(input_img: Image, scale: float) -> Image:
     Returns:
         output_img: Scaled down image
     """
-    # https://stackoverflow.com/questions/24745857/python-pillow-how-to-scale-an-image
+
+    if not (isinstance(input_img, Image.Image) and type(scale) == float):
+        raise TypeError("ERROR (scale_image): Invalid parameter types")
 
     if not 0.0 <= scale <= 1.0:
-        return None
+        raise ValueError("ERROR (scale_image): scale must be in range [0.0, 1.0]")
 
     output_img = input_img.copy()
 
@@ -90,8 +105,11 @@ def rotate_image(input_img: Image, angle: float) -> Image:
 
     Returns:
         output_img: Rotated image
+        TypeError:  Thrown if invalid parameter types
     """
-    # https://pythonexamples.org/python-pillow-rotate-image-90-180-270-degrees/
+
+    if not (isinstance(input_img, Image.Image) and type(angle) == float):
+        raise TypeError("ERROR (change_saturation): Invalid parameter types")
 
     return input_img.rotate(angle)
 
@@ -104,10 +122,10 @@ def rotate_video(input_clip: Clip, angle: float):
 
     Returns:
         output_clip: Rotated video
+        TypeError:   Thrown if parameters are invalid types
     """
 
+    if not (isinstance(input_clip, Image.Image) and type(angle) == float):
+        raise TypeError("ERROR (change_saturation): Invalid parameter types")
+
     return input_clip.mask.rotate(angle)
-
-
-def import_image():
-    pass
