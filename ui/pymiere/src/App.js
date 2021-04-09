@@ -1,5 +1,13 @@
 import './App.css';
 import ImageUIPage from './ImageUIPage'
+import ProjectSelectPage from './ProjectSelectPage'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import CenterImagePage from './CenterImagePage';
 
 function App() {
   /*return (
@@ -21,12 +29,18 @@ function App() {
     </div>
   ); */
 
-  return(
-    <div class="container">
-      <ImageUIPage/>
+  return (
+    <Router>
+      <Switch>
+      <Route path="/image">
+        <ImageUIPage />
+      </Route>
+      <Route path="/">
+        <ProjectSelectPage />
+      </Route>
+    </Switch>
+    </Router>
 
-    </div>
-    
   )
 }
 
