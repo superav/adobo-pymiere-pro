@@ -40,6 +40,22 @@ class AssetManager:
         self.s3_client = boto3.client('s3')
         self.username = username
 
+    def list_bucket(self, list_everything: bool = True) -> list:
+        """
+        Lists all the contents of the S3 bucket
+
+        Returns:
+            bucket_list:    List of all objects in the bucket
+        """
+
+        bucket_list = []
+
+        for key in self.s3_client.list_objects(Bucket=BUCKET_NAME)['Contents']:
+            if list_everything or self.username in key['Key']:
+                bucket_list.append(key['Key'])
+
+        return bucket_list
+
     def import_image_from_s3(self,
                              image_name: str = "working_copy.png", is_working_copy: bool = True) -> Image:
         """
