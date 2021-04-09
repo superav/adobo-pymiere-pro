@@ -1,8 +1,11 @@
 from logic.asset_manager import AssetManager
+
 import unittest
 import math
 import operator
 import requests
+import boto3
+
 from io import BytesIO
 from functools import reduce
 from PIL import Image
@@ -43,11 +46,41 @@ class TestInitializeAssetManager(unittest.TestCase):
         self.assertEqual("__xXX_raven_XXx__", manager_three.username)
 
 
+class TestListBucket(unittest.TestCase):
+    def test_list_user_files(self):
+        asset_manager = AssetManager('test_user_1')
+        expected_list = ["test_user_1/",
+                         "test_user_1/image_projects/",
+                         "test_user_1/image_projects/assets/",
+                         "test_user_1/image_projects/assets/test_1.png",
+                         "test_user_1/image_projects/assets/test_2.png",
+                         "test_user_1/image_projects/assets/test_3.png",
+                         "test_user_1/image_projects/working_copy.png",
+                         "test_user_1/video_projects/",
+                         "test_user_1/video_projects/assets/"]
+
+        output = asset_manager.list_bucket(list_everything=False)
+
+        self.assertEqual(expected_list, output)
+
+    def test_list_all_files(self):
+        asset_manager = AssetManager('test_user_1')
+        client = boto3.client('s3')
+        expected_list = []
+
+        for key in client.list_objects(Bucket='adobo-pymiere')['Contents']:
+            expected_list.append(key['Key'])
+
+        output = asset_manager.list_bucket()
+
+        self.assertEqual(expected_list, output)
+
+
 class TestImportImages(unittest.TestCase):
     asset_manager = AssetManager('test_user_1')
 
     def test_import_existing_image(self):
-        expected_image = Image.open('./test_assets/test_images/working_copy.png')
+        expected_image = Image.open('test_assets/images/working_copy.png')
 
         image = self.asset_manager.import_image_from_s3('test_1.png', False)
 
@@ -89,7 +122,7 @@ class TestUploadImages(unittest.TestCase):
     asset_manager = AssetManager('test_user_1')
 
     def test_upload_invalid_image_extension(self):
-        image = Image.open('./test_assets/test_images/test_2.png')
+        image = Image.open('test_assets/images/test_2.png')
 
         location_one = 'test_user_1/image_projects/assets/bad'
         location_two = 'test_user_1/image_projects/assets/bad.txt'
@@ -104,8 +137,8 @@ class TestUploadImages(unittest.TestCase):
         self.assertEqual("Missing \".png\" extension!", image_three)
 
     def test_upload_valid_image_asset(self):
-        image_one = Image.open('./test_assets/test_images/test_2.png')
-        image_two = Image.open('./test_assets/test_images/test_3.png')
+        image_one = Image.open('test_assets/images/test_2.png')
+        image_two = Image.open('test_assets/images/test_3.png')
 
         expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/test_2.png"
         expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/test_3.png"
@@ -130,7 +163,7 @@ class TestUploadImages(unittest.TestCase):
         self.assertEqual(expected_url_two, url_two)
 
     def test_upload_valid_working_copy(self):
-        image = Image.open('./test_assets/test_images/test_1.png')
+        image = Image.open('test_assets/images/test_1.png')
 
         expected_url = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/working_copy.png"
 
