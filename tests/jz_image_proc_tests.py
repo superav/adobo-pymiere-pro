@@ -2,7 +2,10 @@ import unittest
 import math
 import operator
 from functools import reduce
+from moviepy.editor import VideoFileClip
+
 from logic.jz_image_proc import *
+from logic.asset_manager import AssetManager
 
 
 # This will take the root mean square of the 2 images.
@@ -18,24 +21,157 @@ def compare_images(image_1, image_2):
     return rms
 
 
+ASSET_MANAGER = AssetManager('test_user_1')
+
+
 class TestInputValidation(unittest.TestCase):
-    def test_gaussian_blur_invalid_input(self):
-        pass
+    def test_gaussian_blur_invalid_input_types(self):
+        input_img = Image.open('./test_assets/images/test_1.png')
+
+        with self.assertRaises(TypeError):
+            _ = gaussian_blur("bad", 0)
+
+        with self.assertRaises(TypeError):
+            _ = gaussian_blur(input_img, "bad")
+
+        with self.assertRaises(TypeError):
+            _ = gaussian_blur(input_img, -10.4)
+
+    def test_gaussian_blur_invalid_radius_value(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+
+        with self.assertRaises(ValueError):
+            _ = gaussian_blur(input_img, -1)
+
+        with self.assertRaises(ValueError):
+            _ = gaussian_blur(input_img, -45)
 
     def test_gaussian_blur_correct_input(self):
-        pass
+        input_img = Image.open("./test_assets/images/test_1.png")
+        output = gaussian_blur(input_img, 9)
 
-    def test_saturation_invalid_input(self):
-        pass
+        self.assertTrue(isinstance(output, Image.Image))
+
+    def test_saturation_invalid_input_type(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+
+        with self.assertRaises(TypeError):
+            _ = change_saturation("bad", 4.0)
+
+        with self.assertRaises(TypeError):
+            _ = change_saturation(input_img, True)
+
+        with self.assertRaises(TypeError):
+            _ = change_saturation(True, "bad")
+
+    def test_saturation_invalid_input_value(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+
+        with self.assertRaises(ValueError):
+            _ = change_saturation(input_img, -33.0)
+
+        with self.assertRaises(ValueError):
+            _ = change_saturation(input_img, -0.1)
 
     def test_saturation_correct_input(self):
-        pass
+        input_img = Image.open("./test_assets/images/test_1.png")
+        output = change_saturation(input_img, 1.2)
 
-    def test_watermark_text_invalid_input(self):
-        pass
+        self.assertTrue(isinstance(output, Image.Image))
 
-    def test_watermark_text_correct_input(self):
-        pass
+    def test_watermark_image_invalid_input_type(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+        watermark = Image.open("./test_assets/images/test_2.png")
+
+        with self.assertRaises(TypeError):
+            _ = add_watermark_image("bad", watermark, 10, 0.2, 0.4)
+
+        with self.assertRaises(TypeError):
+            _ = add_watermark_image(input_img, watermark, (10, 10), "nope", 1.0)
+
+        with self.assertRaises(TypeError):
+            _ = add_watermark_image(input_img, watermark, (10, "no"))
+
+        with self.assertRaises(TypeError):
+            _ = add_watermark_image(input_img, watermark, (10, 3, 3))
+
+    def test_watermark_image_invalid_input_value(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+        watermark = Image.open("./test_assets/images/test_2.png")
+
+        with self.assertRaises(ValueError):
+            _ = add_watermark_image(input_img, watermark, (50, 50), size=3.0)
+
+        with self.assertRaises(ValueError):
+            _ = add_watermark_image(input_img, watermark, (50, 50), opacity=3.0)
+
+        with self.assertRaises(ValueError):
+            _ = add_watermark_image(input_img, watermark, (50, 50), opacity=-1.0)
+
+        with self.assertRaises(ValueError):
+            _ = add_watermark_image(input_img, watermark, (50, 50), size=-0.3)
+
+    def test_watermark_image_correct_input(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+        watermark = Image.open("./test_assets/images/test_2.png")
+
+        output = add_watermark_image(input_img, watermark, (40, 40), size=0.4)
+
+        self.assertTrue(isinstance(output, Image.Image))
+
+    def test_scale_image_invalid_input_type(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+
+        with self.assertRaises(TypeError):
+            _ = scale_image("no", 0.4)
+
+        with self.assertRaises(TypeError):
+            _ = scale_image(input_img, input_img)
+
+    def test_scale_image_invalid_input_value(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+
+        with self.assertRaises(ValueError):
+            _ = scale_image(input_img, -0.3)
+
+        with self.assertRaises(ValueError):
+            _ = scale_image(input_img, 2.0)
+
+    def test_scale_image_correct_input(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+        output = scale_image(input_img, 0.5)
+
+        self.assertTrue(isinstance(output, Image.Image))
+
+    def test_rotate_image_invalid_input_type(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+
+        with self.assertRaises(TypeError):
+            _ = rotate_image("no", 44)
+
+        with self.assertRaises(TypeError):
+            _ = rotate_image(input_img, (9, 9))
+
+    def test_rotate_image_correct_input(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+        output = rotate_image(input_img, 45.)
+
+        self.assertTrue(isinstance(output, Image.Image))
+
+    def test_rotate_video_invalid_input_type(self):
+        input_clip = VideoFileClip('./test_assets/videos/video_1.mp4')
+
+        with self.assertRaises(TypeError):
+            _ = rotate_video(True, 44)
+
+        with self.assertRaises(TypeError):
+            _ = rotate_video(input_clip, (30, 30))
+
+    def test_rotate_video_correct_input(self):
+        input_clip = VideoFileClip('./test_assets/videos/video_1.mp4')
+        output = rotate_video(input_clip, 45.)
+
+        self.assertTrue(isinstance(output, Clip.Clip))
 
 
 class TestImageProc(unittest.TestCase):
@@ -173,9 +309,6 @@ class TestImageProc(unittest.TestCase):
         root_mean_square = compare_images(expected_img, output_img)
 
         self.assertEqual(0, root_mean_square)
-
-    def test_import_image_correct_output(self):
-        pass
 
 
 class TestVideoProc(unittest.TestCase):
