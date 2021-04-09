@@ -1,0 +1,27 @@
+#outerContainer {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+#imageProjects {
+    width: 100%;
+    background-color: green;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#videoProjects {
+    width: 100%;
+    background-color: yellow;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#card {
+    display: inline-block;
+    white-space: normal;
+    margin: 0.5%;
+}
