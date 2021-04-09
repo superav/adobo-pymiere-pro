@@ -21,7 +21,10 @@ class ProjectSelectPage extends Component {
             <div id="outerContainer">
                 <div id="imageProjectsContainer">
                     <div id="imageProjects">
-                        <Link to="/image"><ProjectCard id="card" image="/images/new.svg" header="New Image Project" disc="Create a new image project with Adobo Pymiere Pro" /></Link>
+                        <Link to="/image"><ProjectCard image="/images/new.svg" header="New Image Project" disc="Create a new image project with Adobo Pymiere Pro" /></Link>
+                        <ProjectCard id="card" image="/images/new.svg" header="New Image Project" disc="Create a new image project with Adobo Pymiere Pro" />
+                        
+                        
                     </div>
                 </div>
 

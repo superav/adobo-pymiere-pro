@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react'
 
 const extra = (
   <a>
@@ -19,19 +19,14 @@ const ProjectCard = (props) => (
   // />
 
   <Card>
-        <Card.Content header={props.header} />
-        <Card.Content
-          style={{
-            height: "50%",
-            backgroundImage: "/images/new.svg",
-            backgroundSize: "cover",
-          }}
-        >
-          <Card.Description style={{ color: "white" }}>
-            {props.disc}
-          </Card.Description>
-        </Card.Content>
-      </Card>
+    <Card.Content header={props.header} />
+    <Image src={props.image}/>
+    <Card.Content>
+      <Card.Description>
+        {props.disc}
+      </Card.Description>
+    </Card.Content>
+  </Card>
 )
 
 export default ProjectCard
