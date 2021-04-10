@@ -1,6 +1,8 @@
 image: "python:3.7"
 
 before_script:
+  - apt-get update
+  - echo "y" | apt-get install ffmpeg
   - pip install -r requirements.txt
   - pip install coverage pytest pytest-cov
 
@@ -29,7 +31,7 @@ pytest-aidan:
 pytest-jessica:
   stage: test
   script:
-    - echo "This job runs the tests in the logic folder for Jessica"
+    - echo "This job runs the tests in the logic folder"
     - cd tests
     - python -m pytest jz_image_proc_tests.py -v --cov
 
@@ -38,7 +40,7 @@ pytest-john:
   script:
     - echo "This job runs the tests in the logic folder for John"
     - cd tests
-    - python -m pytest john_logic_tests.py -v --cov
+    - python -m pytest john_logic_test.py -v --cov
 
 # deploy-prod:
 #   stage: deploy
