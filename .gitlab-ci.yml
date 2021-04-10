@@ -1,7 +1,8 @@
 image: "python:3.7"
 
 before_script:
-  - cat /etc/os-release
+  - apt-get update
+  - echo "y" | apt-get install ffmpeg
   - pip install -r requirements.txt
   - pip install coverage pytest pytest-cov
 
@@ -32,8 +33,6 @@ pytest-jessica:
   script:
     - echo "This job runs the tests in the logic folder"
     - cd tests
-    - apt-get update
-    - echo "y" | apt-get install ffmpeg
     - python -m pytest jz_image_proc_tests.py -v --cov
 
 pytest-john:
