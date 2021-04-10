@@ -5,6 +5,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import TextOverlayTextInputFont from './TextOverlayTextInputFont'
+import TextOverlayColorPicker from './TextOverlayColorPicker';
+import TextOverlayLocationSelector from './TextOverlayLocationSelector';
+import Button from '@material-ui/core/Button'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,7 +72,7 @@ export default function VerticalTabs() {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Item One" {...a11yProps(0)} />
+        <Tab label="Text Overlay" {...a11yProps(0)} />
         <Tab label="Item Two" {...a11yProps(1)} />
         <Tab label="Item Three" {...a11yProps(2)} />
         <Tab label="Item Four" {...a11yProps(3)} />
@@ -77,7 +81,12 @@ export default function VerticalTabs() {
         <Tab label="Item Seven" {...a11yProps(6)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        Item One
+        <ul>
+            <TextOverlayTextInputFont textLabel="Enter Text Below"/>
+            <TextOverlayLocationSelector />
+            <Button variant="contained" color="primary">Add Text Overlay</Button>
+
+        </ul>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two

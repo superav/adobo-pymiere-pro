@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import "./CenterImagePage.css"
+import VerticalTabs from './EffectsOptionsMenu'
 
 class CenterImagePage extends Component {
-    constructor(props) {
-      super(props);
-  
-  
-    }
 
     render(){
         return (
@@ -15,12 +11,7 @@ class CenterImagePage extends Component {
             //UI for view of current effect options
             //View Image
             <div id="mainImageUIandEffectsBar">
-                <div id="effectOptions">
-                    effects Options
-                </div>
-                <div id="effectControls">
-                    effects Controls
-                </div>
+                <VerticalTabs />
                 <div id="imageDisplay">
                     Image
                 </div>
