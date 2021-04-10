@@ -64,26 +64,26 @@ def create_app():
 
         return ass_man.list_bucket(ui_input["list_everything"])
 
-    @flask_app.route("/logic/image_editor", methods=["GET"])
-    def get_import_image():
-        # Receive input
-        ui_input = request.get_json()
+    # @flask_app.route("/logic/image_editor", methods=["GET"])
+    # def get_import_image():
+    #     # Receive input
+    #     ui_input = request.get_json()
 
-        # Call pull helper method
-        input_img = pull_pillow_image(ui_input)
+    #     # Call pull helper method
+    #     input_img = pull_pillow_image(ui_input)
 
-        return input_img
+    #     return input_img
 
-    @flask_app.route("/logic/image_editor", methods=["POST"])
-    def post_upload_image():
-        # Receive input
-        ui_input = request.get_json()
+    # @flask_app.route("/logic/image_editor", methods=["POST"])
+    # def post_upload_image():
+    #     # Receive input
+    #     ui_input = request.get_json()
 
-        # Call pull helper method, can we send pilImage?
-        # we may not need this method
-        input_img = push_pillow_image(ui_input["altered_image"], ui_input)
+    #     # Call pull helper method, can we send pilImage?
+    #     # we may not need this method
+    #     input_img = push_pillow_image(ui_input["altered_image"], ui_input)
 
-        return input_img
+    #     return input_img
 
     def pull_pillow_image(ui_input: dict):
         # Receive input

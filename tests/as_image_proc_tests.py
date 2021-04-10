@@ -6,14 +6,14 @@ from logic import as_image_proc
 class EditImageTestCase(unittest.TestCase):
     def test_hue_editing_image(self):
         im1 = Image.open(r"image.png")
-        im2 = as_image_proc.hue_editor(im1, [180])
+        im2 = as_image_proc.hue_editor(im1, 180)
         #im2.show()
         self.assertTrue(im2 is not None, True)
 
     def test_hue_invalid_value(self):
         im1 = Image.open(r"image.png")
-        im2 = as_image_proc.hue_editor(im1, [580])
-        im3 = as_image_proc.hue_editor(im1, [-1])
+        im2 = as_image_proc.hue_editor(im1, 580)
+        im3 = as_image_proc.hue_editor(im1, -1)
         self.assertTrue(im2 is None, True)
         self.assertTrue(im3 is None, True)
 
@@ -41,14 +41,14 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_opacity_editing_image(self):
         im1 = Image.open(r"image.png")
-        im2 = as_image_proc.opacity_editor(im1, [50])
+        im2 = as_image_proc.opacity_editor(im1, 50)
         #im2.show()
         self.assertTrue(im2 is not None, True)
 
     def test_opacity_invalid_inputs(self):
         im1 = Image.open(r"image.png")
-        im2 = as_image_proc.opacity_editor(im1, [400])
-        im3 = as_image_proc.opacity_editor(im1, [-400])
+        im2 = as_image_proc.opacity_editor(im1, 400)
+        im3 = as_image_proc.opacity_editor(im1, -400)
 
         self.assertTrue(im2 is None, True)
         self.assertTrue(im3 is None, True)
