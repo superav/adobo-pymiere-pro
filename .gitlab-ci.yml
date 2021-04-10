@@ -16,7 +16,7 @@ pytest:
   script:
     - echo "This job runs the tests in the logic folder"
     - pip install coverage pytest pytest-cov
-    - cd logic/test/;pytest -v --cov
+    - cd tests/;pytest -v --cov
 
 deploy-prod:
   stage: deploy
