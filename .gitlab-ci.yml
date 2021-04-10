@@ -9,15 +9,15 @@ stages:
   - test
   - deploy
 
-build-job:
-  stage: build
-  script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+# build-job:
+#   stage: build
+#   script:
+#     - echo "Hello, $GITLAB_USER_LOGIN!"
 
-test-job1:
-  stage: test
-  script:
-    - echo "This job does nothing :D"
+# test-job1:
+#   stage: test
+#   script:
+#     - echo "This job does nothing :D"
 
 pytest-aidan:
   stage: test
@@ -31,16 +31,16 @@ pytest-jessica:
   script:
     - echo "This job runs the tests in the logic folder"
     - cd tests
-    - python -m pytest as_image_proc_tests.py -v --cov
-
-pytest-john:
-  stage: test
-  script:
-    - echo "This job runs the tests in the logic folder"
-    - cd tests
     - python -m pytest jz_image_proc_tests.py -v --cov
 
-deploy-prod:
-  stage: deploy
-  script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+# pytest-john:
+#   stage: test
+#   script:
+#     - echo "This job runs the tests in the logic folder"
+#     - cd tests
+#     - python -m pytest jz_image_proc_tests.py -v --cov
+
+# deploy-prod:
+#   stage: deploy
+#   script:
+#     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
