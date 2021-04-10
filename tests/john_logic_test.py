@@ -33,8 +33,6 @@ class YinjunSprintOneTests(unittest.TestCase):
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
         self.assertEqual(None, add_text_to_image(im, [5, "arial.ttf", 50, [50, 50], [200, 200, 200]]))
         self.assertEqual(None, add_text_to_image(im, ["hello", 5, 50, [50, 50], [200, 200, 200]]))
-        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
-        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
         self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50, 50], [200, 200, 200]]))
         self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200]]))
 
