@@ -155,7 +155,7 @@ class TestInputValidation(unittest.TestCase):
 
     def test_rotate_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
-        output = rotate_image(input_img, 45.)
+        output = rotate_image(input_img, 45)
 
         self.assertTrue(isinstance(output, Image.Image))
 
@@ -170,7 +170,7 @@ class TestInputValidation(unittest.TestCase):
 
     def test_rotate_video_correct_input(self):
         input_clip = VideoFileClip('./test_assets/videos/video_1.mp4')
-        output = rotate_video(input_clip, 45.)
+        output = rotate_video(input_clip, 45)
 
         self.assertTrue(isinstance(output, Clip.Clip))
 
