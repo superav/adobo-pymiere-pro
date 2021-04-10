@@ -17,7 +17,7 @@ pytest-aidan:
     - echo "This job runs the tests in the logic folder"
     - pip install coverage pytest pytest-cov
     - pip install -r requirements.txt
-    - python -m pytest tests.as_image_proc_tests -v --cov
+    - python -m pytest tests/as_image_proc_tests.py -v --cov
 
 pytest-jessica:
   stage: test
