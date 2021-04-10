@@ -7,16 +7,6 @@
     height: inherit;
 }
 
-#effectOptions {
-    margin-right: 1%;
-    background-color: red;
-    width: 10%;
-}
-
-#effectControls {
-    width: 40%;
-}
-
 #imageDisplay {
     margin-left: 1%;
     background-color: green;

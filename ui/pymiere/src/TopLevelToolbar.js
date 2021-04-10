@@ -4,9 +4,6 @@ import './TopLevelToolbar.css'
 
 
 class TopLevelToolbar extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
