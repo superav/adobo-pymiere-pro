@@ -1,9 +1,17 @@
 image: "python:3.7"
 
+before_script:
+  - pip install -r requirements.txt
+  - pip install coverage pytest pytest-cov
+
+stages:
+  - build
+  - test
+  - deploy
+
 build-job:
   stage: build
   script:
-    - pip install -r requirements.txt
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
 test-job1:
@@ -15,8 +23,6 @@ pytest-aidan:
   stage: test
   script:
     - echo "This job runs the tests in the logic folder"
-    - pip install coverage pytest pytest-cov
-    - pip install -r requirements.txt
     - cd tests
     - python -m pytest as_image_proc_tests.py -v --cov
 
@@ -24,15 +30,15 @@ pytest-jessica:
   stage: test
   script:
     - echo "This job runs the tests in the logic folder"
-    - pip install coverage pytest pytest-cov
-    - pytest tests/as_image_proc_tests.py -v --cov
+    - cd tests
+    - python -m as_image_proc_tests.py -v --cov
 
 pytest-john:
   stage: test
   script:
     - echo "This job runs the tests in the logic folder"
-    - pip install coverage pytest pytest-cov
-    - pytest tests/jz_image_proc_tests.py -v --cov
+    - cd tests
+    - python -m pytest jz_image_proc_tests.py -v --cov
 
 deploy-prod:
   stage: deploy
