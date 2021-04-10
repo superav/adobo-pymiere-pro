@@ -6,23 +6,25 @@ def add_text_to_image(image=Image, specifications: list = [str, str, int, list, 
     text = specifications[0]
     font = specifications[1]
     size = specifications[2]
-    offset = specifications[3]
-    color = specifications[4]
+    offset = tuple(specifications[3])
+    color = tuple(specifications[4])
+
+    print(len(color))
 
     valid_parameters = isinstance(image, Image.Image)
     valid_parameters = valid_parameters and len(specifications) == 5
     valid_parameters = valid_parameters and isinstance(text, str)
     valid_parameters = valid_parameters and isinstance(font, str)
     valid_parameters = valid_parameters and isinstance(size, int)
-    valid_parameters = valid_parameters and isinstance(tuple(offset), tuple)
-    valid_parameters = valid_parameters and isinstance(tuple(color), tuple)
+    valid_parameters = valid_parameters and isinstance(offset, tuple)
+    valid_parameters = valid_parameters and isinstance(color, tuple)
     if not valid_parameters:
         return None
     if len(offset) != 2 or len(color) != 3:
         return None
     font = ImageFont.truetype(font, size)
     draw = ImageDraw.Draw(image)
-    draw.text(tuple(offset), text, tuple(color), font=font)
+    draw.text(offset, text, color, font=font)
     return image
 
 
