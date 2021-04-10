@@ -10,6 +10,7 @@ import TextOverlayColorPicker from './TextOverlayColorPicker';
 import TextOverlayLocationSelector from './TextOverlayLocationSelector';
 import Button from '@material-ui/core/Button'
 import ZoomEffect from './Effects/ZoomEffect'
+import PixelViewer from './Effects/PixelViewer'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,7 +76,7 @@ export default function VerticalTabs(props) {
       >
         <Tab label="Text Overlay" {...a11yProps(0)} />
         <Tab label="Zoom" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
+        <Tab label="Pixel Viewer" {...a11yProps(2)} />
         <Tab label="Item Four" {...a11yProps(3)} />
         <Tab label="Item Five" {...a11yProps(4)} />
         <Tab label="Item Six" {...a11yProps(5)} />
@@ -95,7 +96,9 @@ export default function VerticalTabs(props) {
         </ul>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <ul>
+            <PixelViewer canvasTransform={props.canvasTransform} onTransform={props.onTransform}>Pixel Viewer</PixelViewer>
+        </ul>
       </TabPanel>
       <TabPanel value={value} index={3}>
         Item Four
