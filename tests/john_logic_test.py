@@ -29,18 +29,18 @@ class YinjunSprintOneTests(unittest.TestCase):
 
     def test_add_text_to_image_invalid_input(self):
         im = 5
-        self.assertEqual(None, add_text_to_image(im, "hello", "arial.ttf", 50, (50, 50), (200, 200, 200)))
+        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        self.assertEqual(None, add_text_to_image(im, 5, "arial.ttf", 50, (50, 50), (200, 200, 200)))
-        self.assertEqual(None, add_text_to_image(im, "hello", 5, 50, (50, 50), (200, 200, 200)))
-        self.assertEqual(None, add_text_to_image(im, "hello", "arial.ttf", 50, [50, 50], (200, 200, 200)))
-        self.assertEqual(None, add_text_to_image(im, "hello", "arial.ttf", 50, (50, 50), [200, 200, 200]))
-        self.assertEqual(None, add_text_to_image(im, "hello", "arial.ttf", 50, (50, 50, 50), (200, 200, 200)))
-        self.assertEqual(None, add_text_to_image(im, "hello", "arial.ttf", 50, (50, 50), (200, 200)))
+        self.assertEqual(None, add_text_to_image(im, [5, "arial.ttf", 50, [50, 50], [200, 200, 200]]))
+        self.assertEqual(None, add_text_to_image(im, ["hello", 5, 50, [50, 50], [200, 200, 200]]))
+        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
+        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
+        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50, 50], [200, 200, 200]]))
+        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200]]))
 
     def test_add_text_to_image_valid_input(self):
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        self.assertNotEqual(None, add_text_to_image(im, "hello", "arial.ttf", 50, (50, 50), (200, 200, 200)))
+        self.assertNotEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
         fin = ASSET_MANAGER.import_image_from_s3('test_2_hello.png', False)
         rms = compare_images(im, fin)
         self.assertEqual(0, rms)
@@ -78,14 +78,14 @@ class YinjunSprintOneTests(unittest.TestCase):
 
     def test_audio_fade_effect_invalid_input(self):
         cl = 5
-        self.assertEqual(None, audio_fade_effect(cl, 5, 5))
+        self.assertEqual(None, audio_fade_effect(cl, [5, 5]))
         cl = VideoFileClip("munobrars.mp4")
-        self.assertEqual(None, audio_fade_effect(cl, 5.0, 5))
-        self.assertEqual(None, audio_fade_effect(cl, 5, 5.0))
+        self.assertEqual(None, audio_fade_effect(cl, [5.0, 5]))
+        self.assertEqual(None, audio_fade_effect(cl, [5, 5.0]))
 
     def test_audio_fade_effect_valid_input(self):
         cl = VideoFileClip("munobrars.mp4")
-        self.assertNotEqual(None, audio_fade_effect(cl, 5, 5))
+        self.assertNotEqual(None, audio_fade_effect(cl, [5, 5]))
 
 
 if __name__ == '__main__':

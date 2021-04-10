@@ -2,20 +2,27 @@ from PIL import Image, ImageFont, ImageDraw
 from moviepy.editor import *
 
 
-def add_text_to_image(image=Image, text=str, font=str, size=int, offset=tuple, color=tuple) -> Image:
+def add_text_to_image(image=Image, specifications: list = [str, str, int, list, list]) -> Image:
+    text = specifications[0]
+    font = specifications[1]
+    size = specifications[2]
+    offset = specifications[3]
+    color = specifications[4]
+
     valid_parameters = isinstance(image, Image.Image)
+    valid_parameters = valid_parameters and len(specifications) == 5
     valid_parameters = valid_parameters and isinstance(text, str)
     valid_parameters = valid_parameters and isinstance(font, str)
     valid_parameters = valid_parameters and isinstance(size, int)
-    valid_parameters = valid_parameters and isinstance(offset, tuple)
-    valid_parameters = valid_parameters and isinstance(color, tuple)
+    valid_parameters = valid_parameters and isinstance(tuple(offset), tuple)
+    valid_parameters = valid_parameters and isinstance(tuple(color), tuple)
     if not valid_parameters:
         return None
     if len(offset) != 2 or len(color) != 3:
         return None
     font = ImageFont.truetype(font, size)
     draw = ImageDraw.Draw(image)
-    draw.text(offset, text, color, font=font)
+    draw.text(tuple(offset), text, tuple(color), font=font)
     return image
 
 
@@ -45,7 +52,10 @@ def audio_normalize_effect(clip=VideoFileClip) -> VideoFileClip:
     return clip
 
 
-def audio_fade_effect(clip=VideoFileClip, fade_in=int, fade_out=int) -> VideoFileClip:
+def audio_fade_effect(clip=VideoFileClip, specifications: list = [int, int]) -> VideoFileClip:
+    fade_in = specifications[0]
+    fade_out = specifications[1]
+
     valid_parameters = isinstance(clip, VideoFileClip)
     valid_parameters = valid_parameters and isinstance(fade_in, int)
     valid_parameters = valid_parameters and isinstance(fade_out, int)
