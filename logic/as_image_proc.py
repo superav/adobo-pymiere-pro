@@ -34,11 +34,11 @@ def hue_editor(input_img: Image, hue: int) -> Image:
 
 
 def crop_editor(input_img: Image,
-                bounds: tuple = (int, int, int, int)) -> Image:
+                bounds: list = [int, int, int, int]) -> Image:
     """
        Args:
            input_img:  The image to be changed
-           bounds:     tuple of 4 floats, being the left, top, right, bottom,
+           bounds:     list of 4 floats, being the left, top, right, bottom,
                        of where the image is to be cropped by pixel count, that
                        have to be within the image size
 
@@ -74,11 +74,11 @@ def opacity_editor(input_img: Image, alpha: int) -> Image:
 
 
 def apply_color_editor(input_img: Image,
-                       color_mask: tuple = (255, 255, 255, 255)) -> Image:
+                       color_mask: list = [255, 255, 255, 255]) -> Image:
     """
        Args:
             input_img:  The image to be changed
-            color_mask: A tuple of four ints, being the rgba for the color
+            color_mask: A list of four ints, being the rgba for the color
                         mask
 
        Returns:
@@ -97,15 +97,15 @@ def apply_color_editor(input_img: Image,
 
 
 def apply_gradient_editor(input_img: Image, alpha: int,
-                          color_initial: tuple = (255, 255, 255),
-                          color_secondary: tuple = (255, 255, 255)) -> Image:
+                          color_initial: list = [255, 255, 255],
+                          color_secondary: list = [255, 255, 255]) -> Image:
     """
        Args:
            input_img:  The image to be changed
            alpha: the alpha value of the mask to be applied
-           color_initial: A tuple of three ints, being the rgb for the first
+           color_initial: A list of three ints, being the rgb for the first
                           half of the color mask
-           color_secondary: A tuple of three ints, being the rgb for the
+           color_secondary: A list of three ints, being the rgb for the
                             second half of the color mask
 
        Returns:
