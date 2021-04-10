@@ -9,6 +9,7 @@ import TextOverlayTextInputFont from './TextOverlayTextInputFont'
 import TextOverlayColorPicker from './TextOverlayColorPicker';
 import TextOverlayLocationSelector from './TextOverlayLocationSelector';
 import Button from '@material-ui/core/Button'
+import ZoomEffect from './Effects/ZoomEffect'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VerticalTabs() {
+export default function VerticalTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -73,7 +74,7 @@ export default function VerticalTabs() {
         className={classes.tabs}
       >
         <Tab label="Text Overlay" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
+        <Tab label="Zoom" {...a11yProps(1)} />
         <Tab label="Item Three" {...a11yProps(2)} />
         <Tab label="Item Four" {...a11yProps(3)} />
         <Tab label="Item Five" {...a11yProps(4)} />
@@ -89,7 +90,9 @@ export default function VerticalTabs() {
         </ul>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <ul>
+          <ZoomEffect canvasTransform={props.canvasTransform} onTransform={props.onTransform}>Zoom</ZoomEffect>
+        </ul>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
