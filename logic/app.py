@@ -1,6 +1,5 @@
 from flask import Flask, request
 from PIL.Image import Image
-import flask
 from asset_manager import AssetManager
 import jz_image_proc
 import as_image_proc
@@ -13,7 +12,6 @@ def create_app():
 
     @flask_app.route("/logic/image_editor", methods=["GET"])
     def get_apply_effect():
-
         # Receive input
         ui_input = request.get_json()
 
@@ -58,6 +56,34 @@ def create_app():
 
         # Return url and image information to UI
         return {"image_name": ui_input["image_name"], "url": url, "file_extension": ui_input["file_extension"]}
+
+    @flask_app.route("/logic/image_editor", methods=["GET"])
+    def get_list_bucket():
+        # Receive input
+        ui_input = request.get_json()
+
+        return ass_man.list_bucket(ui_input["list_everything"])
+
+    @flask_app.route("/logic/image_editor", methods=["GET"])
+    def get_import_image():
+        # Receive input
+        ui_input = request.get_json()
+
+        # Call pull helper method
+        input_img = pull_pillow_image(ui_input)
+
+        return input_img
+
+    @flask_app.route("/logic/image_editor", methods=["POST"])
+    def post_upload_image():
+        # Receive input
+        ui_input = request.get_json()
+
+        # Call pull helper method, can we send pilImage?
+        # we may not need this method
+        input_img = push_pillow_image(ui_input["altered_image"], ui_input)
+
+        return input_img
 
     def pull_pillow_image(ui_input: dict):
         # Receive input

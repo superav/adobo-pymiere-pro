@@ -3,18 +3,18 @@ import numpy as np
 import colorsys
 
 
-def hue_editor(input_img: Image, hue: int) -> Image:
+def hue_editor(input_img: Image, specifications: int) -> Image:
     """
        Args:
            input_img:  The image to be changed
-           hue:     The hue factor that will be set -
+           specifications:     The hue factor that will be set -
 
        Returns:
            output_img: Image with hue changed
     """
-    #https://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
+    # https://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
 
-    if hue > 360 or hue < 0:
+    if specifications > 360 or specifications < 0:
         return None
 
     img = input_img.convert('RGBA')
@@ -25,7 +25,7 @@ def hue_editor(input_img: Image, hue: int) -> Image:
 
     r, g, b, a = np.rollaxis(arr, axis=-1)
     h, s, v = rgb_to_hsv(r, g, b)
-    h = (h + hue / 360.) % 1
+    h = (h + specifications / 360.) % 1
     r, g, b = hsv_to_rgb(h, s, v)
     arr = np.dstack((r, g, b, a))
 
@@ -34,11 +34,11 @@ def hue_editor(input_img: Image, hue: int) -> Image:
 
 
 def crop_editor(input_img: Image,
-                bounds: list = [int, int, int, int]) -> Image:
+                specifications: list = [int, int, int, int]) -> Image:
     """
        Args:
            input_img:  The image to be changed
-           bounds:     list of 4 floats, being the left, top, right, bottom,
+           specifications:list of 4 floats, being the left, top, right, bottom,
                        of where the image is to be cropped by pixel count, that
                        have to be within the image size
 
@@ -46,7 +46,7 @@ def crop_editor(input_img: Image,
            output_img: Image that has been cropped
     """
 
-    left, top, right, bottom = bounds
+    left, top, right, bottom = specifications
     w, h = input_img.size
     if left >= w or right >= w or top >= h or bottom >= h \
             or right <= left or bottom <= top or left < 0 or top < 0:
@@ -55,37 +55,37 @@ def crop_editor(input_img: Image,
     return output_img
 
 
-def opacity_editor(input_img: Image, alpha: int) -> Image:
+def opacity_editor(input_img: Image, specifications: int) -> Image:
     """
        Args:
                input_img:  The image to be changed
-               alpha:      The value determining how opaque the image will be -
-                           0 being invisible, 100 being opaque
+               specifications: The value determining how opaque the image will
+                        be - 0 being invisible, 100 being opaque
 
        Returns:
            output_img: Image with opacity changed
     """
 
-    if alpha > 100 or alpha < 0:
+    if specifications > 100 or specifications < 0:
         return None
 
-    input_img.putalpha(int(alpha * 2.55))
+    input_img.putalpha(int(specifications * 2.55))
     return input_img
 
 
 def apply_color_editor(input_img: Image,
-                       color_mask: list = [255, 255, 255, 255]) -> Image:
+                       specifications: list = [255, 255, 255, 255]) -> Image:
     """
        Args:
             input_img:  The image to be changed
-            color_mask: A list of four ints, being the rgba for the color
+            specifications: A list of four ints, being the rgba for the color
                         mask
 
        Returns:
            output_img: Image with color mask applied changed
     """
 
-    r, g, b, a = color_mask
+    r, g, b, a = specifications
     if r < 0 or g < 0 or b < 0 or a < 0 or \
             r > 255 or g > 255 or b > 255 or a > 255:
         return None
@@ -96,22 +96,27 @@ def apply_color_editor(input_img: Image,
     return output_image
 
 
-def apply_gradient_editor(input_img: Image, alpha: int,
-                          color_initial: list = [255, 255, 255],
-                          color_secondary: list = [255, 255, 255]) -> Image:
+def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     """
        Args:
            input_img:  The image to be changed
-           alpha: the alpha value of the mask to be applied
-           color_initial: A list of three ints, being the rgb for the first
-                          half of the color mask
-           color_secondary: A list of three ints, being the rgb for the
-                            second half of the color mask
+           specifications: list containing the next 3 values ->
+
+                           alpha: the alpha value of the mask to be applied
+                           color_initial: A list of three ints, being the rgb
+                                            for the first half of the color
+                                            mask
+                           color_secondary: A list of three ints, being the
+                                            rgb for the second half of the
+                                            color mask
 
        Returns:
            output_img: Image with color mask applied changed
     """
-    #https://python-catalin.blogspot.com/2013/10/how-to-make-color-gradient-and-images.html
+    # https://python-catalin.blogspot.com/2013/10/how-to-make-color-gradient-and-images.html
+    alpha = specifications[0]
+    color_initial = specifications[1]
+    color_secondary = specifications[2]
 
     r, g, b = color_initial
     r2, g2, b2 = color_secondary
