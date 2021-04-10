@@ -11,6 +11,8 @@ ADD requirements.txt /docker_root
 ADD credentials /root/.aws
 
 RUN pip install -r requirements.txt
+RUN apt-get update
+RUN echo "y" | apt-get install ffmpeg
 
 EXPOSE 5000
 
