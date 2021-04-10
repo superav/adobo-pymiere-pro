@@ -1,8 +1,8 @@
 from flask import Flask, request
 from PIL.Image import Image
-from asset_manager import AssetManager
-import jz_image_proc
-import as_image_proc
+from logic.asset_manager import AssetManager
+from logic import jz_image_proc
+from logic import as_image_proc
 #import nst
 
 ass_man = AssetManager("test_user_1")
