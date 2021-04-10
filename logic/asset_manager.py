@@ -37,7 +37,10 @@ class AssetManager:
         if ' ' in username:
             raise Exception("AssetManager: username must not have spaces in it!")
 
-        self.s3_client = boto3.client('s3')
+        self.s3_client = boto3.client('s3',
+                                      aws_access_key_id='AKIAYA22OMIBDDNHCQWM',
+                                      aws_secret_access_key='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'
+                                      )
         self.username = username
 
     def list_bucket(self, list_everything: bool = True) -> list:
