@@ -41,7 +41,7 @@ pytest-john:
   script:
     - echo "This job runs the tests in the logic folder for John"
     - cd tests
-    - python -m pytest john_logic_tests.py -v --cov
+    - python -m pytest john_logic_test.py -v --cov
 
 # deploy-prod:
 #   stage: deploy
