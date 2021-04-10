@@ -40,12 +40,12 @@ def create_app():
             altered_image = logic.jz_image_proc.rotate_image(input_img, ui_input["specifications"].toJson())
         elif var == "downscale-resolution":
             altered_image = logic.jz_image_proc.scale_image(input_img, ui_input["specifications"].toJson())
-        elif var == "reverb":
-            altered_image = ImageEditor.reverb(input_img, ui_input["specifications"].toJson())
-        elif var == "eq":
-            altered_image = ImageEditor.eq(input_img, ui_input["specifications"].toJson())
-        elif var == "volume":
-            altered_image = ImageEditor.volume(input_img, ui_input["specifications"].toJson())
+        # elif var == "reverb":
+        #     altered_image = ImageEditor.reverb(input_img, ui_input["specifications"].toJson())
+        # elif var == "eq":
+        #     altered_image = ImageEditor.eq(input_img, ui_input["specifications"].toJson())
+        # elif var == "volume":
+        #     altered_image = ImageEditor.volume(input_img, ui_input["specifications"].toJson())
         elif var == "rotate-video":
             altered_image = logic.jz_image_proc.rotate_video(input_img, ui_input["specifications"].toJson())
         else:
