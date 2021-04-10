@@ -1,0 +1,24 @@
+image: "python:3.7"
+
+build-job:
+  stage: build
+  script:
+    - pip install -r requirements.txt
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+
+test-job1:
+  stage: test
+  script:
+    - echo "This job does nothing :D"
+
+pytest:
+  stage: test
+  script:
+    - echo "This job runs the tests in the logic folder"
+    - pip install coverage pytest pytest-cov
+    - cd logic/test/;pytest -v --cov
+
+deploy-prod:
+  stage: deploy
+  script:
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
