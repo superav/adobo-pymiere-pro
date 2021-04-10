@@ -9,8 +9,6 @@ def add_text_to_image(image=Image, specifications: list = [str, str, int, list, 
     offset = tuple(specifications[3])
     color = tuple(specifications[4])
 
-    print(len(color))
-
     valid_parameters = isinstance(image, Image.Image)
     valid_parameters = valid_parameters and len(specifications) == 5
     valid_parameters = valid_parameters and isinstance(text, str)
