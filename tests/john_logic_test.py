@@ -1,6 +1,6 @@
 import unittest
 from logic.asset_manager import AssetManager
-from john_logic import *
+from logic.john_logic import *
 
 import math
 import operator
