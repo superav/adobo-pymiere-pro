@@ -31,7 +31,7 @@ pytest-jessica:
   script:
     - echo "This job runs the tests in the logic folder"
     - cd tests
-    - python -m as_image_proc_tests.py -v --cov
+    - python -m pytest as_image_proc_tests.py -v --cov
 
 pytest-john:
   stage: test
