@@ -10,7 +10,6 @@ ADD /logic /docker_root/test
 ADD requirements.txt /docker_root
 ADD credentials /root/.aws
 
-RUN pip install flask
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
