@@ -3,6 +3,7 @@ from PIL.Image import Image
 from logic.asset_manager import AssetManager
 from logic import jz_image_proc
 from logic import as_image_proc
+from logic import john_logic
 #import nst
 
 ass_man = AssetManager("test_user_1")
@@ -40,12 +41,14 @@ def create_app():
             altered_image = jz_image_proc.rotate_image(input_img, ui_input["specifications"].toJson())
         elif var == "downscale-resolution":
             altered_image = jz_image_proc.scale_image(input_img, ui_input["specifications"].toJson())
-        # elif var == "reverb":
-        #     altered_image = ImageEditor.reverb(input_img, ui_input["specifications"].toJson())
-        # elif var == "eq":
-        #     altered_image = ImageEditor.eq(input_img, ui_input["specifications"].toJson())
-        # elif var == "volume":
-        #     altered_image = ImageEditor.volume(input_img, ui_input["specifications"].toJson())
+        elif var == "fade_audio":
+            altered_image = john_logic.audio_fade_effect(input_img, ui_input["specifications"].toJson())
+        elif var == "normalize":
+            altered_image = john_logic.audio_normalize_effect(input_img, ui_input["specifications"].toJson())
+        elif var == "volume":
+            altered_image = john_logic.change_volume(input_img, ui_input["specifications"].toJson())
+        elif var == "add-text":
+            altered_image = john_logic.add_text_to_image(input_img, ui_input["specifications"].toJson())
         elif var == "rotate-video":
             altered_image = jz_image_proc.rotate_video(input_img, ui_input["specifications"].toJson())
         else:

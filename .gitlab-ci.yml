@@ -22,23 +22,23 @@ stages:
 pytest-aidan:
   stage: test
   script:
-    - echo "This job runs the tests in the logic folder"
+    - echo "This job runs the tests in the logic folder for Aidan"
     - cd tests
     - python -m pytest as_image_proc_tests.py -v --cov
 
 pytest-jessica:
   stage: test
   script:
-    - echo "This job runs the tests in the logic folder"
+    - echo "This job runs the tests in the logic folder for Jessica"
     - cd tests
     - python -m pytest jz_image_proc_tests.py -v --cov
 
-# pytest-john:
-#   stage: test
-#   script:
-#     - echo "This job runs the tests in the logic folder"
-#     - cd tests
-#     - python -m pytest jz_image_proc_tests.py -v --cov
+pytest-john:
+  stage: test
+  script:
+    - echo "This job runs the tests in the logic folder for John"
+    - cd tests
+    - python -m pytest john_logic_tests.py -v --cov
 
 # deploy-prod:
 #   stage: deploy
