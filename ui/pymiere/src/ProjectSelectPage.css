@@ -1,0 +1,35 @@
+#outerContainer {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+#imageProjects {
+    width: 100%;
+    background-color: green;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#videoProjects {
+    width: 100%;
+    background-color: yellow;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.card {
+    display: inline-block !important; 
+    margin: 0.5% !important;
+    white-space: normal !important;
+    width: 15% !important
+}
+
+@media (max-width: 1024px) {
+    .card {
+        width: 40% !important;
+        margin: 2% !important;
+    }
+}
