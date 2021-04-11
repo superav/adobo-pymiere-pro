@@ -34,6 +34,10 @@ class ZoomEffect extends Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({ zoomLvl: this.props.canvasTransform[0] })
+  }
+
   render() {
     return (
       <div>
