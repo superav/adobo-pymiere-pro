@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// TODO Add callbacks to TabPanel child elements to save their states between tab switches
 export default function VerticalTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);

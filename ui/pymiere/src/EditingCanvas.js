@@ -14,7 +14,7 @@ class EditingCanvas extends Component {
   }
 
   componentDidMount() {
-    // Get parent sizes (TODO Fix dom reference)
+    // Get parent sizes (TODO Fix dom reference by passing width and height by prop from the parent element)
     const parent = document.getElementById('imageDisplay');
     let width = parent.offsetWidth;
     let height = parent.offsetHeight;
