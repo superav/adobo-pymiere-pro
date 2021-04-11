@@ -1,0 +1,15 @@
+#mainImageUIandEffectsBar {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.5%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    height: inherit;
+}
+
+#imageDisplay {
+    margin-left: 1%;
+    background-color: green;
+    width: 55%;
+}
+

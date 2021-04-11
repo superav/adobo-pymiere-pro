@@ -1,0 +1,14 @@
+#topBar {
+    width:99%;
+    display: flex;
+    margin: 0.5%;
+    background-color:grey;
+    height: 7.5%;
+}
+
+.menuButton {
+    float: left;
+    margin-left : 1.5%;
+    margin-top: 0.75%;
+    margin-bottom: 0.5%;
+}
