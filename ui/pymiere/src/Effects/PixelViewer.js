@@ -5,24 +5,24 @@ class PixelViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggleOn: false,
+      canvas: <canvas id="Pixel Canvas"/>,
       savedScale: [1, 1],
-      pixelRatio: 20, // Size ratio of 1 real pixel to screen pixels
-      text: "Off"
     }
+    this.pixelRatio = 20; // Size ratio of 1 real pixel to screen pixels
+    this.toggleOn = false;
+    this.text = "Off";
   }
 
   Toggle = () => {
     const oldTransform = this.props.canvasTransform;
     
-    let toggleState = this.state.toggleOn;
-    this.setState({ toggleOn: !toggleState });
-    this.setState({ text: this.state.toggleOn ? 'On' : 'Off'});
+    this.toggleOn = !this.toggleOn;
+    this.text = this.toggleOn ? "On" : "Off";
     
-    if (this.state.toggleOn) {
+    if (this.toggleOn) {
       this.setState({ savedScale: [oldTransform[0], oldTransform[3]]});
-      oldTransform[0] = this.state.pixelRatio;
-      oldTransform[3] = this.state.pixelRatio;
+      oldTransform[0] = this.pixelRatio;
+      oldTransform[3] = this.pixelRatio;
     } else {
       oldTransform[0] = this.state.savedScale[0];
       oldTransform[3] = this.state.savedScale[1];
@@ -31,10 +31,17 @@ class PixelViewer extends Component {
     this.props.onTransform(oldTransform);
   }
 
+  componentWillUnmount() {
+    if (this.toggleOn) {
+      this.Toggle();
+    }
+  }
+
   render() {
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.Toggle}>{this.state.text}</Button>
+        <Button variant="contained" color="primary" onClick={this.Toggle}>{this.text}</Button><br/>
+        <canvas />
       </div>
     );
   }
