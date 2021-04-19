@@ -104,17 +104,16 @@ class AssetManager:
         if image_name[-4:] != '.png':
             return "Missing \".png\" extension!"
 
-        buffer = BytesIO()
-        image = input_image.convert('RGBA')
-
-        image.save(buffer, 'PNG')
+        input_image.convert('RGBA').save("__temp__.png")
 
         if is_working_copy:
             location = "%s/image_projects/%s" % (self.username, image_name)
         else:
             location = "%s/image_projects/assets/%s" % (self.username, image_name)
 
-        self.s3_client.put_object(Body=buffer.getvalue(), Bucket=BUCKET_NAME, Key=location)
+        # self.s3_client.put_object(Body=buffer.getvalue(), Bucket=BUCKET_NAME, Key=location)
+        self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
+
         url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
 
         return url
