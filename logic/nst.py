@@ -35,18 +35,6 @@ from tensorflow.python.keras import layers
 from tensorflow.python.keras import backend as K
 
 
-# tf.enable_eager_execution()
-# print("Eager execution: {}".format(tf.executing_eagerly()))
-
-# Upload image
-# Download in S3
-# !wget --quiet -P /tmp/nst/ https://upload.wikimedia.org/wikipedia/commons/d/d7/Green_Sea_Turtle_grazing_seagrass.jpg
-# !wget --quiet -P /tmp/nst/ https://upload.wikimedia.org/wikipedia/commons/0/0a/The_Great_Wave_off_Kanagawa.jpg
-
-# content_path = './turtle.jpg'
-# style_path = './wave.jpg'
-
-
 def load_img_from_s3(path_to_im):
     max_dim = 512
     s3 = boto3.client('s3')
