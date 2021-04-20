@@ -111,7 +111,7 @@ export default function VerticalTabs(props) {
         Item Five
       </TabPanel>
       <TabPanel value={value} index={5}>
-        
+        <SpecialEffectsOptions />
       </TabPanel>
       <TabPanel value={value} index={6}>
         Item Seven
