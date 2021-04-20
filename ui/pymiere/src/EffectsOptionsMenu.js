@@ -111,7 +111,7 @@ export default function VerticalTabs(props) {
         <VignetteEffectPage getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
       </TabPanel>
       <TabPanel value={value} index={5}>
-        
+        <SpecialEffectsOptions />
       </TabPanel>
       <TabPanel value={value} index={6}>
         <LightingOptionsMenu />
