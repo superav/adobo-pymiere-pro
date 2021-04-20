@@ -11,7 +11,10 @@ class AssetManager:
 
     The file structure of the S3 bucket is as follows:
         .
-        └── _username/
+        ├── _styles/
+        │   ├── example_style_1.jpg
+        │   └── example_style_2.png
+        ├── _username/
         │   ├── _video_projects/
         │   │   ├── _assets/
         │   │   │   ├── example_audio.mp3
@@ -39,13 +42,16 @@ class AssetManager:
 
         self.s3_client = boto3.client('s3',
                                       aws_access_key_id='AKIAYA22OMIBDDNHCQWM',
-                                      aws_secret_access_key='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'
-                                      )
+                                      aws_secret_access_key='1trhjY5it/Vy12pglEFuHqBsdhqq7ZO/Q/TtOxub')
         self.username = username
 
     def list_bucket(self, list_everything: bool = True) -> list:
         """
-        Lists all the contents of the S3 bucket
+        Lists the contents of the S3 bucket
+
+        Args:
+            list_everything: If true, will list everything in the bucket.
+                             Otherwise, list only files for the current user
 
         Returns:
             bucket_list:    List of all objects in the bucket
@@ -111,7 +117,26 @@ class AssetManager:
         else:
             location = "%s/image_projects/assets/%s" % (self.username, image_name)
 
-        # self.s3_client.put_object(Body=buffer.getvalue(), Bucket=BUCKET_NAME, Key=location)
+        self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
+
+        url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
+
+        return url
+
+    def upload_nst_style_reference(self, image: Image, image_name: str) -> str:
+        """
+        Args:
+            image:
+            image_name:
+
+        Returns:
+
+        """
+
+        image.convert('RGBA').save("__temp__.png")
+
+        location = "styles/%s" % image_name
+
         self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
 
         url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
