@@ -6,15 +6,15 @@ import EditingCanvas from "./EditingCanvas.js"
 class CenterImagePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      canvasTransform: [1, 0, 0, 1, 0, 0],
-      canvasRef: React.createRef()
-    }
   }
 
-  handleCanvasTransform = (newTransform) => {
-    this.setState({ canvasTransform: newTransform });
-    this.child.setState({ canvasTransform: newTransform })
+  // Methods for interacting with canvas. All interactions should be happend through these calls
+  handleSetCanvas = (property, value) => {
+    this.canvas.setCanvasState(property, value);
+  }
+
+  handleGetCanvas = (property, value) => {
+    return this.canvas.getCanvasState(property, value);
   }
 
   render(){
@@ -24,9 +24,9 @@ class CenterImagePage extends Component {
       //UI for view of current effect options
       //View Image
       <div id="mainImageUIandEffectsBar">
-        <VerticalTabs canvasTransform={this.state.canvasTransform} onTransform={this.handleCanvasTransform}/>
+        <VerticalTabs getCanvas={this.handleGetCanvas} setCanvas={this.handleSetCanvas}/>
         <div id="imageDisplay">
-          <EditingCanvas ref={ref => (this.child = ref)} canvasRef={this.state.canvasRef} canvasTransform={this.state.canvasTransform}/>
+          <EditingCanvas ref={ref => (this.canvas = ref)}/>
         </div>
       </div>
     );

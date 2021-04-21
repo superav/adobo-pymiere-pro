@@ -12,30 +12,30 @@ class ZoomEffect extends Component {
     };
   }
 
+  updateZoom = (newZoomLvl) => {
+    this.setState({ zoomLvl: newZoomLvl });
+    const oldTransform = this.props.getCanvas("transform");
+    oldTransform[0] = newZoomLvl;
+    oldTransform[3] = newZoomLvl;
+    this.props.setCanvas("transform", oldTransform);
+  }
+
   zoomIn = () => {
     var newZoomLvl = this.state.zoomLvl + this.zoomStep;
     if (newZoomLvl <= this.maxZoom) {
-      this.setState({ zoomLvl: newZoomLvl });
-      const oldTransform = this.props.canvasTransform;
-      oldTransform[0] = newZoomLvl;
-      oldTransform[3] = newZoomLvl;
-      this.props.onTransform(oldTransform);
+      this.updateZoom(newZoomLvl);
     }
   }
 
   zoomOut = () => {
     var newZoomLvl = this.state.zoomLvl - this.zoomStep;
     if (newZoomLvl >= this.minZoom) {
-      this.setState({ zoomLvl: newZoomLvl });
-      const oldTransform = this.props.canvasTransform;
-      oldTransform[0] = newZoomLvl;
-      oldTransform[3] = newZoomLvl;
-      this.props.onTransform(oldTransform);
+      this.updateZoom(newZoomLvl);
     }
   }
 
   componentDidMount() {
-    this.setState({ zoomLvl: this.props.canvasTransform[0] })
+    this.setState({ zoomLvl: this.props.getCanvas("transform")[0] })
   }
 
   render() {
