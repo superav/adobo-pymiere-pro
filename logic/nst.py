@@ -26,6 +26,13 @@ from tensorflow.python.keras import backend as K
 
 
 def load_img_from_s3(path_to_im):
+    """
+    Args:
+        path_to_im: Path of image to be loaded from S3
+
+    Returns:
+        output_img: Loaded image
+    """
     max_dim = 512
     s3 = boto3.client('s3')
     file_byte_string = s3.get_object(Bucket='adobo-pymiere', Key=path_to_im)['Body'].read()
@@ -43,6 +50,13 @@ def load_img_from_s3(path_to_im):
 
 
 def imshow(img, title=None):
+    """
+    Displays image
+
+    Args:
+        img:    Image
+        title:  Title (if any), default is None
+    """
     out = np.squeeze(img, axis=0)
     out = out.astype('uint8')
     plt.imshow(out)
@@ -52,12 +66,26 @@ def imshow(img, title=None):
 
 
 def load_and_process_img(path_to_img):
+    """
+    Args:
+        path_to_img:    Path to image
+
+    Returns:
+        output_img:     Loaded image
+    """
     img = load_img_from_s3(path_to_img)
     img = tf.keras.applications.vgg19.preprocess_input(img)
     return img
 
 
 def deprocess_img(processed_img):
+    """
+    Args:
+        processed_img: Processed image
+
+    Returns:
+        deprocessed_img:    De-processed image
+    """
     x = processed_img.copy()
     if len(x.shape) == 4:
         x = np.squeeze(x, 0)
@@ -92,6 +120,10 @@ num_style_layers = len(style_layers)
 
 
 def get_model():
+    """
+    Returns:
+        NST model
+    """
     vgg = tf.keras.applications.vgg19.VGG19(include_top=False, weights='imagenet')
     vgg.trainable = False
     style_outputs = [vgg.get_layer(name).output for name in style_layers]
@@ -101,10 +133,25 @@ def get_model():
 
 
 def get_content_loss(base_content, target):
+    """
+    Args:
+        base_content:   Base content
+        target:         Target content
+
+    Returns:
+        mean_square:    Mean squared error between base and target content
+    """
     return tf.reduce_mean(tf.square(base_content - target))
 
 
 def gram_matrix(input_tensor):
+    """
+    Args:
+        input_tensor:   Input tensor
+
+    Returns:
+        gram_matrix:    Gram matrix of tensor
+    """
     channels = int(input_tensor.shape[-1])
     a = tf.reshape(input_tensor, [-1, channels])
     n = tf.shape(a)[0]
@@ -113,13 +160,33 @@ def gram_matrix(input_tensor):
 
 
 def get_style_loss(base_style, gram_target):
-    height, width, channels = base_style.get_shape().as_list()
+    """
+    Calculates style loss.
+
+    Args:
+        base_style:     Original style
+        gram_target:
+
+    Returns:
+    """
+    # height, width, channels = base_style.get_shape().as_list()
     gram_style = gram_matrix(base_style)
 
     return tf.reduce_mean(tf.square(gram_style - gram_target))
 
 
 def get_feature_representations(model, content_path, style_path):
+    """
+    Args:
+        model:          NST model
+        content_path:   Path to content image
+        style_path:     Path to style image
+
+    Returns:
+        style_features: List of feature descriptors in style image
+        content_features:   List of feature descriptors in content image
+    """
+
     content_image = load_and_process_img(content_path)
     style_image = load_and_process_img(style_path)
     style_outputs = model(style_image)
@@ -131,6 +198,19 @@ def get_feature_representations(model, content_path, style_path):
 
 
 def compute_loss(model, loss_weights, init_image, gram_style_features, content_features):
+    """
+    Args:
+        model:  NST model
+        loss_weights:   Weights (for calculating style loss)
+        init_image:     Initial image
+        gram_style_features:
+        content_features:   Content feature descriptors
+
+    Returns:
+        loss:       Total style loss
+        style_score:    Style loss in style images
+        content_score:  Style loss in content images
+    """
     style_weight, content_weight = loss_weights
 
     model_outputs = model(init_image)
@@ -161,6 +241,14 @@ def compute_loss(model, loss_weights, init_image, gram_style_features, content_f
 
 
 def compute_grads(cfg):
+    """
+    Args:
+        cfg:    Config dictionary
+
+    Returns:
+        gradient:   Gradients of total loss
+        all_loss:   Total loss
+    """
     with tf.GradientTape() as tape:
         all_loss = compute_loss(**cfg)
 
@@ -174,6 +262,19 @@ def run_style_transfer(content_path,
                        num_iterations=1000,
                        content_weight=1e3,
                        style_weight=1e-2):
+    """
+    Args:
+        content_path:   Path to content image
+        style_path:     Path to style image
+        num_iterations: Number of iterations. Default is 1000
+        content_weight: Loss weight for content image
+        style_weight:   Loss weight for style image
+
+    Returns:
+        best_img:   Image with the least loss
+        best_loss:  Minimum loss value
+    """
+
     model = get_model()
 
     for layer in model.layers:
@@ -190,7 +291,7 @@ def run_style_transfer(content_path,
     opt = tf.optimizers.Adam(learning_rate=5, beta_1=0.99, epsilon=1e-1)
 
     # For displaying intermediate images
-    iter_count = 1
+    # iter_count = 1
 
     # Store our best result
     best_loss, best_img = float('inf'), None
@@ -224,7 +325,7 @@ def run_style_transfer(content_path,
         opt.apply_gradients([(grads, init_image)])
         clipped = tf.clip_by_value(init_image, min_vals, max_vals)
         init_image.assign(clipped)
-        end_time = time.time()
+        # end_time = time.time()
 
         if loss < best_loss:
             # Update best loss and best image from total loss.
@@ -260,6 +361,15 @@ def run_style_transfer(content_path,
 
 
 def show_results(best_img, content_path, style_path, show_large_final=True):
+    """
+    Debug method to show results of NST.
+
+    Args:
+        best_img:           Best NST image
+        content_path:       Path to content image
+        style_path:         Path to style image
+        show_large_final:   Shows final result image if true.
+    """
     plt.figure(figsize=(10, 5))
     content = load_img_from_s3(content_path)
     style = load_img_from_s3(style_path)
@@ -280,6 +390,8 @@ def show_results(best_img, content_path, style_path, show_large_final=True):
 
 def run_nst(content_path: str = 'turtle.jpg', style_path: str = 'wave.jpg') -> Image:
     """
+    Performs NST on the image. This is the only method you have to call to run NST
+
     Args:
         content_path:   Name of the image that will have NST performed on it
         style_path:     Name of the image that will be the style reference for NST
