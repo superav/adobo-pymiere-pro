@@ -9,6 +9,7 @@ import TextOverlayTextInputFont from './TextOverlayTextInputFont'
 import TextOverlayColorPicker from './TextOverlayColorPicker';
 import TextOverlayLocationSelector from './TextOverlayLocationSelector';
 import Button from '@material-ui/core/Button';
+import VignetteEffectPage from "./VignetteEffectPage"
 
 import ZoomEffect from './Effects/ZoomEffect';
 import PixelViewer from './Effects/PixelViewer';
@@ -81,7 +82,7 @@ export default function VerticalTabs(props) {
         <Tab label="Zoom" {...a11yProps(1)} />
         <Tab label="Pixel Viewer" {...a11yProps(2)} />
         <Tab label="Cropping" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
+        <Tab label="Vignette" {...a11yProps(4)} />
         <Tab label="Item Six" {...a11yProps(5)} />
         <Tab label="Item Seven" {...a11yProps(6)} />
       </Tabs>
@@ -109,7 +110,7 @@ export default function VerticalTabs(props) {
         </ul>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Item Five
+        <VignetteEffectPage getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
       </TabPanel>
       <TabPanel value={value} index={5}>
         Item Six
