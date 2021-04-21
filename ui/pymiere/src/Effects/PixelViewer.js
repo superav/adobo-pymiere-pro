@@ -14,7 +14,7 @@ class PixelViewer extends Component {
   }
 
   Toggle = () => {
-    const oldTransform = this.props.canvasTransform;
+    const oldTransform = this.props.getCanvas("transform");
     
     this.toggleOn = !this.toggleOn;
     this.text = this.toggleOn ? "On" : "Off";
@@ -28,7 +28,7 @@ class PixelViewer extends Component {
       oldTransform[3] = this.state.savedScale[1];
       oldTransform[4] = oldTransform[5] = 0; // Reset position too since the size reset will displaced the image
     }
-    this.props.onTransform(oldTransform);
+    this.props.setCanvas("transform", oldTransform);
   }
 
   componentWillUnmount() {
@@ -41,7 +41,7 @@ class PixelViewer extends Component {
     return (
       <div>
         <Button variant="contained" color="primary" onClick={this.Toggle}>{this.text}</Button><br/>
-        <canvas />
+        {this.state.canvas}
       </div>
     );
   }
