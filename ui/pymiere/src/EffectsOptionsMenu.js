@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button'
 import ZoomEffect from './Effects/ZoomEffect'
 import PixelViewer from './Effects/PixelViewer'
 import LightingOptionsMenu from './LightingOptionsMenu'
+import SpecialEffectsOptions from './SpecialEffectsOptions'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -79,10 +80,10 @@ export default function VerticalTabs(props) {
         <Tab label="Text Overlay" {...a11yProps(0)} />
         <Tab label="Zoom" {...a11yProps(1)} />
         <Tab label="Pixel Viewer" {...a11yProps(2)} />
-        <Tab label="Cropping" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Lighting Options" {...a11yProps(6)} />
+        <Tab label="Item Four" {...a11yProps(3)} />
+        <Tab label="Lighting Options" {...a11yProps(4)} />
+        <Tab label="Special Effects" {...a11yProps(5)} />
+        <Tab label="Item Seven" {...a11yProps(6)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ul>
@@ -97,6 +98,7 @@ export default function VerticalTabs(props) {
           <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
         </ul>
       </TabPanel>
+      {/* TODO: pixel viewer text does not change from on to off when toggled*/}
       <TabPanel value={value} index={2}>
         <ul>
           <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
@@ -106,13 +108,16 @@ export default function VerticalTabs(props) {
         Item Four
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Item Five
+        <LightingOptionsMenu />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        Item Six
+        <SpecialEffectsOptions />
       </TabPanel>
       <TabPanel value={value} index={6}>
-        <LightingOptionsMenu />
+        Item Five
+      </TabPanel>
+      <TabPanel value={value} index={7}>
+        Item Seven
       </TabPanel>
     </div>
   );
