@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button'
 import ZoomEffect from './Effects/ZoomEffect'
 import PixelViewer from './Effects/PixelViewer'
 import LightingOptionsMenu from './LightingOptionsMenu'
+import VignetteEffectPage from "./VignetteEffectPage"
 import SpecialEffectsOptions from './SpecialEffectsOptions'
 import ColorMenu from './ColorMenu'
 import PencilTool from './Effects/PencilTool';
@@ -85,6 +86,7 @@ export default function VerticalTabs(props) {
         <Tab label="Lighting Options" {...a11yProps(4)} />
         <Tab label="Special Effects" {...a11yProps(5)} />
         <Tab label="Pen Tool" {...a11yProps(6)} />
+        <Tab label="Vignette" {...a11yProps(7)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ul>
@@ -117,7 +119,7 @@ export default function VerticalTabs(props) {
         <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
       </TabPanel>
       <TabPanel value={value} index={7}>
-        Item Seven
+        <VignetteEffectPage getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
     </div>
   );
