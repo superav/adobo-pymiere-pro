@@ -69,8 +69,15 @@ export default function ColorMenu() {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs>
-          <Slider value={saturation} onChange={handleChangeSaturation} aria-labelledby="continuous-slider" />
-          <p>Saturation: {Math.ceil(saturation*2.55)}</p>
+          <Slider
+            value={saturation}
+            onChangeCommitted={handleChangeSaturation}
+            aria-labelledby="discrete-slider-small-steps"
+            min={0}
+            max={255}
+            step={1}
+            valueLabelDisplay="auto"
+          ></Slider>
           <br></br>
         </Grid>
       </Grid>
@@ -80,8 +87,15 @@ export default function ColorMenu() {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs>
-          <Slider value={hue} onChange={handleChangeHue} aria-labelledby="continuous-slider" />
-          <p>Hue: {Math.floor(hue*3.6)}</p>
+        <Slider
+            value={hue}
+            onChangeCommitted={handleChangeHue}
+            aria-labelledby="discrete-slider-small-steps"
+            min={0}
+            max={255}
+            step={1}
+            valueLabelDisplay="auto"
+          ></Slider>
         </Grid>
       </Grid>
 
