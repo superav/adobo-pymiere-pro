@@ -45,7 +45,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
 
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    display: 'flex',
+    display: "flex",
     height: 900,
   },
   tabs: {
@@ -97,13 +97,16 @@ export default function VerticalTabs(props) {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ul>
-          <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+          <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
         </ul>
       </TabPanel>
       {/* TODO: pixel viewer text does not change from on to off when toggled*/}
       <TabPanel value={value} index={2}>
         <ul>
-          <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+          <PixelViewer
+            getCanvas={props.getCanvas}
+            setCanvas={props.setCanvas}
+          />
         </ul>
       </TabPanel>
       <TabPanel value={value} index={3}>

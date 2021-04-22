@@ -45,6 +45,7 @@ class EditingCanvas extends Component {
     img.src = src;
     img.onload = () => {this.draw()};
     
+    img.id = "mainImage";
     // Center the image in the canvas
     this.canvasState.transform[4] += (this.canvas.width - img.width) / 2;
     this.canvasState.transform[5] += (this.canvas.height - img.height) / 2;
@@ -77,6 +78,7 @@ class EditingCanvas extends Component {
     // Repopulate the canvas
     this.context.drawImage(...this.canvasState.image);
     // Update functions
+    this.drawOutline();
     switch (this.canvasState.activeFunction) {
       case "crop":
         this.drawCropTool();
@@ -99,7 +101,7 @@ class EditingCanvas extends Component {
   drawCropTool = () => {
     const box = this.canvasState.functions.crop.boundingBox;
     // Draw crop box and bounding gizmos
-    this.context.strokeStyle = 'black';
+    this.context.strokeStyle = '#FF0000';
     this.context.strokeRect(...box);
     this.cropHandlePositions(box).forEach((p, i) => {
       if (i === this.canvasState.functions.crop.resize)
@@ -142,6 +144,13 @@ class EditingCanvas extends Component {
       });
       this.context.stroke();
     }
+  }
+  
+  drawOutline = () => {
+    const box = this.canvasState.functions.crop.boundingBox;
+    // Draw crop box and bounding gizmos
+    this.context.strokeStyle = 'black';
+    this.context.strokeRect(0, 0, this.canvasState.image[3], this.canvasState.image[4]);
   }
 
   handleMouseMove = (e) => {
@@ -224,9 +233,7 @@ class EditingCanvas extends Component {
     }
   }
 
-  // Other mouse event functions if needed
-  handleMouseDown = () => {}
-  handleMouseLeave = () => {}
+  
 
   render() {
     return (
