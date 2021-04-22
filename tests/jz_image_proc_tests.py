@@ -29,23 +29,23 @@ class TestInputValidation(unittest.TestCase):
     def test_gaussian_blur_invalid_input_types(self):
         input_img = Image.open('./test_assets/images/test_1.png')
 
-        with self.assertRaises(TypeError):
-            _ = gaussian_blur("bad", 0)
+        output = gaussian_blur("bad", 0)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = gaussian_blur(input_img, "bad")
+        output = gaussian_blur(input_img, "bad")
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = gaussian_blur(input_img, -10.4)
+        output = gaussian_blur(input_img, -10.4)
+        self.assertEqual(None, output)
 
     def test_gaussian_blur_invalid_radius_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        with self.assertRaises(ValueError):
-            _ = gaussian_blur(input_img, -1)
+        output = gaussian_blur(input_img, -1)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(ValueError):
-            _ = gaussian_blur(input_img, -45)
+        output = gaussian_blur(input_img, -45)
+        self.assertEqual(None, output)
 
     def test_gaussian_blur_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -56,23 +56,23 @@ class TestInputValidation(unittest.TestCase):
     def test_saturation_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        with self.assertRaises(TypeError):
-            _ = change_saturation("bad", 4.0)
+        output = change_saturation("bad", 4.0)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = change_saturation(input_img, True)
+        output = change_saturation(input_img, True)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = change_saturation(True, "bad")
+        output = change_saturation(True, "bad")
+        self.assertEqual(None, output)
 
     def test_saturation_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        with self.assertRaises(ValueError):
-            _ = change_saturation(input_img, -33.0)
+        output = change_saturation(input_img, -33.0)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(ValueError):
-            _ = change_saturation(input_img, -0.1)
+        output = change_saturation(input_img, -0.1)
+        self.assertEqual(None, output)
 
     def test_saturation_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -84,59 +84,68 @@ class TestInputValidation(unittest.TestCase):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = Image.open("./test_assets/images/test_2.png")
 
-        with self.assertRaises(TypeError):
-            _ = add_watermark_image("bad", watermark, 10, 0.2, 0.4)
+        output = add_watermark_image("bad", 10)
 
-        with self.assertRaises(TypeError):
-            _ = add_watermark_image(input_img, watermark, (10, 10), "nope", 1.0)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = add_watermark_image(input_img, watermark, (10, "no"))
+        specifications = [watermark, (10, 10), "nope", 1.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = add_watermark_image(input_img, watermark, (10, 3, 3))
+        specifications = [watermark, (10, "no"), "nope", 1.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
+
+        specifications = [watermark, (10, 3, 3), "nope", 1.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
 
     def test_watermark_image_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = Image.open("./test_assets/images/test_2.png")
 
-        with self.assertRaises(ValueError):
-            _ = add_watermark_image(input_img, watermark, (50, 50), size=3.0)
+        specifications = [watermark, (50, 50), 3.0, 1.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(ValueError):
-            _ = add_watermark_image(input_img, watermark, (50, 50), opacity=3.0)
+        specifications = [watermark, (50, 50), 1.0, 3.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(ValueError):
-            _ = add_watermark_image(input_img, watermark, (50, 50), opacity=-1.0)
+        specifications = [watermark, (50, 50), 1.0, -1.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(ValueError):
-            _ = add_watermark_image(input_img, watermark, (50, 50), size=-0.3)
+        specifications = [watermark, (50, 50), -0.2, 3.0]
+        output = add_watermark_image(input_img, specifications)
+        self.assertEqual(None, output)
 
     def test_watermark_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = Image.open("./test_assets/images/test_2.png")
 
-        output = add_watermark_image(input_img, watermark, (40, 40), size=0.4)
+        specifications = [watermark, (40, 40), 0.4, 1.0]
+        output = add_watermark_image(input_img, specifications)
 
         self.assertTrue(isinstance(output, Image.Image))
 
     def test_scale_image_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        with self.assertRaises(TypeError):
-            _ = scale_image("no", 0.4)
+        output = scale_image("no", 0.4)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = scale_image(input_img, input_img)
+        output = scale_image(input_img, input_img)
+        self.assertEqual(None, output)
 
     def test_scale_image_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        with self.assertRaises(ValueError):
-            _ = scale_image(input_img, -0.3)
+        output = scale_image(input_img, -0.3)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(ValueError):
-            _ = scale_image(input_img, 2.0)
+        output = scale_image(input_img, 2.0)
+        self.assertEqual(None, output)
 
     def test_scale_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -147,11 +156,11 @@ class TestInputValidation(unittest.TestCase):
     def test_rotate_image_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        with self.assertRaises(TypeError):
-            _ = rotate_image("no", 44)
+        output = rotate_image("no", 44)
+        self.assertEqual(None, output)
 
-        with self.assertRaises(TypeError):
-            _ = rotate_image(input_img, (9, 9))
+        output = rotate_image(input_img, (9, 9))
+        self.assertEqual(None, output)
 
     def test_rotate_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -205,17 +214,19 @@ class TestImageProc(unittest.TestCase):
         watermark = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
         expected_img = ASSET_MANAGER.import_image_from_s3('test_3_watermark_1.png', False)
 
-        output = add_watermark_image(input_img, watermark, (40, 40), size=0.5)
+        specifications = [watermark, (40, 40), 0.5, 1.0]
+        output = add_watermark_image(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
-        # Text: "Hello", Position: (200, 300), font: Dela Gothic Regular, color: (161, 232, 175, 175)
+        # Position: (40, 60), Size: 1.0, Opacity: 0.1
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
         watermark = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_watermark_1.png', False)
 
-        output = add_watermark_image(input_img, watermark, (40, 60), opacity=0.1)
+        specifications = [watermark, (40, 60), 1.0, 0.1]
+        output = add_watermark_image(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
