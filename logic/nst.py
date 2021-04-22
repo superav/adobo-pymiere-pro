@@ -7,9 +7,8 @@ Original file is located at
 """
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from io import BytesIO
 import IPython.display
-import boto3
+import os
 
 import numpy as np
 from PIL import Image
@@ -25,18 +24,40 @@ from tensorflow.python.keras import layers
 from tensorflow.python.keras import backend as K
 
 
-def load_img_from_s3(path_to_im):
+# def load_img_from_s3(path_to_im):
+#     """
+#     Args:
+#         path_to_im: Path of image to be loaded from S3
+#
+#     Returns:
+#         output_img: Loaded image
+#     """
+#     max_dim = 512
+#     s3 = boto3.client('s3')
+#     file_byte_string = s3.get_object(Bucket='adobo-pymiere', Key=path_to_im)['Body'].read()
+#     img = Image.open(BytesIO(file_byte_string))
+#
+#     long = max(img.size)
+#     scale = max_dim / long
+#     img = img.resize((round(img.size[0] * scale), round(img.size[1] * scale)), Image.ANTIALIAS)
+#
+#     img = kp_image.img_to_array(img)
+#
+#     # broadcast the image array such that it has a batch dimension
+#     img = np.expand_dims(img, axis=0)
+#     return img
+
+
+def load_img(path_to_im):
     """
     Args:
-        path_to_im: Path of image to be loaded from S3
+        path_to_im: Path of image to be loaded from disk
 
     Returns:
         output_img: Loaded image
     """
     max_dim = 512
-    s3 = boto3.client('s3')
-    file_byte_string = s3.get_object(Bucket='adobo-pymiere', Key=path_to_im)['Body'].read()
-    img = Image.open(BytesIO(file_byte_string))
+    img = Image.open(path_to_im)
 
     long = max(img.size)
     scale = max_dim / long
@@ -73,7 +94,8 @@ def load_and_process_img(path_to_img):
     Returns:
         output_img:     Loaded image
     """
-    img = load_img_from_s3(path_to_img)
+    # img = load_img_from_s3(path_to_img)
+    img = load_img(path_to_img)
     img = tf.keras.applications.vgg19.preprocess_input(img)
     return img
 
@@ -371,8 +393,8 @@ def show_results(best_img, content_path, style_path, show_large_final=True):
         show_large_final:   Shows final result image if true.
     """
     plt.figure(figsize=(10, 5))
-    content = load_img_from_s3(content_path)
-    style = load_img_from_s3(style_path)
+    content = load_img(content_path)
+    style = load_img(style_path)
 
     plt.subplot(1, 2, 1)
     imshow(content, 'Content Image')
@@ -388,13 +410,13 @@ def show_results(best_img, content_path, style_path, show_large_final=True):
         plt.show()
 
 
-def run_nst(content_path: str = 'turtle.jpg', style_path: str = 'wave.jpg') -> Image:
+def run_nst(content_url: str, style_url: str) -> Image:
     """
     Performs NST on the image. This is the only method you have to call to run NST
 
     Args:
-        content_path:   Name of the image that will have NST performed on it
-        style_path:     Name of the image that will be the style reference for NST
+        content_url:   URL of the image (in the S3 bucket) that will have NST performed on it
+        style_url:     URL of the image (in the S3 bucket) that will be the style reference for NST
 
     Returns:
         output_image:   Stylized image
@@ -404,6 +426,9 @@ def run_nst(content_path: str = 'turtle.jpg', style_path: str = 'wave.jpg') -> I
 
     tf.executing_eagerly()
     print("Eager execution: {}".format(tf.executing_eagerly()))
+
+    content_path = tf.keras.utils.get_file(os.path.basename(content_url)[-128:], content_url)
+    style_path = tf.keras.utils.get_file(os.path.basename(style_url)[-128:], style_url)
 
     best, best_loss = run_style_transfer(content_path, style_path, num_iterations=1000)
 
