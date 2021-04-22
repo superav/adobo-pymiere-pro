@@ -12,7 +12,8 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
        Returns:
            output_img: Image with hue changed
     """
-    # https://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
+    # https://stackoverflow.com/questions/7274221/
+    #                           changing-image-hue-with-python-pil
 
     if specifications > 360 or specifications < 0:
         return None
@@ -48,11 +49,30 @@ def crop_editor(input_img: Image,
 
     left, top, right, bottom = specifications
     width, height = input_img.size
-    if left >= width or right >= width or top >= height or bottom >= height \
-            or right <= left or bottom <= top or left < 0 or top < 0:
+    # Determines if the crop dimensions will fit in the given image
+    if not crop_in_given_dimensions(width, height, top, left, right, bottom):
         return None
     output_img = input_img.crop((left, top, right, bottom))
     return output_img
+
+
+def crop_in_given_dimensions(width: int, height: int, top: int, left: int,
+                             right: int, bottom: int) -> bool:
+    """
+       Args:
+           width: width to be checked
+           height: height to be checked
+           top: top y coordinate
+           left: left x coordinate
+           right: right x coordinate
+           bottom: bottom y coordinate
+       Returns:
+           inside: bool that says if the crop will fit in the dimensions
+    """
+    if width > right > left >= 0 and height > bottom > top >= 0:
+        return True
+    else:
+        return False
 
 
 def opacity_editor(input_img: Image, specifications: int) -> Image:
@@ -86,8 +106,7 @@ def apply_color_editor(input_img: Image,
     """
 
     red, green, blue, alpha = specifications
-    if red < 0 or green < 0 or blue < 0 or alpha < 0 or \
-            red > 255 or green > 255 or blue > 255 or alpha > 255:
+    if color_val_in_range(red, green, blue):
         return None
 
     color = Image.new('RGB', input_img.size, (red, green, blue))
@@ -113,7 +132,8 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
        Returns:
            output_img: Image with color mask applied changed
     """
-    # https://python-catalin.blogspot.com/2013/10/how-to-make-color-gradient-and-images.html
+    # https://python-catalin.blogspot.com/2013/10/
+    #                       how-to-make-color-gradient-and-images.html
     alpha = specifications[0]
     color_initial = specifications[1]
     color_secondary = specifications[2]
@@ -121,12 +141,9 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     red, green, blue = color_initial
     red_secondary, green_secondary, blue_secondary = color_secondary
 
-    if red < 0 or green < 0 or blue < 0 or \
-            red > 255 or green > 255 or blue > 255:
+    if color_val_in_range(red, green, blue):
         return None
-    if red_secondary < 0 or green_secondary < 0 or blue_secondary < 0 or \
-            red_secondary > 255 or \
-            green_secondary > 255 or blue_secondary > 255:
+    if color_val_in_range(red_secondary, green_secondary, blue_secondary):
         return None
     if alpha < 0 or alpha > 255:
         return None
@@ -144,6 +161,13 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     mask = Image.new('RGBA', input_img.size, (0, 0, 0, alpha))
     output_image = Image.composite(input_img, color, mask).convert('RGB')
     return output_image
+
+
+def color_val_in_range(red: int, green: int, blue: int) -> bool:
+    if 255 >= red >= 0 and 255 >= green >= 0 and 255 >= blue >= 0:
+        return False
+    else:
+        return True
 
 
 def apply_mirror(input_img: Image, specifications: int) -> Image:
