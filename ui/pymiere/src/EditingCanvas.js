@@ -6,7 +6,6 @@ class EditingCanvas extends Component {
   constructor(props) {
     super(props);
     this.img = null;
-    this.mouseDown = false;
     this.canvasRef = React.createRef();
     this.canvasState = {
       transform: [1, 0, 0, 1, 0, 0],
@@ -16,6 +15,16 @@ class EditingCanvas extends Component {
         crop: {
           resize: -1,
           boundingBox: [100, 100, 100, 150] // Default location and size of cropping box
+        },
+        pencil: {
+          strokes: [],
+          currentStroke: {
+            points: [],
+            fill: [0, 0, 0],
+            width: 4
+          },
+          fill: [0, 0, 0],
+          width: 4
         }
       }
     }
@@ -33,8 +42,9 @@ class EditingCanvas extends Component {
 
   insertImage = (src) => {
     const img = new Image();
-    img.onload = () => {this.draw()};
     img.src = src;
+    img.onload = () => {this.draw()};
+    
     // Center the image in the canvas
     this.canvasState.transform[4] += (this.canvas.width - img.width) / 2;
     this.canvasState.transform[5] += (this.canvas.height - img.height) / 2;
@@ -52,7 +62,7 @@ class EditingCanvas extends Component {
     
     this.canvas.width = width;
     this.canvas.height = height;
-    this.insertImage("logo512.png"); // TODO remove this when there's ability to import image
+    this.insertImage("TEST_IMG.png"); // TODO remove this when there's ability to import image
   }
 
   draw = () => {
@@ -74,6 +84,7 @@ class EditingCanvas extends Component {
       default:
         break;
     }
+    this.drawPencil(); // We want to keep the strokes even after exiting the tool
   }
 
   cropHandlePositions = (box) => {
@@ -99,6 +110,40 @@ class EditingCanvas extends Component {
     })
   }
 
+  drawPencil = () => {
+    const pencil = this.canvasState.functions.pencil;
+    // Draw all previous strokes
+    pencil.strokes.forEach(s => {
+      this.context.strokeStyle = `rgb(
+        ${s.fill[0]},
+        ${s.fill[1]},
+        ${s.fill[2]})`;
+      this.context.lineWidth = s.width;
+      this.context.beginPath();
+      this.context.moveTo(s.points[0][0], s.points[0][1]);
+      s.points.forEach(p => {
+        this.context.lineTo(p[0], p[1]);
+      });
+      this.context.stroke();
+    });
+
+    // Draw current stroke
+    const stroke = pencil.currentStroke;
+    if (stroke.points.length !== 0) {
+      this.context.strokeStyle = `rgb(
+        ${stroke.fill[0]},
+        ${stroke.fill[1]},
+        ${stroke.fill[2]})`;
+      this.context.lineWidth = stroke.width;
+      this.context.beginPath();
+      this.context.moveTo(stroke.points[0][0], stroke.points[0][1]);
+      stroke.points.forEach(p => {
+        this.context.lineTo(p[0], p[1]);
+      });
+      this.context.stroke();
+    }
+  }
+
   handleMouseMove = (e) => {
     // Update actual mouse position in canvas
     const canvasTransform = this.canvasState.transform
@@ -106,41 +151,41 @@ class EditingCanvas extends Component {
       (e.clientX - this.rect.left - canvasTransform[4]) / canvasTransform[0],
       (e.clientY - this.rect.top  - canvasTransform[5]) / canvasTransform[3]
     ];
-    
-    if (this.mouseDown) {
-      if (this.canvasState.activeFunction) {
-        switch (this.canvasState.activeFunction) {
-          case "crop":
-            const crop = this.canvasState.functions.crop;
-            const dX = e.movementX / canvasTransform[0];
-            const dY = e.movementY / canvasTransform[3];
-            switch (crop.resize) {
-              case 0:
-                crop.boundingBox[1] += dY;
-                crop.boundingBox[3] -= dY;
-                break;
-              case 1:
-                crop.boundingBox[0] += dX;
-                crop.boundingBox[2] -= dX;
-                break;
-              case 2:
-                crop.boundingBox[3] += dY;
-                break;
-              case 3:
-                crop.boundingBox[2] += dX;
-                break;
-              default:
-                crop.boundingBox[0] += dX;
-                crop.boundingBox[1] += dY;
-                break;
-            }
-            break;
-          default:
-            break;
-        }
-      } else {
-        this.canvasState.transform[4] += e.movementX;
-        this.canvasState.transform[5] += e.movementY;
+
+    if (e.buttons === 1) {
+      switch (this.canvasState.activeFunction) {
+        case "crop":
+          const crop = this.canvasState.functions.crop;
+          const dX = e.movementX / canvasTransform[0];
+          const dY = e.movementY / canvasTransform[3];
+          switch (crop.resize) {
+            case 0:
+              crop.boundingBox[1] += dY;
+              crop.boundingBox[3] -= dY;
+              break;
+            case 1:
+              crop.boundingBox[0] += dX;
+              crop.boundingBox[2] -= dX;
+              break;
+            case 2:
+              crop.boundingBox[3] += dY;
+              break;
+            case 3:
+              crop.boundingBox[2] += dX;
+              break;
+            default:
+              crop.boundingBox[0] += dX;
+              crop.boundingBox[1] += dY;
+              break;
+          }
+          break;
+        case "pencil":
+          this.canvasState.functions.pencil.currentStroke.points.push(this.mousePos);
+          break;
+        default:
+          this.canvasState.transform[4] += e.movementX;
+          this.canvasState.transform[5] += e.movementY;
+          break;
       }
     } else {
       switch (this.canvasState.activeFunction) {
@@ -163,17 +208,25 @@ class EditingCanvas extends Component {
     this.draw();
   }
 
-  handleMouseDown = (e) => {
-    this.mouseDown = true;
-  }
-  
-  handleMouseUp = (e) => {
-    this.mouseDown = false;
+  handleMouseUp = () => {
+    switch (this.canvasState.activeFunction) {
+      case "pencil":
+        const pencil = this.canvasState.functions.pencil;
+        pencil.strokes.push(pencil.currentStroke);
+        pencil.currentStroke = {
+          points: [],
+          fill: pencil.fill,
+          width: pencil.width
+        };
+        break;
+      default:
+        break;
+    }
   }
 
-  handleMouseLeave = (e) => {
-    this.mouseDown = false;
-  }
+  // Other mouse event functions if needed
+  handleMouseDown = () => {}
+  handleMouseLeave = () => {}
 
   render() {
     return (
