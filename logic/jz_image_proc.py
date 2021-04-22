@@ -121,23 +121,6 @@ def rotate_image(input_img: Image, angle: int) -> Image:
     return input_img.rotate(angle, Image.NEAREST, expand=1)
 
 
-def rotate_video(input_clip: Clip, angle: int) -> Clip:
-    """
-    Args:
-        input_clip: Video clip to be rotated
-        angle:      Angle of rotation (in degrees)
-
-    Returns:
-        output_clip: Rotated video
-        TypeError:   Thrown if parameters are invalid types
-    """
-
-    if not (isinstance(input_clip, Clip.Clip) and type(angle) == int):
-        raise TypeError("ERROR (rotate_video): Invalid parameter types")
-
-    return input_clip.rotate(angle, "nearest", expand=True)
-
-
 # HELPER METHOD
 
 def position_is_valid(position: tuple) -> bool:

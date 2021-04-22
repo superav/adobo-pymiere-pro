@@ -159,21 +159,6 @@ class TestInputValidation(unittest.TestCase):
 
         self.assertTrue(isinstance(output, Image.Image))
 
-    def test_rotate_video_invalid_input_type(self):
-        input_clip = VideoFileClip('./test_assets/videos/video_1.mp4')
-
-        with self.assertRaises(TypeError):
-            _ = rotate_video(True, 44)
-
-        with self.assertRaises(TypeError):
-            _ = rotate_video(input_clip, (30, 30))
-
-    def test_rotate_video_correct_input(self):
-        input_clip = VideoFileClip('./test_assets/videos/video_1.mp4')
-        output = rotate_video(input_clip, 45)
-
-        self.assertTrue(isinstance(output, Clip.Clip))
-
 
 class TestImageProc(unittest.TestCase):
     def test_gaussian_blur_correct_output(self):
@@ -182,11 +167,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_1_gaussian_1.png', False)
 
         output = gaussian_blur(input_img, 9)
-        output.save('./test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -195,11 +176,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_gaussian_1.png', False)
 
         output = gaussian_blur(input_img, 2)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -209,11 +186,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_saturation_1.png', False)
 
         output = change_saturation(input_img, 0.5)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(output_img, expected_img)
+        root_mean_square = compare_images(output, expected_img)
 
         self.assertEqual(0, root_mean_square)
 
@@ -222,11 +195,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_3_saturation_1.png', False)
 
         output = change_saturation(input_img, 1.5)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(output_img, expected_img)
+        root_mean_square = compare_images(output, expected_img)
 
         self.assertEqual(0, root_mean_square)
 
@@ -237,11 +206,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_3_watermark_1.png', False)
 
         output = add_watermark_image(input_img, watermark, (40, 40), size=0.5)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -251,11 +216,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_watermark_1.png', False)
 
         output = add_watermark_image(input_img, watermark, (40, 60), opacity=0.1)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -265,11 +226,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_scale_1.png', False)
 
         output = scale_image(input_img, 0.1)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -278,11 +235,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_1_scale_1.png', False)
 
         output = scale_image(input_img, 0.5)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -292,11 +245,7 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_1.png', False)
 
         output = rotate_image(input_img, 90)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
@@ -305,33 +254,6 @@ class TestImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_2.png', False)
 
         output = rotate_image(input_img, 370)
-        output.save('test_assets/output.png')
-
-        output_img = Image.open('test_assets/output.png')
-
-        root_mean_square = compare_images(expected_img, output_img)
+        root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
-
-
-class TestVideoProc(unittest.TestCase):
-    def test_rotate_video_correct_output(self):
-        clip = VideoFileClip("./test_assets/videos/video_1.mp4")
-
-        # 45
-        output_clip = rotate_video(clip, 45)
-
-        output_clip.write_videofile("./test_assets/output.mp4")
-
-        output = VideoFileClip("./test_assets/output.mp4")
-
-        self.assertNotEqual(None, output)
-
-        # -80
-        output_clip = rotate_video(clip, -80)
-
-        output_clip.write_videofile("./test_assets/output.mp4")
-
-        output = VideoFileClip("./test_assets/output.mp4")
-
-        self.assertNotEqual(None, output)
