@@ -14,6 +14,7 @@ import LightingOptionsMenu from './LightingOptionsMenu'
 import VignetteEffectPage from "./VignetteEffectPage"
 import SpecialEffectsOptions from './SpecialEffectsOptions'
 import ColorMenu from './ColorMenu'
+import PencilTool from './Effects/PencilTool';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -81,18 +82,16 @@ export default function VerticalTabs(props) {
         <Tab label="Text Overlay" {...a11yProps(0)} />
         <Tab label="Zoom" {...a11yProps(1)} />
         <Tab label="Pixel Viewer" {...a11yProps(2)} />
-        <Tab label="Cropping" {...a11yProps(3)} />
         <Tab label="Color Menu" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
+        <Tab label="Lighting Options" {...a11yProps(4)} />
         <Tab label="Special Effects" {...a11yProps(5)} />
-        <Tab label="Lighting Options" {...a11yProps(6)} />
+        <Tab label="Pen Tool" {...a11yProps(6)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ul>
-            <TextOverlayTextInputFont textLabel="Enter Text Below"/>
-            <TextOverlayLocationSelector />
-            <Button variant="contained" color="primary">Add Text Overlay</Button>
-
+          <TextOverlayTextInputFont textLabel="Enter Text Below"/>
+          <TextOverlayLocationSelector />
+          <Button variant="contained" color="primary">Add Text Overlay</Button>
         </ul>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -117,7 +116,10 @@ export default function VerticalTabs(props) {
         <SpecialEffectsOptions />
       </TabPanel>
       <TabPanel value={value} index={6}>
-        <LightingOptionsMenu />
+        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+      </TabPanel>
+      <TabPanel value={value} index={7}>
+        Item Seven
       </TabPanel>
     </div>
   );
