@@ -104,9 +104,7 @@ export default function VerticalTabs(props) {
         </ul>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ul>
-          <CropEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
-        </ul>
+        Item Four
       </TabPanel>
       <TabPanel value={value} index={4}>
         <VignetteEffectPage getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
