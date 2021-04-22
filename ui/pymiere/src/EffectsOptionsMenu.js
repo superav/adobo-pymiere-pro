@@ -104,13 +104,12 @@ export default function VerticalTabs(props) {
         </ul>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ul>
-          <CropEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
-          <ColorMenu />
-        </ul>
+        Item Four
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Item Five
+      <ul>
+          <ColorMenu />
+        </ul>
       </TabPanel>
       <TabPanel value={value} index={5}>
         Item Six
