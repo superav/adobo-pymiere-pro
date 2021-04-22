@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 
 export default function LightingOptionsMenu() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(50);
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
