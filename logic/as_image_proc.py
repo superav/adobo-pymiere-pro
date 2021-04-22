@@ -176,15 +176,18 @@ def apply_frame(input_img: Image,
         Returns:
             output_img: Image with color mask applied changed
     """
-    # https://stackoverflow.com/questions/11142851/adding-borders-to-an-image-using-python
+    # https://stackoverflow.com/questions/
+    #                   11142851/adding-borders-to-an-image-using-python
     old_size = input_img.size
     red, green, blue = specifications
+    # make new_size bigger, change background and then paste back image
     new_size = (int(input_img.height * 1.1), int(input_img.width * 1.1))
-    new_im = Image.new("RGB", new_size)
-    new_im.paste((red, green, blue), [0, 0, new_im.size[0], new_im.size[1]])
-    new_im.paste(input_img, ((new_size[0] - old_size[0]) // 2,
-                             (new_size[1] - old_size[1]) // 2))
-    return new_im
+    output_img = Image.new("RGB", new_size)
+    output_img.paste((red, green, blue), [0, 0, output_img.size[0],
+                                          output_img.size[1]])
+    output_img.paste(input_img, ((new_size[0] - old_size[0]) // 2,
+                                 (new_size[1] - old_size[1]) // 2))
+    return output_img
 
 
 def apply_solarize(input_img: Image, specifications: int) -> Image:
@@ -197,7 +200,12 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
         Returns:
             output_img: Image with color mask applied changed
     """
-    return ImageOps.solarize(input_img, threshold=specifications)
+    input_img.load()
+    # Have to make rgba image rgb
+    output_img = Image.new("RGB", input_img.size, (255, 255, 255))
+    output_img.paste(input_img, mask=input_img.split()[3])
+    output_img = ImageOps.solarize(output_img, threshold=specifications)
+    return output_img
 
 
 def apply_mosaic_filter(input_img: Image) -> Image:
@@ -208,13 +216,14 @@ def apply_mosaic_filter(input_img: Image) -> Image:
         Returns:
             output_img: Image with color mask applied changed
     """
-    # https://stackoverflow.com/questions/47143332/how-to-pixelate-a-square-image-to-256-big-pixels-with-python
+    # https://stackoverflow.com/questions/47143332/
+    #           how-to-pixelate-a-square-image-to-256-big-pixels-with-python
+
     # Resize smoothly down to smaller pixel dimensions
-    img_small = input_img.resize((32, 32),
-                                 resample=Image.BILINEAR)
+    output_img = input_img.resize((32, 32), resample=Image.BILINEAR)
 
     # Scale back up using NEAREST to original size
-    return img_small.resize(input_img.size, Image.NEAREST)
+    return output_img.resize(input_img.size, Image.NEAREST)
 
 
 def apply_red_eye_filter(input_img: Image,
@@ -231,13 +240,19 @@ def apply_red_eye_filter(input_img: Image,
         Returns:
             output_img: Image with color mask applied changed
     """
-    # https://learnopencv.com/automatic-red-eye-remover-using-opencv-cpp-python/
-    pixels = input_img.load()
+    # https://learnopencv.com/
+    #           automatic-red-eye-remover-using-opencv-cpp-python/
+    input_img.load()
 
+    # Have to make rgba image rgb
+    output_img = Image.new("RGB", input_img.size, (255, 255, 255))
+    output_img.paste(input_img, mask=input_img.split()[3])
+
+    pixels = output_img.load()
     left_side_x, top_side_y, right_side_x, bottom_side_y = specifications
 
-    for row in range(input_img.size[0]):  # for every pixel:
-        for column in range(input_img.size[1]):
+    for row in range(output_img.size[0]):  # for every pixel:
+        for column in range(output_img.size[1]):
             red, green, blue = pixels[row, column]
             # determine if the pixel is in the box and mostly red
             if left_side_x < row < right_side_x and \
@@ -246,4 +261,4 @@ def apply_red_eye_filter(input_img: Image,
                 # change to black if red
                 pixels[row, column] = (int(red / 5), green, blue)
 
-    return input_img
+    return output_img

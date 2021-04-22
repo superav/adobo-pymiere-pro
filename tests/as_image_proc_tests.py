@@ -9,8 +9,10 @@ from logic.asset_manager import AssetManager
 
 ASSET_MANAGER = AssetManager('test_user_1')
 
+
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
+    # Reference: https://stackoverflow.com/questions/
+    #               1927660/compare-two-images-the-python-linux-way
     h1 = image_1.histogram()
     h2 = image_2.histogram()
 
@@ -36,7 +38,8 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_crop_editing_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('crop_expected_20_30_700_700.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'crop_expected_20_30_700_700.png', False)
         im2 = as_image_proc.crop_editor(im1, [20, 30, 700, 700])
         self.assertTrue(compare_images(fin, im2) == 0)
 
@@ -58,7 +61,8 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_opacity_editing_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('opacity_expected_50.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'opacity_expected_50.png', False)
         im2 = as_image_proc.opacity_editor(im1, 50)
         self.assertTrue(compare_images(fin, im2) == 0)
 
@@ -72,7 +76,8 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_gradient_color_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('gradient_expected_255_0_0_128.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'gradient_expected_255_0_0_128.png', False)
         im2 = as_image_proc.apply_color_editor(im1, [255, 0, 0, 128])
         self.assertTrue(compare_images(fin, im2) == 0)
 
@@ -92,7 +97,8 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_filter_editing_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('filter_expected_70_255_0_0_0_0_255.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'filter_expected_70_255_0_0_0_0_255.png', False)
         im2 = as_image_proc.apply_gradient_editor(im1, [70, [255, 0, 0],
                                                         [0, 0, 255]])
         self.assertTrue(compare_images(fin, im2) == 0)
@@ -140,7 +146,8 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_frame_color_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('frame_expected_120_75_225.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'frame_expected_120_75_225.png', False)
         im2 = as_image_proc.apply_frame(im1, [255, 0, 0])
         self.assertTrue(compare_images(fin, im2) == 0)
 
@@ -151,11 +158,9 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_solarize_color_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im1.show()
-        fin = ASSET_MANAGER.import_image_from_s3('solarize_expected_128.png', False)
-        fin.show()
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'solarize_expected_128.png', False)
         im2 = as_image_proc.apply_solarize(im1, 128)
-        im2.show()
         self.assertTrue(compare_images(fin, im2) == 0)
 
     def test_solarize_invalid_value(self):
@@ -173,10 +178,9 @@ class EditImageTestCase(unittest.TestCase):
 
     def test_red_eye_color_image(self):
         im1 = ASSET_MANAGER.import_image_from_s3('redeye.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('red_eye_expected_35_110_150_150.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'red_eye_expected_35_110_150_150.png', False)
         im2 = as_image_proc.apply_red_eye_filter(im1, [35, 110, 150, 150])
-        fin.show()
-        im2.show()
         self.assertTrue(compare_images(fin, im2) == 0)
 
     def test_red_eye_invalid_value(self):
