@@ -27,8 +27,16 @@ export default function LightingOptionsMenu() {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs>
-          <Slider value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
-          <p>{value}</p>
+        <Slider
+          value={value}
+          onChangeCommitted={handleChange}
+          aria-labelledby="discrete-slider-small-steps"
+          min={0}
+          max={1}
+          step={0.1}
+          valueLabelDisplay="auto"
+        ></Slider>
+
         </Grid>
       </Grid>
       <br></br>
