@@ -1,20 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import TextOverlayTextInputFont from './TextOverlayTextInputFont'
-import TextOverlayLocationSelector from './TextOverlayLocationSelector';
-import Button from '@material-ui/core/Button'
-import ZoomEffect from './Effects/ZoomEffect'
-import PixelViewer from './Effects/PixelViewer'
-import LightingOptionsMenu from './LightingOptionsMenu'
-import VignetteEffectPage from "./VignetteEffectPage"
-import SpecialEffectsOptions from './SpecialEffectsOptions'
-import ColorMenu from './ColorMenu'
-import PencilTool from './Effects/PencilTool';
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import TextOverlayTextInputFont from "./TextOverlayTextInputFont";
+import TextOverlayLocationSelector from "./TextOverlayLocationSelector";
+import Button from "@material-ui/core/Button";
+import ZoomEffect from "./Effects/ZoomEffect";
+import PixelViewer from "./Effects/PixelViewer";
+import LightingOptionsMenu from "./LightingOptionsMenu";
+import VignetteEffectPage from "./VignetteEffectPage";
+import SpecialEffectsOptions from "./SpecialEffectsOptions";
+import ColorMenu from "./ColorMenu";
+import PencilTool from "./Effects/PencilTool";
+import TransformationEditingMenu from "./TransformationEditingMenu.js";
+import SizeEditingMenu from "./SizeEditingMenu.js";
+import StoreLocalFilesystem from "./StoreLocalFilesystem";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -87,12 +90,17 @@ export default function VerticalTabs(props) {
         <Tab label="Special Effects" {...a11yProps(5)} />
         <Tab label="Pen Tool" {...a11yProps(6)} />
         <Tab label="Vignette" {...a11yProps(7)} />
+        <Tab label="Transformation Menu" {...a11yProps(8)} />
+        <Tab label="Size Editing Menu" {...a11yProps(9)} />
+        <Tab label="Save As" {...a11yProps(10)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ul>
-          <TextOverlayTextInputFont textLabel="Enter Text Below"/>
+          <TextOverlayTextInputFont textLabel="Enter Text Below" />
           <TextOverlayLocationSelector />
-          <Button variant="contained" color="primary">Add Text Overlay</Button>
+          <Button variant="contained" color="primary">
+            Add Text Overlay
+          </Button>
         </ul>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -119,10 +127,25 @@ export default function VerticalTabs(props) {
         <SpecialEffectsOptions />
       </TabPanel>
       <TabPanel value={value} index={6}>
-        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={7}>
-        <VignetteEffectPage getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <VignetteEffectPage
+          getCanvas={props.getCanvas}
+          setCanvas={props.setCanvas}
+        />
+      </TabPanel>
+      <TabPanel value={value} index={8}>
+        <TransformationEditingMenu></TransformationEditingMenu>
+      </TabPanel>
+      <TabPanel value={value} index={9}>
+        <SizeEditingMenu
+          getCanvas={props.getCanvas}
+          setCanvas={props.setCanvas}
+        ></SizeEditingMenu>
+      </TabPanel>
+      <TabPanel value={value} index={10}>
+        <StoreLocalFilesystem></StoreLocalFilesystem>
       </TabPanel>
     </div>
   );
