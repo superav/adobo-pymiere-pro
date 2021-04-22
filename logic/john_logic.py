@@ -3,6 +3,14 @@ from moviepy.editor import *
 
 
 def add_text_to_image(image=Image, specifications: list = [str, str, int, list, list]) -> Image:
+    """
+    Args:
+        image: image to add text to
+        specifications: list of additional parameters needed to call this function (text, font, size, offset, color)
+
+    Return:
+        output_img: Image with text added on top. Returns None if unsuccessful.
+    """
     text = specifications[0]
     font = specifications[1]
     size = specifications[2]
@@ -27,6 +35,14 @@ def add_text_to_image(image=Image, specifications: list = [str, str, int, list, 
 
 
 def store_image_in_filesystem(image=Image, filename=str) -> Image:
+    """
+    Args:
+        image: Image to be stored in local filesystem
+        filename: Name to give to new stored file
+
+    Return:
+        output_img: Image that was saved to local filesystem. Returns None if unsuccessful.
+    """
     valid_parameters = isinstance(image, Image.Image)
     valid_parameters = valid_parameters and isinstance(filename, str)
     if not valid_parameters:
@@ -36,6 +52,14 @@ def store_image_in_filesystem(image=Image, filename=str) -> Image:
 
 
 def change_volume(clip=VideoFileClip, factor=float) -> VideoFileClip:
+    """
+    Args:
+        clip: Video clip to change volume of
+        factor: factor to scale current volume by
+
+    Return:
+        output_clip: Video clip with changed volume. Returns None if unsuccessful.
+    """
     valid_parameters = isinstance(clip, VideoFileClip)
     valid_parameters = valid_parameters and isinstance(factor, float)
     if not valid_parameters:
@@ -45,6 +69,13 @@ def change_volume(clip=VideoFileClip, factor=float) -> VideoFileClip:
 
 
 def audio_normalize_effect(clip=VideoFileClip) -> VideoFileClip:
+    """
+    Args:
+        clip: Video clip to normalize audio of
+
+    Return:
+        output_clip: Video clip with audio normalized. Returns None if unsuccessful.
+    """
     valid_parameters = isinstance(clip, VideoFileClip)
     if not valid_parameters:
         return None
@@ -53,6 +84,14 @@ def audio_normalize_effect(clip=VideoFileClip) -> VideoFileClip:
 
 
 def audio_fade_effect(clip=VideoFileClip, specifications: list = [int, int]) -> VideoFileClip:
+    """
+    Args:
+        clip: Video clip fade audio of
+        specifications: list of parameters to fade audio (fade in time, fade out time)
+
+    Return:
+        output_clip: Video clip with faded audio. Returns None if unsuccessful.
+    """
     fade_in = specifications[0]
     fade_out = specifications[1]
 
@@ -64,14 +103,3 @@ def audio_fade_effect(clip=VideoFileClip, specifications: list = [int, int]) -> 
     clip = clip.fx(afx.audio_fadein, fade_in)
     clip = clip.fx(afx.audio_fadeout, fade_out)
     return clip
-
-
-# cl = VideoFileClip("munobrars.mp4")
-# # cl = change_volume(cl, 0.0)
-# # cl = audio_normalize_effect(cl)
-# cl = audio_fade_effect(cl, 5, 5)
-# cl.write_videofile("munobrarsnew.webm")
-
-# im = Image.open("hopper.jpg")
-# add_text_to_image(im, "hello", "arial.ttf", 50, (50, 50), (200, 200, 200))
-# store_image_in_filesystem(im, "hellohop.jpg")
