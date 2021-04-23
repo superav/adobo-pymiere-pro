@@ -1,0 +1,69 @@
+import React, { Component, useState } from 'react';
+import { uploadFile } from 'react-s3';
+
+/*
+class UploadNSTFilterForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.fileInput = React.createRef();
+    }
+
+
+    handleSubmit(event) {
+        event.preventDefault();
+        alert(
+            `Selected file - ${this.fileInput.current.files[0].name}`
+        );
+        //Add upload file function here
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Upload file:
+            <input type="file" ref={this.fileInput} accept="image/*" />
+                </label>
+                <br />
+                <button type="submit">Submit</button>
+            </form>
+        );
+    }
+}
+*/
+
+const S3_BUCKET ='YOUR_BUCKET_NAME';
+const REGION ='YOUR_REGION_NAME';
+const ACCESS_KEY ='YOUR_ACCESS_KEY';
+const SECRET_ACCESS_KEY ='YOUR_SECRET_ACCESS_KEY';
+
+const config = {
+    bucketName: S3_BUCKET,
+    region: REGION,
+    accessKeyId: ACCESS_KEY,
+    secretAccessKey: SECRET_ACCESS_KEY,
+}
+
+const UploadNSTFilterForm = () => {
+
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileInput = (e) => {
+        setSelectedFile(e.target.files[0]);
+    }
+
+    const handleUpload = async (file) => {
+        uploadFile(file, config)
+            .then(data => console.log(data))
+            .catch(err => console.error(err))
+    }
+
+    return <div>
+        <div>Upload NST Style Filter</div>
+        <input type="file" onChange={handleFileInput} accept="image/*"/>
+        <button onClick={() => handleUpload(selectedFile)}> Upload to S3</button>
+    </div>
+}
+
+export default UploadNSTFilterForm;
