@@ -251,3 +251,24 @@ class TestUploadTempImages(unittest.TestCase):
 
         self.assertEqual(0, root_mean_square)
         self.assertEqual(expected_url_two, url_two)
+
+
+class TestClearTempFolders(unittest.TestCase):
+    asset_manager = AssetManager('test_user_1')
+
+    def test_clear_temp_images(self):
+        image_one = Image.open('test_assets/images/test_2.png')
+        image_two = Image.open('test_assets/images/test_3.png')
+
+        _ = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_2.png"
+        _ = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_3.png"
+
+        _ = self.asset_manager.upload_temp_image_to_s3(image_one, "test_2.png")
+        _ = self.asset_manager.upload_temp_image_to_s3(image_two, "test_3.png")
+
+        self.asset_manager.clear_temps()
+
+        all_files = self.asset_manager.list_bucket()
+
+        for file_name in all_files:
+            self.assertTrue("/temp/" not in file_name)

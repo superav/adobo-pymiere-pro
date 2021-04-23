@@ -166,3 +166,14 @@ class AssetManager:
         url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
 
         return url
+
+    def clear_temps(self):
+        objects_list = self.s3_client.list_objects(Bucket=BUCKET_NAME).get('Contents', [])
+        deletion_list = {'Objects': []}
+
+        for obj in objects_list:
+            if "/temp/" in obj['Key']:
+                print(obj['Key'])
+                deletion_list['Objects'].append({'Key': obj['Key']})
+
+        self.s3_client.delete_objects(Bucket=BUCKET_NAME, Delete=deletion_list)
