@@ -1,5 +1,4 @@
 Pillow~=8.2.0
-moviepy~=1.0.3
 numpy~=1.19.5
 matplotlib~=3.4.1
 boto3~=1.17.47

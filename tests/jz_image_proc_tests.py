@@ -2,8 +2,6 @@ import unittest
 import math
 import operator
 from functools import reduce
-from moviepy.editor import VideoFileClip
-import numpy as np
 
 from logic.jz_image_proc import *
 from logic.asset_manager import AssetManager
