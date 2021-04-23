@@ -14,11 +14,15 @@ const useStyles = makeStyles({
 
 export default function LightingOptionsMenu() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(1);
+  const [brightness, setBrightness] = React.useState(1);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setBrightness(newValue);
   };
+
+  function confirmLightingEffects() {
+    console.log(brightness)
+  }
 
   return (
     <div className={classes.root}>
@@ -28,7 +32,7 @@ export default function LightingOptionsMenu() {
       <Grid container spacing={2}>
         <Grid item xs>
         <Slider
-          value={value}
+          value={brightness}
           onChangeCommitted={handleChange}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
@@ -40,7 +44,7 @@ export default function LightingOptionsMenu() {
         </Grid>
       </Grid>
       <br></br>
-      <Button variant="contained" color="primary">Add Lighting Effects</Button>
+      <Button variant="contained" color="primary" onClick={confirmLightingEffects}>Add Lighting Effects</Button>
     </div>
   );
 }

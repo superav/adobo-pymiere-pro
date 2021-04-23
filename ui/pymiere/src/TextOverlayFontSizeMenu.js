@@ -41,7 +41,7 @@ export default function TextOverlayFontSizeMenu(props) {
           <MenuItem value={20}>20</MenuItem>
           <MenuItem value={24}>24</MenuItem>
           <MenuItem value={30}>30</MenuItem>
-          <MenuItem value={30}>50</MenuItem>
+          <MenuItem value={50}>50</MenuItem>
         </Select>
       </FormControl>
     </div>
