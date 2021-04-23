@@ -33,16 +33,17 @@ class UploadNSTFilterForm extends React.Component {
 }
 */
 
-const S3_BUCKET ='YOUR_BUCKET_NAME';
-const REGION ='YOUR_REGION_NAME';
-const ACCESS_KEY ='YOUR_ACCESS_KEY';
-const SECRET_ACCESS_KEY ='YOUR_SECRET_ACCESS_KEY';
+const S3_BUCKET ='adobo-pymiere';
+const REGION ='us-east-1';
+const ACCESS_KEY ='AKIAYA22OMIBDDNHCQWM';
+const SECRET_ACCESS_KEY ='1trhjY5it/Vy12pglEFuHqBsdhqq7ZO/Q/TtOxub';
 
 const config = {
     bucketName: S3_BUCKET,
     region: REGION,
     accessKeyId: ACCESS_KEY,
     secretAccessKey: SECRET_ACCESS_KEY,
+    dirName: "styles",
 }
 
 const UploadNSTFilterForm = () => {
