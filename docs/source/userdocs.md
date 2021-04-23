@@ -10,15 +10,23 @@ In the top-level project directory, install all necessary python libraries using
 
 `python -m pip install -r requirements.txt`
 
-## Running Backend
+## Quickstart
 
-If you don't have Docker already, make sure to download Docker Desktop. Run Docker. Then, open up your terminal and run:
+Make sure Docker Desktop is installed.
 
-`docker build -t pymiere .`
+Run `docker compose up` in the top-level directory. This will build and run docker images for both UI and backend.
 
-Once the build finishes, run:
+UI will be on port 3000 and backend will be on port 5000.
 
-`docker run -d -p 5000:5000 pymiere`
+## Building the Backend
+
+To build the logic docker image:
+
+```docker build -f ./docker/logic.Dockerfile -t pymiere-logic . ```
+
+Running the logic image:
+
+```docker run -d -p 5000:5000 pymiere-logic```
 
 After Docker's up and running, you can make HTTP GET requests to directly call the image and video processing functions
 in the backend. You can either run GET requests through interfaces such as Postman or Advanced REST client, or you can
@@ -60,28 +68,26 @@ parameters should be put in a list and set to "specifications." In order to see 
 effect, reference the corresponding function in lines 23-55 of app.py, go to that function, and look at the necessary 
 parameters and their types.
 
+## Building the Frontend
+
+Building the UI docker image:
+
+```docker build -f ./docker/ui.Dockerfile -t pymiere-ui . ```
+
+Running the UI docker image:
+
+```docker run -d -p 3000:3000 pymiere-ui```
+
 ## Running the Backend Test Suite
 
-To thoroughly test the functionality of our image/video processing methods, we wrote a series of test suites to ensure
-the backend logic works correctly. To run these test suites, navigate into the tests folder by running `cd tests`
-in your terminal, then paste the following commands in:
+In the top-level directory, run: `python -m pip install -r requirements.txt`
+
+To run test suites, in `tests/`, you can run:
 
 ```
 python -m pytest as_image_proc_tests.py -v --cov
+
 python -m pytest jz_image_proc_tests.py -v --cov
+
 python -m pytest john_logic_test.py -v --cov
 ``` 
-
-## Running the Frontend
-
-To start up the frontend, make sure you have Node.js installed first. Then, navigate to the ui/pymiere folder by running
-`cd ui/pymiere` in your terminal. Then, run the following two commands:
-
-```
-npm install
-npm start
-```
-
-This should launch the UI in your browser window. To learn more about the UI and what features are available to you,
-make sure to keep reading the rest of the guide! Note that, at the moment, the UI is NOT responsive, and you won't be able
-to apply any of the effects through the UI.
