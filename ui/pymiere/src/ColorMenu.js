@@ -15,7 +15,6 @@ const useStyles = makeStyles({
 export default function ColorMenu() {
   const classes = useStyles();
   const [saturation, setSaturation] = React.useState(50);
-  const [gradient, setGradient] = React.useState(50);
   const [hue, setHue] = React.useState(50);
   const [alpha, setAlpha] = React.useState(50);
   const [colorInit1, setColorInit1] = React.useState(50);
@@ -33,33 +32,45 @@ export default function ColorMenu() {
     setHue(newValue);
   };
 
-  const handleChangeAlpha = (event, newValue) => {
-    setAlpha(newValue);
+  const handleChangeAlpha = (e) => {
+    setAlpha(e.target.value);
   };
 
-  const handleChangeColorInit1 = (event, newValue) => {
-    setColorInit1(newValue);
+  const handleChangeColorInit1 = (e) => {
+    setColorInit1(e.target.value);
   };
 
-  const handleChangeColorInit2 = (event, newValue) => {
-    setColorInit2(newValue);
+  const handleChangeColorInit2 = (e) => {
+    setColorInit2(e.target.value);
   };
 
-  const handleChangeColorInit3 = (event, newValue) => {
-    setColorInit3(newValue);
+  const handleChangeColorInit3 = (e) => {
+    setColorInit3(e.target.value);
   };
 
-  const handleChangeColorSecondary1 = (event, newValue) => {
-    setColorSecondary1(newValue);
+  const handleChangeColorSecondary1 = (e) => {
+    setColorSecondary1(e.target.value);
   };
 
-  const handleChangeColorSecondary2 = (event, newValue) => {
-    setColorSecondary2(newValue);
+  const handleChangeColorSecondary2 = (e) => {
+    setColorSecondary2(e.target.value);
   };
 
-  const handleChangeColorSecondary3 = (event, newValue) => {
-    setColorSecondary3(newValue);
+  const handleChangeColorSecondary3 = (e) => {
+    setColorSecondary3(e.target.value);
   };
+
+  function confirmColorEffects() {
+    console.log(saturation);
+    console.log(hue);
+    console.log(alpha);
+    console.log(colorInit1);
+    console.log(colorInit2);
+    console.log(colorInit3);
+    console.log(colorSecondary1);
+    console.log(colorSecondary2);
+    console.log(colorSecondary3);
+  }
 
 
   return (
@@ -128,7 +139,7 @@ export default function ColorMenu() {
       </Grid>
       <br></br>
       <br></br>
-      <Button variant="contained" color="primary">Apply Color Effects</Button>
+      <Button variant="contained" color="primary" onClick={confirmColorEffects}>Apply Color Effects</Button>
       
     </div>
   );

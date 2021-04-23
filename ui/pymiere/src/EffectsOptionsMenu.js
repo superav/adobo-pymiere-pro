@@ -5,11 +5,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import TextOverlayTextInputFont from "./TextOverlayTextInputFont";
-import TextOverlayLocationSelector from "./TextOverlayLocationSelector";
-import Button from "@material-ui/core/Button";
 import ZoomEffect from "./Effects/ZoomEffect";
 import PixelViewer from "./Effects/PixelViewer";
+import TextOverlayMenu from './TextOverlayMenu'
 import LightingOptionsMenu from "./LightingOptionsMenu";
 import VignetteEffectPage from "./VignetteEffectPage";
 import SpecialEffectsOptions from "./SpecialEffectsOptions";
@@ -95,6 +93,7 @@ export default function VerticalTabs(props) {
         <Tab label="Save As" {...a11yProps(10)} />
       </Tabs>
       <TabPanel value={value} index={0}>
+<<<<<<< HEAD
         <ul>
           <TextOverlayTextInputFont textLabel="Enter Text Below" />
           <TextOverlayLocationSelector />
@@ -116,6 +115,16 @@ export default function VerticalTabs(props) {
             setCanvas={props.setCanvas}
           />
         </ul>
+=======
+          <TextOverlayMenu />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+          <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+      </TabPanel>
+      {/* TODO: pixel viewer text does not change from on to off when toggled*/}
+      <TabPanel value={value} index={2}>
+          <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+>>>>>>> refactored text overlay menu, created handlers for buttons for my menus for backend integration
       </TabPanel>
       <TabPanel value={value} index={3}>
         <ColorMenu />
