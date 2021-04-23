@@ -1,38 +1,6 @@
 import React, { Component, useState } from 'react';
 import { uploadFile } from 'react-s3';
 
-/*
-class UploadNSTFilterForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.fileInput = React.createRef();
-    }
-
-
-    handleSubmit(event) {
-        event.preventDefault();
-        alert(
-            `Selected file - ${this.fileInput.current.files[0].name}`
-        );
-        //Add upload file function here
-    }
-
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Upload file:
-            <input type="file" ref={this.fileInput} accept="image/*" />
-                </label>
-                <br />
-                <button type="submit">Submit</button>
-            </form>
-        );
-    }
-}
-*/
-
 const S3_BUCKET ='adobo-pymiere';
 const REGION ='us-east-1';
 const ACCESS_KEY ='AKIAYA22OMIBDDNHCQWM';
