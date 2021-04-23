@@ -44,8 +44,10 @@ class EditingCanvas extends Component {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    const body = `{"effect" : ${effect} }`;
-    Object.assign(body, parameters);
+    const body = `{
+      "effect" : ${effect},
+      "specifications" : ${parameters} 
+     }`;
 
     const init = {
       method: 'POST',
