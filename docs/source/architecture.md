@@ -12,17 +12,7 @@ When a user wants to perform a specific action on the image/video, the relevant 
 
 An example of how all 3 components interact with each other when a user wants to crop an image:
 
-```mermaid
-sequenceDiagram
-
-User ->> EC2 Instance: Crop image;
-User ->> S3 Bucket: Grab relevant file;
-S3 Bucket -->> User: return image;
-User ->> EC2 Instance: Pass in image;
-EC2 Instance ->> EC2 Instance: Perform image cropping;
-EC2 Instance ->> S3 Bucket: Save cropped image;
-S3 Bucket ->> User: Display cropped image;
-```
+![sequence diagram](./sequence_diagram.png)
 
 ## UI
 
@@ -69,8 +59,8 @@ Uploading and import assets to and from the S3 bucket is handled by ```AssetMana
 
 ### Python
 
-- [MoviePy Docs](https://moviepy.readthedocs.io/en/latest/index.html)
 - [Pillow Docs](https://pillow.readthedocs.io/en/stable/reference/index.html)
+- [Boto3 S3 Docs](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html)
 
 ### Git
 

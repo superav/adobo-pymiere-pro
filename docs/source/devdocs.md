@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-Check out [Architecture](/Developer Documentation/Architecture) and the [style guide](#style-guide) for how to add features.
+Check out [Architecture](./architecture.md) and the [style guide](#style-guide) for how to add features.
 
 See [Useful Links](#useful-links) for quick links to more documents about sprint and product backlogs.
 
