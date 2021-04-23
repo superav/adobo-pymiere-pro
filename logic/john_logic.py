@@ -1,12 +1,17 @@
 from PIL import Image, ImageFont, ImageDraw
-from moviepy.editor import *
 
 
 def add_text_to_image(image=Image, specifications: list = [str, str, int, list, list]) -> Image:
     """
     Args:
         image: image to add text to
-        specifications: list of additional parameters needed to call this function (text, font, size, offset, color)
+        specifications: list containing the next three values ->
+
+            text: the text to be added on top of the image
+            font: the font type of the added text
+            size: the size of the added text 
+            offset: an (x,y) tuple containing coordinates for text offset on the image
+            color: an (R,G,B) tuple containing the color values for the text
 
     Return:
         output_img: Image with text added on top. Returns None if unsuccessful.
@@ -49,57 +54,3 @@ def store_image_in_filesystem(image=Image, filename=str) -> Image:
         return None
     image.save(filename)
     return image
-
-
-def change_volume(clip=VideoFileClip, factor=float) -> VideoFileClip:
-    """
-    Args:
-        clip: Video clip to change volume of
-        factor: factor to scale current volume by
-
-    Return:
-        output_clip: Video clip with changed volume. Returns None if unsuccessful.
-    """
-    valid_parameters = isinstance(clip, VideoFileClip)
-    valid_parameters = valid_parameters and isinstance(factor, float)
-    if not valid_parameters:
-        return None
-    clip = clip.volumex(factor)
-    return clip
-
-
-def audio_normalize_effect(clip=VideoFileClip) -> VideoFileClip:
-    """
-    Args:
-        clip: Video clip to normalize audio of
-
-    Return:
-        output_clip: Video clip with audio normalized. Returns None if unsuccessful.
-    """
-    valid_parameters = isinstance(clip, VideoFileClip)
-    if not valid_parameters:
-        return None
-    clip = clip.fx(afx.audio_normalize)
-    return clip
-
-
-def audio_fade_effect(clip=VideoFileClip, specifications: list = [int, int]) -> VideoFileClip:
-    """
-    Args:
-        clip: Video clip fade audio of
-        specifications: list of parameters to fade audio (fade in time, fade out time)
-
-    Return:
-        output_clip: Video clip with faded audio. Returns None if unsuccessful.
-    """
-    fade_in = specifications[0]
-    fade_out = specifications[1]
-
-    valid_parameters = isinstance(clip, VideoFileClip)
-    valid_parameters = valid_parameters and isinstance(fade_in, int)
-    valid_parameters = valid_parameters and isinstance(fade_out, int)
-    if not valid_parameters:
-        return None
-    clip = clip.fx(afx.audio_fadein, fade_in)
-    clip = clip.fx(afx.audio_fadeout, fade_out)
-    return clip
