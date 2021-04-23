@@ -120,25 +120,23 @@ class AssetManager:
 
         return url
 
-    def upload_temp_image_to_s3(self, input_image: Image, image_name: str) -> str:
+    def upload_temp_image_to_s3(self, input_image_path, s3_image_name: str) -> str:
         """
         Args:
-            input_image:  A PIL.Image
-            image_name:   Name of the image (with the .png extension).
+            input_image_path:  Path to temp image on disk
+            s3_image_name:     Name of the image (with the .png extension) in s3.
 
         Returns:
             url:    The URL to the file in the S3 bucket on success. Otherwise, will return
                     an appropriate error message
         """
 
-        if image_name[-4:] != '.png':
+        if s3_image_name[-4:] != '.png':
             return "Missing \".png\" extension!"
 
-        input_image.convert('RGBA').save("__temp__.png")
+        location = "%s/image_projects/assets/temp/%s" % (self.username, s3_image_name)
 
-        location = "%s/image_projects/assets/temp/%s" % (self.username, image_name)
-
-        self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
+        self.s3_client.upload_file(input_image_path, BUCKET_NAME, location)
 
         url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
 

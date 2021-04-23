@@ -1,8 +1,9 @@
-image: "python:3.7"
+image: "python:3.8"
 
 before_script:
   - apt-get update
   - echo "y" | apt-get install ffmpeg
+  - pip install -U pip
   - pip install -r requirements.txt
   - pip install coverage pytest pytest-cov
 
