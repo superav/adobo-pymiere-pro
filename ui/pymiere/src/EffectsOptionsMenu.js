@@ -16,6 +16,7 @@ import PencilTool from "./Effects/PencilTool";
 import TransformationEditingMenu from "./TransformationEditingMenu.js";
 import SizeEditingMenu from "./SizeEditingMenu.js";
 import StoreLocalFilesystem from "./StoreLocalFilesystem";
+import ViewNSTOutputMenu from "./ViewNSTOutputMenu.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -90,7 +91,8 @@ export default function VerticalTabs(props) {
         <Tab label="Vignette" {...a11yProps(7)} />
         <Tab label="Transformation Menu" {...a11yProps(8)} />
         <Tab label="Size Editing Menu" {...a11yProps(9)} />
-        <Tab label="Save As" {...a11yProps(10)} />
+        <Tab label="View NST outputs" {...a11yProps(10)} />
+        <Tab label="Save As" {...a11yProps(11)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <TextOverlayMenu />
@@ -133,6 +135,9 @@ export default function VerticalTabs(props) {
         ></SizeEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={10}>
+        <ViewNSTOutputMenu defaultGeneration={0} step={5} min={0} max={30} marks/>
+      </TabPanel>
+      <TabPanel value={value} index={11}>
         <StoreLocalFilesystem></StoreLocalFilesystem>
       </TabPanel>
     </div>
