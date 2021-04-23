@@ -34,7 +34,7 @@ class YinjunSprintOneTests(unittest.TestCase):
     def test_add_text_to_image_valid_input(self):
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
         self.assertNotEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
-        fin = ASSET_MANAGER.import_image_from_s3('test_2_hello_again.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3('test_2_hello.png', False)
         rms = compare_images(im, fin)
         self.assertEqual(0, rms)
 
