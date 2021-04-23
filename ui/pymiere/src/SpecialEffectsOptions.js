@@ -14,6 +14,10 @@ export function SpecialEffectsOptions () {
     setEffectChoice(newValue);
   };
 
+  function confirmSpecialEffects() {
+    console.log(effectChoice);
+  }
+
   return (
       <div>
         <FormControl component="fieldset">
@@ -25,7 +29,7 @@ export function SpecialEffectsOptions () {
         </RadioGroup>
       </FormControl>
       <br></br>
-      <Button variant="contained" color="primary">Add Special Effect</Button>
+      <Button variant="contained" color="primary" onClick={confirmSpecialEffects}>Add Special Effect</Button>
 
       </div>
   )

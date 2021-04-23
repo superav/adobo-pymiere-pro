@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import { Autorenew } from '@material-ui/icons';
 
 class ZoomEffect extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class ZoomEffect extends Component {
       <div>
          <h4>Zoom Percentage {this.state.zoomLvl * 100} %</h4>
             <Button variant="contained" color="primary" onClick={this.zoomIn}>In</Button>
+            <div style={{"width": "10px", "height": "auto", "display": "inline-block"}}></div>
             <Button variant="contained" color="primary" onClick={this.zoomOut}>Out</Button>
       </div>
     );
