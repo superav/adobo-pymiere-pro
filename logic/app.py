@@ -54,11 +54,6 @@ def create_app():
         elif var == "fade_audio":
             altered_image = john_logic.audio_fade_effect(
                 input_img, ui_input["specifications"])
-        elif var == "normalize":
-            altered_image = john_logic.audio_normalize_effect(input_img)
-        elif var == "volume":
-            altered_image = john_logic.change_volume(
-                input_img, ui_input["specifications"])
         elif var == "add-text":
             altered_image = john_logic.add_text_to_image(
                 input_img, ui_input["specifications"])
