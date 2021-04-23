@@ -176,3 +176,78 @@ class TestUploadImages(unittest.TestCase):
 
         self.assertEqual(0, root_mean_square)
         self.assertEqual(expected_url, url)
+
+
+class TestUploadStyleImages(unittest.TestCase):
+    asset_manager = AssetManager('test_user_1')
+
+    def test_upload_valid_image_asset(self):
+        image_one = Image.open('test_assets/images/test_style_1.jpg')
+        image_two = Image.open('test_assets/images/test_style_2.jpg')
+
+        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_1.jpg"
+        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_2.jpg"
+
+        url_one = self.asset_manager.upload_nst_style_reference(image_one, "test_style_1.jpg")
+        url_two = self.asset_manager.upload_nst_style_reference(image_two, "test_style_2.jpg")
+
+        r = requests.get(url_one)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image_one)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url_one, url_one)
+
+        r = requests.get(url_two)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image_two)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url_two, url_two)
+
+
+class TestUploadTempImages(unittest.TestCase):
+    asset_manager = AssetManager('test_user_1')
+
+    def test_upload_invalid_image_extension(self):
+        image = Image.open('test_assets/images/test_2.png')
+
+        location_one = 'test_user_1/image_projects/assets/bad'
+        location_two = 'test_user_1/image_projects/assets/bad.txt'
+        location_three = 'test_user_1/image_projects/assets/bad.'
+
+        image_one = self.asset_manager.upload_temp_image_to_s3(image, location_one)
+        image_two = self.asset_manager.upload_temp_image_to_s3(image, location_two)
+        image_three = self.asset_manager.upload_temp_image_to_s3(image, location_three)
+
+        self.assertEqual("Missing \".png\" extension!", image_one)
+        self.assertEqual("Missing \".png\" extension!", image_two)
+        self.assertEqual("Missing \".png\" extension!", image_three)
+
+    def test_upload_valid_image_asset(self):
+        image_one = Image.open('test_assets/images/test_2.png')
+        image_two = Image.open('test_assets/images/test_3.png')
+
+        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_2.png"
+        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_3.png"
+
+        url_one = self.asset_manager.upload_temp_image_to_s3(image_one, "test_2.png")
+        url_two = self.asset_manager.upload_temp_image_to_s3(image_two, "test_3.png")
+
+        r = requests.get(url_one)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image_one)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url_one, url_one)
+
+        r = requests.get(url_two)
+        output = Image.open(BytesIO(r.content))
+
+        root_mean_square = compare_images(output, image_two)
+
+        self.assertEqual(0, root_mean_square)
+        self.assertEqual(expected_url_two, url_two)
