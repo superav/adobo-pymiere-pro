@@ -361,8 +361,7 @@ def run_style_transfer(content_path,
             plt.axis('off')
             image_name = "__temp__.png"
             plt.savefig(image_name, bbox_inches='tight', pad_inches=0)
-
-            image_url = ASSET_MANAGER.upload_image_to_s3("__temp__.png", False)
+            image_url = ASSET_MANAGER.upload_temp_image_to_s3("__temp__.png", "nst_temp_%s.png" % i)
             IMAGE_URLS.append(image_url)
         # plt.subplot(num_rows, num_cols, i + 1)
         # plt.imshow(img)
