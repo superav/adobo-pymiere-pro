@@ -62,7 +62,7 @@ class EditingCanvas extends Component {
     
     this.canvas.width = width;
     this.canvas.height = height;
-    this.insertImage("TEST_IMG.png"); // TODO remove this when there's ability to import image
+    this.insertImage("logo512.png"); // TODO remove this when there's ability to import image
   }
 
   draw = () => {
