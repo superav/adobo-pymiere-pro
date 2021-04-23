@@ -178,36 +178,6 @@ class TestUploadImages(unittest.TestCase):
         self.assertEqual(expected_url, url)
 
 
-class TestUploadStyleImages(unittest.TestCase):
-    asset_manager = AssetManager('test_user_1')
-
-    def test_upload_valid_image_asset(self):
-        image_one = Image.open('test_assets/images/test_style_1.jpg')
-        image_two = Image.open('test_assets/images/test_style_2.jpg')
-
-        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_1.jpg"
-        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_2.jpg"
-
-        url_one = self.asset_manager.upload_nst_style_reference(image_one, "test_style_1.jpg")
-        url_two = self.asset_manager.upload_nst_style_reference(image_two, "test_style_2.jpg")
-
-        r = requests.get(url_one)
-        output = Image.open(BytesIO(r.content))
-
-        root_mean_square = compare_images(output, image_one)
-
-        self.assertEqual(0, root_mean_square)
-        self.assertEqual(expected_url_one, url_one)
-
-        r = requests.get(url_two)
-        output = Image.open(BytesIO(r.content))
-
-        root_mean_square = compare_images(output, image_two)
-
-        self.assertEqual(0, root_mean_square)
-        self.assertEqual(expected_url_two, url_two)
-
-
 class TestUploadTempImages(unittest.TestCase):
     asset_manager = AssetManager('test_user_1')
 

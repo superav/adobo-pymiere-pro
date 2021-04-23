@@ -15,14 +15,11 @@ class AssetManager:
         │   ├── example_style_1.jpg
         │   └── example_style_2.png
         ├── _username/
-        │   ├── _video_projects/
-        │   │   ├── _assets/
-        │   │   │   ├── example_audio.mp3
-        │   │   │   └── example_video.mp4
-        │   │   └── working_copy.mp4
         │   └── _image_projects/
         │       ├── _assets/
-        │       │   └── example_image.png
+        │       │   ├── example_image.png
+        │       │   └── _temp/
+        │       │       └── temp_nst_output.png
         │       └── working_copy.png
         └── _other_username/
             └── [same internal file structure as _username]
@@ -140,26 +137,6 @@ class AssetManager:
         input_image.convert('RGBA').save("__temp__.png")
 
         location = "%s/image_projects/assets/temp/%s" % (self.username, image_name)
-
-        self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
-
-        url = "https://%s.s3.amazonaws.com/%s" % (BUCKET_NAME, location)
-
-        return url
-
-    def upload_nst_style_reference(self, image: Image, image_name: str) -> str:
-        """
-        Args:
-            image:      Image to be uploaded.
-            image_name: Image name
-
-        Returns:
-            url:    URL of image in S3 bucket
-        """
-
-        image.convert('RGBA').save("__temp__.png")
-
-        location = "styles/%s" % image_name
 
         self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
 
