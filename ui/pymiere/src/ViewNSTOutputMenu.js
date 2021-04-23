@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Slider from '@material-ui/core/Slider';
+import Button from '@material-ui/core/Button'
 
 export default class ViewNSTOutputMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      generation: this.props.defaultGeneration
+      generation: 1
     }
   }
 
@@ -13,20 +14,26 @@ export default class ViewNSTOutputMenu extends Component {
     this.setState({ generation: v });
   }
 
+  confirmNSTOutput = () => {
+    console.log(this.state.generation);
+    this.props.applyfilter("nst-view", [this.state.generation]);
+  }
+
   render() {
     return (<div width="auto">
       <h4>View NST outputs</h4><br/>
       <Slider
-        width="auto"
-        value={this.state.generation}
-        onChange={this.handleChange}
-        aria-labelledby="slider"
-        valueLabelDisplay="on"
-        step={this.props.step}
-        min={this.props.min}
-        max={this.props.max}
-        marks={this.props.marks}
-      />
+            value={this.state.generation}
+            onChange={this.handleChange}
+            aria-labelledby="discrete-slider-small-steps"
+            min={1}
+            max={10}
+            step={1}
+            valueLabelDisplay="auto"
+          ></Slider>
+        <p>{this.state.generation}</p>
+        <Button variant="contained" color="primary" onClick={this.confirmNSTOutput}>Select NST View</Button>
+
     </div>);
   }
 }

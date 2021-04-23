@@ -135,7 +135,7 @@ export default function VerticalTabs(props) {
         ></SizeEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={10}>
-        <ViewNSTOutputMenu defaultGeneration={0} step={5} min={0} max={30} marks/>
+        <ViewNSTOutputMenu applyfilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={11}>
         <StoreLocalFilesystem></StoreLocalFilesystem>
