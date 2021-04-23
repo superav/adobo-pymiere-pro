@@ -6,23 +6,23 @@ BUCKET_NAME = 'adobo-pymiere'
 
 
 class AssetManager:
-    """
-    This is a class that will manage uploading and downloading assets from the S3 bucket.
+    """ This is a class that will manage uploading and downloading assets from the S3 bucket.
 
-    The file structure of the S3 bucket is as follows:
-        .
-        ├── _styles/
-        │   ├── example_style_1.jpg
-        │   └── example_style_2.png
-        ├── _username/
-        │   └── _image_projects/
-        │       ├── _assets/
-        │       │   ├── example_image.png
-        │       │   └── _temp/
-        │       │       └── temp_nst_output.png
-        │       └── working_copy.png
-        └── _other_username/
-            └── [same internal file structure as _username]
+    The file structure of the S3 bucket is as follows::
+
+    $   .
+    $   ├── _styles/
+    $   │   ├── example_style_1.jpg
+    $   │   └── example_style_2.png
+    $   ├── _username/
+    $   │   └── _image_projects/
+    $   │       ├── _assets/
+    $   │       │   ├── example_image.png
+    $   │       │   └── _temp/
+    $   │       │       └── temp_nst_output.png
+    $   │       └── working_copy.png
+    $   └── _other_username/
+    $       └── [same internal file structure as _username]
 
     All images loaded into the S3 bucket will be in PNG format (so that we can also use the
     alpha channel when doing image processing)
@@ -51,7 +51,7 @@ class AssetManager:
                              Otherwise, list only files for the current user
 
         Returns:
-            bucket_list:    List of all objects in the bucket
+            list:    List of all objects in the bucket
         """
 
         bucket_list = []
@@ -70,7 +70,7 @@ class AssetManager:
             is_working_copy: If the image being imported is the working copy of the project
 
         Returns:
-            output_image:   A PIL.Image if image exists in bucket. Otherwise, None
+            PIL.Image:  A PIL.Image if image exists in bucket. Otherwise, None
         """
 
         if image_name[-4:] != '.png':
@@ -100,8 +100,7 @@ class AssetManager:
             is_working_copy: If the image to be uploaded is the working copy of the project. Default is True
 
         Returns:
-            url:    The URL to the file in the S3 bucket on success. Otherwise, will return
-                    an appropriate error message
+            str: The URL to the file in the S3 bucket on success. Otherwise, will return an appropriate error message
         """
 
         if image_name[-4:] != '.png':
@@ -127,8 +126,7 @@ class AssetManager:
             s3_image_name:     Name of the image (with the .png extension) in s3.
 
         Returns:
-            url:    The URL to the file in the S3 bucket on success. Otherwise, will return
-                    an appropriate error message
+            str: The URL to the file in the S3 bucket on success. Otherwise, will return an appropriate error message
         """
 
         if s3_image_name[-4:] != '.png':
@@ -143,6 +141,9 @@ class AssetManager:
         return url
 
     def clear_temps(self):
+        """
+        Clears all temporary files from S3 bucket
+        """
         objects_list = self.s3_client.list_objects(Bucket=BUCKET_NAME).get('Contents', [])
         deletion_list = {'Objects': []}
 

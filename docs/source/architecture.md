@@ -4,9 +4,9 @@
 
 The software is divided into 3 major portions: the UI, an S3 bucket, and an AWS EC2 instance:
 
-- UI - What the user sees and interacts with.
-- S3 Bucket - Stores project assets and work in progress files.
-- EC2 Instance - Server with a Docker container that holds the Flask backend. Performs the video and image processing.
+- **UI** - What the user sees and interacts with.
+- **S3 Bucket** - Stores project assets and work in progress files.
+- **EC2 Instance** - Server with a Docker container that holds the Flask backend. Performs the video and image processing.
 
 When a user wants to perform a specific action on the image/video, the relevant file will be pulled from the S3 bucket and passed into the backend (on the EC2 instance). The backend will perform the image/video processing and then return the resulting image/video back to the S3 bucket and the UI will display the updated image.
 
@@ -25,26 +25,26 @@ An example of how all 3 components interact with each other when a user wants to
   - Check [resources](#python) for links to documentation
 - Using requirements.txt to track required packages.
 
-## AWS
+## EC2
 
 ### S3
 
 Files within the S3 bucket will be organized as such:
 
 ```
-.
-└── _username/
-│   ├── _video_projects/
-│   │   ├── _assets/
-│   │   │   ├── example_audio.mp3
-│   │   │   └── example_video.mp4
-│   │   └── working_copy.mp4
-│   └── _image_projects/
-│       ├── _assets/
-│       │   └── example_image.png
-│       └── working_copy.png
-└── _other_username/
-    └── [same internal file structure as _username]
+   .
+   ├── _styles/
+   │   ├── example_style_1.jpg
+   │   └── example_style_2.png
+   ├── _username/
+   │   └── _image_projects/
+   │       ├── _assets/
+   │       │   ├── example_image.png
+   │       │   └── _temp/
+   │       │       └── temp_nst_output.png
+   │       └── working_copy.png
+   └── _other_username/
+       └── [same internal file structure as _username]
 ```
 
 Uploading and import assets to and from the S3 bucket is handled by ```AssetManager``` in ```asset_manager.py```.

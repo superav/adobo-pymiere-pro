@@ -10,7 +10,7 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
            specifications:     The hue factor that will be set -
 
        Returns:
-           output_img: Image with hue changed
+           PIL.Image: Image with hue changed
     """
     # https://stackoverflow.com/questions/7274221/
     #                           changing-image-hue-with-python-pil
@@ -44,7 +44,7 @@ def crop_editor(input_img: Image,
                        have to be within the image size
 
        Returns:
-           output_img: Image that has been cropped
+           PIL.Image: Image that has been cropped
     """
 
     left, top, right, bottom = specifications
@@ -67,7 +67,7 @@ def crop_in_given_dimensions(width: int, height: int, top: int, left: int,
            right: right x coordinate
            bottom: bottom y coordinate
        Returns:
-           inside: bool that says if the crop will fit in the dimensions
+           bool: bool that says if the crop will fit in the dimensions
     """
     if width > right > left >= 0 and height > bottom > top >= 0:
         return True
@@ -83,7 +83,7 @@ def opacity_editor(input_img: Image, specifications: int) -> Image:
                         be - 0 being invisible, 100 being opaque
 
        Returns:
-           output_img: Image with opacity changed
+           PIL.Image: Image with opacity changed
     """
 
     if specifications > 100 or specifications < 0:
@@ -98,11 +98,10 @@ def apply_color_editor(input_img: Image,
     """
        Args:
             input_img:  The image to be changed
-            specifications: A list of four ints, being the rgba for the color
-                        mask
+            specifications: A list of four ints, being the rgba for the color mask
 
        Returns:
-           output_img: Image with color mask applied changed
+           PIL.Image: Image with color mask applied changed
     """
 
     red, green, blue, alpha = specifications
@@ -121,16 +120,12 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
            input_img:  The image to be changed
            specifications: list containing the next 3 values ->
 
-                           alpha: the alpha value of the mask to be applied
-                           color_initial: A list of three ints, being the rgb
-                                            for the first half of the color
-                                            mask
-                           color_secondary: A list of three ints, being the
-                                            rgb for the second half of the
-                                            color mask
+                           * alpha: the alpha value of the mask to be applied
+                           * color_initial: A list of three ints, being the rgb for the first half of the color mask
+                           * color_secondary: A list of three ints, being the rgb for the second half of the color mask
 
        Returns:
-           output_img: Image with color mask applied changed
+           PIL.Image: Image with color mask applied changed
     """
     # https://python-catalin.blogspot.com/2013/10/
     #                       how-to-make-color-gradient-and-images.html
@@ -164,6 +159,15 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
 
 
 def color_val_in_range(red: int, green: int, blue: int) -> bool:
+    """ Checks that all color values are in the range [0, 255]
+    Args:
+        red:    Red color value
+        green:  Green color value
+        blue:   Blue color value
+
+    Returns:
+        bool:   True if all color values are in range
+    """
     if 255 >= red >= 0 and 255 >= green >= 0 and 255 >= blue >= 0:
         return False
     else:
@@ -175,11 +179,12 @@ def apply_mirror(input_img: Image, specifications: int) -> Image:
         Args:
             input_img:  The image to be changed
             specifications: int determining if its a horizontal or vertical
-                            mirror, 0 -> flip across the y axis
-                                    1 -> flip across the x axis
+                            mirror:
+                            * 0 -> flip across the y axis
+                            * 1 -> flip across the x axis
 
         Returns:
-            output_img: Image with color mask applied changed
+            PIL.Image: Image with color mask applied changed
     """
     if specifications == 0:
         return ImageOps.mirror(input_img)
@@ -198,7 +203,7 @@ def apply_frame(input_img: Image,
                             and blue values for the border's color
 
         Returns:
-            output_img: Image with color mask applied changed
+            PIL.Image: Image with color mask applied changed
     """
     # https://stackoverflow.com/questions/
     #                   11142851/adding-borders-to-an-image-using-python
@@ -218,11 +223,10 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
     """
         Args:
             input_img:  The image to be changed
-            specifications: int to determine the threshold of the
-                            solarization effect
+            specifications: int to determine the threshold of the solarization effect
 
         Returns:
-            output_img: Image with color mask applied changed
+            PIL.Image: Image with color mask applied changed
     """
     input_img.load()
     # Have to make rgba image rgb
@@ -233,12 +237,13 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
 
 
 def apply_mosaic_filter(input_img: Image) -> Image:
-    """
+    """ Applies a mosaic filter to an image
+
         Args:
             input_img:  The image to be changed
 
         Returns:
-            output_img: Image with color mask applied changed
+            PIL.Image: Image with color mask applied changed
     """
     # https://stackoverflow.com/questions/47143332/
     #           how-to-pixelate-a-square-image-to-256-big-pixels-with-python
@@ -252,17 +257,15 @@ def apply_mosaic_filter(input_img: Image) -> Image:
 
 def apply_red_eye_filter(input_img: Image,
                          specifications: list = [int, int, int, int]) -> Image:
-    """
-        Args:
-            input_img:  The image to be changed
-            specifications: list of 4 ints to determine what area has
-                            the red eyes in it -> left x value
-                                                  top y value
-                                                  right x value
-                                                  bottom y value
+    """ Removes red eye effect in a given area
 
-        Returns:
-            output_img: Image with color mask applied changed
+    Args:
+        input_img:  Input image
+        specifications: List of integers denoting area to perform red eye removal.
+            * Integers should be in this format: [left x value, top y value, right x value, bottom y value]
+
+    Returns:
+        PIL.Image: Image with red eye removed
     """
     # https://learnopencv.com/
     #           automatic-red-eye-remover-using-opencv-cpp-python/

@@ -16,4 +16,4 @@ Developer Documentation
    userdocs
    devdocs
    architecture
-   logic
+   modules

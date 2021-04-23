@@ -14,16 +14,18 @@ See [Useful Links](#useful-links) for quick links to more documents about sprint
 - Must follow [PEP8](https://pep8.org/)
 - Type hints are required
 - Use [docstrings](https://www.python.org/dev/peps/pep-0257) to label classes and methods (this just makes code easier to read)
-  - Example:
+  - Must format according to [Google-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
+  - Simple example:
 
 ```python
 def update_game(request: dict) -> dict:
-    """
+    """ <Description of method>
+    
         Args:
             request: dictionary describing the "move" to be made in the game
 
         Returns:
-            reply: dictionary describing the game's new state.
+            <Return Type>: dictionary describing the game's new state.
     """"
 ```
 

@@ -6,11 +6,10 @@ def gaussian_blur(input_img: Image, specifications: int) -> Image:
     Args:
         input_img:  An image to be blurred
 
-        specifications:
-            radius:     The radius of the gaussian blur. Must be greater than 0
+        specifications: The radius of the gaussian blur. Must be greater than 0
 
     Return:
-        output_img: Blurred image. Will throw a TypeError for invalid input
+        PIL.Image: Blurred image. Will throw a TypeError for invalid input
     """
 
     radius = specifications
@@ -31,12 +30,11 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
     Args:
         input_img:  The image to be changed
         specifications:
-            factor:     Enhancement factor. 0.0 give a black and white image, 1.0 gives original image
-                        Value must be above 0.0
+            * factor:  Enhancement factor.
+                * 0.0 give a black and white image, 1.0 gives original image. Value must be above 0.0
 
     Returns:
-        output_img: Image with saturation changed
-        TypeError:  Thrown if parameters are invalid types
+        PIL.Image: Image with saturation changed
     """
 
     factor = specifications
@@ -54,19 +52,19 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
 
 
 def add_watermark_image(input_img: Image, specifications: list) -> Image:
-    """
+    """ Adds a watermark image on top of the base image
+
     Args:
         input_img:  The image (PNG) to be changed
         specifications:
-            watermark:  The image (PNG) to be watermarked
-            position:   Tuple (x, y) of where watermark should be placed
-            size:       Size of image (scaled downwards).
-                        Must be in range [0.0, 0.1]. Default is 1.0
-            opacity:    Opacity of the image.
-                        Must be in range [0.0, 0.1]. Default is 1.0
+
+            * watermark:  The image (PNG) to be watermarked
+            * position:   Tuple (x, y) of where watermark should be placed
+            * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
 
     Returns:
-        output_img: Watermarked image
+        PIL.Image: Watermarked image
     """
 
     if not __watermark_specifications_are_valid(specifications):
@@ -94,11 +92,10 @@ def scale_image(input_img: Image, specifications: float) -> Image:
     """
     Args:
         input_img:  Image to be changed
-        specifications:
-            scale:      Scale of image. Must be in range [0.0, 1.0]
+        specifications: Scale of image. Must be in range [0.0, 1.0]
 
     Returns:
-        output_img: Scaled down image
+        PIL.Image: Scaled down image
     """
 
     scale = specifications
@@ -121,12 +118,10 @@ def rotate_image(input_img: Image, specifications: int) -> Image:
     """
     Args:
         input_img:  Image to be changed
-        specifications:
-            angle:      Angle to be rotated (in degrees)
+        specifications: Angle to be rotated (in degrees)
 
     Returns:
-        output_img: Rotated image
-        TypeError:  Thrown if invalid parameter types
+        PIL.Image: Rotated image
     """
 
     angle = specifications
@@ -145,7 +140,7 @@ def __position_is_valid(position: tuple) -> bool:
         position:   Position
 
     Returns:
-        is_valid:   If position is a tuple of correct type and size
+        bool:   If position is a tuple of correct type and size
     """
     if len(position) != 2:
         return False
@@ -159,15 +154,15 @@ def __watermark_specifications_are_valid(specifications: list):
     """
     Args:
         specifications:
-            watermark:  The image (PNG) to be watermarked
-            position:   Tuple (x, y) of where watermark should be placed
-            size:       Size of image (scaled downwards).
-                        Must be in range [0.0, 0.1]. Default is 1.0
-            opacity:    Opacity of the image.
-                        Must be in range [0.0, 0.1]. Default is 1.0
+            * watermark:  The image (PNG) to be watermarked
+            * position:   Tuple (x, y) of where watermark should be placed
+            * size:       Size of image (scaled downwards).
+                Must be in range [0.0, 0.1]. Default is 1.0
+
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
 
     Returns:
-        is_valid:   True if all specification types and values are valid
+        bool:   True if all specification types and values are valid
     """
 
     if type(specifications) != list or len(specifications) != 4:
