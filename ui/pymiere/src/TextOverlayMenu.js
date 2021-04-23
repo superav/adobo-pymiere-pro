@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 import TextOverlayLocationSelector from './TextOverlayLocationSelector'
 import TextOverlayColorPicker from './TextOverlayColorPicker'
 
-export default function TextOverlayMenu() {
+export default function TextOverlayMenu(props) {
 
     const [curTextInput, setCurTextInput] = useState("");
     const [fontType, setFontType] = useState("Open Sans");
@@ -43,6 +43,7 @@ export default function TextOverlayMenu() {
         console.log(colorBlue);
         console.log(locationX);
         console.log(locationY);
+        props.applyfilter("add-text", [curTextInput, fontType, fontSize, (locationX, locationY), (colorRed, colorGreen, colorBlue)])
     }
 
     return (

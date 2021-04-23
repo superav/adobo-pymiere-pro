@@ -95,7 +95,7 @@ export default function VerticalTabs(props) {
         <Tab label="NST Filters" {...a11yProps(11)} /> 
       </Tabs>
       <TabPanel value={value} index={0}>
-        <TextOverlayMenu />
+        <TextOverlayMenu applyfilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
           <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
@@ -108,7 +108,7 @@ export default function VerticalTabs(props) {
           />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ColorMenu />
+        <ColorMenu applyfilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={4}>
         <LightingOptionsMenu />
