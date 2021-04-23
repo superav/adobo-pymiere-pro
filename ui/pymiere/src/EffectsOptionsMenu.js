@@ -16,6 +16,7 @@ import PencilTool from "./Effects/PencilTool";
 import TransformationEditingMenu from "./TransformationEditingMenu.js";
 import SizeEditingMenu from "./SizeEditingMenu.js";
 import StoreLocalFilesystem from "./StoreLocalFilesystem";
+import UploadNSTFilterForm from "./UploadNSTFilterForm";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -91,6 +92,7 @@ export default function VerticalTabs(props) {
         <Tab label="Transformation Menu" {...a11yProps(8)} />
         <Tab label="Size Editing Menu" {...a11yProps(9)} />
         <Tab label="Save As" {...a11yProps(10)} />
+        <Tab label="NST Filters" {...a11yProps(11)} /> 
       </Tabs>
       <TabPanel value={value} index={0}>
         <TextOverlayMenu />
@@ -133,7 +135,10 @@ export default function VerticalTabs(props) {
         ></SizeEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={10}>
-        <StoreLocalFilesystem></StoreLocalFilesystem>
+        <StoreLocalFilesystem/>
+      </TabPanel>
+      <TabPanel value={value} index={11}>
+        <UploadNSTFilterForm/>
       </TabPanel>
     </div>
   );
