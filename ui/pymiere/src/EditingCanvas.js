@@ -40,6 +40,33 @@ class EditingCanvas extends Component {
     this.draw();
   }
 
+  updateImage = (effect, parameters) => {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    const body = `{"effect" : ${effect} }`;
+    Object.assign(body, parameters);
+
+    const init = {
+      method: 'POST',
+      headers,
+      body
+    };
+
+    const url = 'localhost:5000/logic/image_editor'
+    fetch(url, init)
+    .then((response) => {
+      return response.json(); // or .text() or .blob() ...
+    })
+    .then((text) => {
+      this.insertImage(text.url);
+      this.draw();
+    })
+    .catch((e) => {
+      // error in e.message
+    });
+  }
+  
   insertImage = (src) => {
     const img = new Image();
     img.src = src;
@@ -63,7 +90,8 @@ class EditingCanvas extends Component {
     
     this.canvas.width = width;
     this.canvas.height = height;
-    this.insertImage("logo512.png"); // TODO remove this when there's ability to import image
+    
+    this.insertImage("https://www.google.com/logos/doodles/2021/celebrating-the-letter-n-6753651837108360.2-l.png"); // TODO remove this when there's ability to import image
   }
 
   // This is the core of this class. all updates to the canvas has to be followed up by a draw call
