@@ -6,15 +6,13 @@
 Welcome to Adobo Pymiere Pro's documentation!
 =============================================
 
+Developer Documentation
+---------------------------------------------
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   install
+   architecture
+   logic
