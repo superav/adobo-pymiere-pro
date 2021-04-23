@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import ZoomEffect from "./Effects/ZoomEffect";
 import PixelViewer from "./Effects/PixelViewer";
-import TextOverlayMenu from './TextOverlayMenu'
+import TextOverlayMenu from "./TextOverlayMenu";
 import LightingOptionsMenu from "./LightingOptionsMenu";
 import VignetteEffectPage from "./VignetteEffectPage";
 import SpecialEffectsOptions from "./SpecialEffectsOptions";
@@ -92,23 +92,20 @@ export default function VerticalTabs(props) {
         <Tab label="Transformation Menu" {...a11yProps(8)} />
         <Tab label="Size Editing Menu" {...a11yProps(9)} />
         <Tab label="Save As" {...a11yProps(10)} />
-        <Tab label="NST Filters" {...a11yProps(11)} /> 
+        <Tab label="NST Filters" {...a11yProps(11)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <TextOverlayMenu applyfilter={props.applyFilter}/>
+        <TextOverlayMenu applyfilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-          <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       {/* TODO: pixel viewer text does not change from on to off when toggled*/}
       <TabPanel value={value} index={2}>
-          <PixelViewer
-            getCanvas={props.getCanvas}
-            setCanvas={props.setCanvas}
-          />
+        <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ColorMenu applyfilter={props.applyFilter}/>
+        <ColorMenu applyfilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={4}>
         <LightingOptionsMenu />
@@ -126,19 +123,22 @@ export default function VerticalTabs(props) {
         />
       </TabPanel>
       <TabPanel value={value} index={8}>
-        <TransformationEditingMenu></TransformationEditingMenu>
+        <TransformationEditingMenu
+          applyFilter={props.applyFilter}
+        ></TransformationEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={9}>
         <SizeEditingMenu
           getCanvas={props.getCanvas}
           setCanvas={props.setCanvas}
+          applyFilter={props.applyFilter}
         ></SizeEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={10}>
-        <StoreLocalFilesystem/>
+        <StoreLocalFilesystem applyFilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={11}>
-        <UploadNSTFilterForm/>
+        <UploadNSTFilterForm />
       </TabPanel>
     </div>
   );

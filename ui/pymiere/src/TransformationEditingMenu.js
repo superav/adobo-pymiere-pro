@@ -10,6 +10,7 @@ class TransformationEditingMenu extends Component {
       rValue: "",
       gValue: "",
       bValue: "",
+      aValue: "",
       watermarkName: "",
       watermarkPosition: "",
       watermarkSize: "",
@@ -28,6 +29,12 @@ class TransformationEditingMenu extends Component {
     console.log("r value: " + this.state.rValue);
     console.log("g value: " + this.state.gValue);
     console.log("b value: " + this.state.bValue);
+    this.applyFilter("recoloration", [
+      this.state.rValue,
+      this.state.gValue,
+      this.state.bValue,
+      this.state.aValue,
+    ]);
   };
 
   addWatermark = () => {
@@ -35,6 +42,12 @@ class TransformationEditingMenu extends Component {
     console.log("watermark position: " + this.state.watermarkPosition);
     console.log("watermark opacity: " + this.state.watermarkOpacity);
     console.log("watermark size: " + this.state.watermarkSize);
+    this.props.applyFilter("watermark", [
+      this.state.watermarkName,
+      this.state.watermarkPosition,
+      this.state.watermarkSize,
+      this.state.watermarkOpacity,
+    ]);
   };
 
   changeBackground = () => {
@@ -46,6 +59,7 @@ class TransformationEditingMenu extends Component {
       blurValue: val,
     });
     console.log("Gaussian blur: " + this.state.blurValue);
+    this.props.applyFilter("blur", [this.state.blurValue]);
   };
 
   changeOpacity = (e, val) => {
@@ -53,6 +67,7 @@ class TransformationEditingMenu extends Component {
       opacityValue: val,
     });
     console.log("Opacity: " + this.state.opacityValue);
+    this.props.applyFilter("opacity", [this.state.opacityValue]);
   };
 
   render() {
@@ -61,7 +76,7 @@ class TransformationEditingMenu extends Component {
         <h4>Change Opacity:</h4>
         <Slider
           value={this.state.opacityValue}
-          onChangeCommitted={this.changeOpacity}
+          onChange={this.changeOpacity}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
           max={1}
@@ -71,7 +86,7 @@ class TransformationEditingMenu extends Component {
         <h4>Gaussian Blur:</h4>
         <Slider
           value={this.state.blurValue}
-          onChangeCommitted={this.applyGaussianBlur}
+          onChange={this.applyGaussianBlur}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
           max={1}
@@ -82,7 +97,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.backgroundName}
-          onChange={this.handleChange('backgroundName')}
+          onChange={this.handleChange("backgroundName")}
           label="Background Name"
           variant="outlined"
         />
@@ -99,7 +114,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.watermarkName}
-          onChange={this.handleChange('watermarkName')}
+          onChange={this.handleChange("watermarkName")}
           label="Image Name"
           variant="outlined"
         />
@@ -107,7 +122,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.watermarkPosition}
-          onChange={this.handleChange('watermarkPosition')}
+          onChange={this.handleChange("watermarkPosition")}
           label="Position"
           variant="outlined"
         />
@@ -115,7 +130,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.watermarkSize}
-          onChange={this.handleChange('watermarkSize')}
+          onChange={this.handleChange("watermarkSize")}
           label="Size"
           variant="outlined"
         />
@@ -123,7 +138,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.watermarkOpacity}
-          onChange={this.handleChange('watermarkOpacity')}
+          onChange={this.handleChange("watermarkOpacity")}
           label="Opacity"
           variant="outlined"
         />
@@ -137,7 +152,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.rValue}
-          onChange={this.handleChange('rValue')}
+          onChange={this.handleChange("rValue")}
           label="R Value"
           variant="outlined"
         />
@@ -145,7 +160,7 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.gValue}
-          onChange={this.handleChange('gValue')}
+          onChange={this.handleChange("gValue")}
           label="G Value"
           variant="outlined"
         />
@@ -153,8 +168,16 @@ class TransformationEditingMenu extends Component {
         <TextField
           id="outlined-basic"
           value={this.state.bValue}
-          onChange={this.handleChange('bValue')}
+          onChange={this.handleChange("bValue")}
           label="B Value"
+          variant="outlined"
+        />
+        <br />
+        <TextField
+          id="outlined-basic"
+          value={this.state.aValue}
+          onChange={this.handleChange("aValue")}
+          label="A Value"
           variant="outlined"
         />
         <br />

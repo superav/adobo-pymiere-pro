@@ -29,6 +29,12 @@ class CropEffect extends Component {
     this.props.setCanvas("activeFunction", setFunction);
   }
 
+  updateCropBackend = () => {
+    let right = crop[0] + crop[2];
+    let bottom = crop[1] + crop[3];
+    this.props.applyFilter("crop", [crop[2], crop[3], crop[0], crop[1], right, bottom]);
+  }
+
   Crop = () => {
     if (this.props.getCanvas("activeFunction")) {
       const crop = this.props.getCanvas("functions").crop.boundingBox;
@@ -45,6 +51,7 @@ class CropEffect extends Component {
 
       this.props.setCanvas("image", image);
       this.ToggleCropFrame();
+      this.updateCropBackend();
     }
   }
 
