@@ -1,9 +1,10 @@
 from flask import Flask, request
 from PIL.Image import Image
 from logic.asset_manager import AssetManager
-from logic import jz_image_proc
-from logic import as_image_proc
-from logic import john_logic
+from logic.jz_image_proc import *
+from logic.as_image_proc import *
+from logic.john_logic import *
+from logic.draw_on_image import *
 
 ass_man = AssetManager("test_user_1")
 
@@ -11,7 +12,7 @@ ass_man = AssetManager("test_user_1")
 def create_app():
     flask_app = Flask(__name__)
 
-    @flask_app.route("/logic/image_editor", methods=["GET"])
+    @flask_app.route("/logic/image_editor", methods=["POST"])
     def get_apply_effect():
         # Receive input
         ui_input = request.get_json()
@@ -22,57 +23,54 @@ def create_app():
         # Call alteration method specified by request
         var = ui_input["effect"]
         if var == "saturation":
-            altered_image = jz_image_proc.change_saturation(
+            altered_image = change_saturation(
                 input_img, ui_input["specifications"])
         elif var == "hue":
-            altered_image = as_image_proc.hue_editor(
+            altered_image = hue_editor(
                 input_img, ui_input["specifications"])
         elif var == "color-gradient":
-            altered_image = as_image_proc.apply_gradient_editor(
+            altered_image = apply_gradient_editor(
                 input_img, ui_input["specifications"])
         elif var == "crop":
-            altered_image = jz_image_proc.crop_editor(
+            altered_image = crop_editor(
                 input_img, ui_input["specifications"])
         elif var == "watermark":
-            altered_image = jz_image_proc.add_watermark_image(
+            altered_image = add_watermark_image(
                 input_img, ui_input["specifications"])
         elif var == "blur":
-            altered_image = jz_image_proc.gaussian_blur(
+            altered_image = gaussian_blur(
                 input_img, ui_input["specifications"])
         elif var == "opacity":
-            altered_image = as_image_proc.opacity_editor(
+            altered_image = opacity_editor(
                 input_img, ui_input["specifications"])
         elif var == "recoloration":
-            altered_image = as_image_proc.apply_color_editor(
+            altered_image = apply_color_editor(
                 input_img, ui_input["specifications"])
         elif var == "rotate":
-            altered_image = jz_image_proc.rotate_image(
+            altered_image = rotate_image(
                 input_img, ui_input["specifications"])
         elif var == "downscale-resolution":
-            altered_image = jz_image_proc.scale_image(
-                input_img, ui_input["specifications"])
-        elif var == "fade_audio":
-            altered_image = john_logic.audio_fade_effect(
+            altered_image = scale_image(
                 input_img, ui_input["specifications"])
         elif var == "add-text":
-            altered_image = john_logic.add_text_to_image(
+            altered_image = add_text_to_image(
                 input_img, ui_input["specifications"])
         elif var == "draw-line":
-            altered_image = jz_image_proc.rotate_video(
+            altered_image = draw_line(
                 input_img, ui_input["specifications"])
         elif var == "mirror":
-            altered_image = as_image_proc.apply_mirror(
+            altered_image = apply_mirror(
                 input_img, ui_input["specifications"])
         elif var == "red-eye-remover":
-            altered_image = as_image_proc.apply_red_eye_filter(
+            altered_image = apply_red_eye_filter(
                 input_img, ui_input["specifications"])
         elif var == "solarize":
-            altered_image = as_image_proc.apply_solarize(
+            altered_image = apply_solarize(
                 input_img, ui_input["specifications"])
         elif var == "mosaic":
-            altered_image = as_image_proc.apply_mosaic_filter(input_img)
+            altered_image = apply_mosaic_filter(input_img)
         elif var == "frame":
-            altered_image = as_image_proc.apply_frame(
+            altered_image = apply_frame(
                 input_img, ui_input["specifications"])
         else:
             return None
