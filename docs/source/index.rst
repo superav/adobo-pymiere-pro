@@ -14,5 +14,6 @@ Developer Documentation
    :caption: Contents:
 
    install
+   devdocs
    architecture
    logic
