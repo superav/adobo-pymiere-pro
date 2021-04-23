@@ -93,38 +93,17 @@ export default function VerticalTabs(props) {
         <Tab label="Save As" {...a11yProps(10)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-<<<<<<< HEAD
-        <ul>
-          <TextOverlayTextInputFont textLabel="Enter Text Below" />
-          <TextOverlayLocationSelector />
-          <Button variant="contained" color="primary">
-            Add Text Overlay
-          </Button>
-        </ul>
+        <TextOverlayMenu />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ul>
           <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
-        </ul>
       </TabPanel>
       {/* TODO: pixel viewer text does not change from on to off when toggled*/}
       <TabPanel value={value} index={2}>
-        <ul>
           <PixelViewer
             getCanvas={props.getCanvas}
             setCanvas={props.setCanvas}
           />
-        </ul>
-=======
-          <TextOverlayMenu />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-          <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
-      </TabPanel>
-      {/* TODO: pixel viewer text does not change from on to off when toggled*/}
-      <TabPanel value={value} index={2}>
-          <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
->>>>>>> refactored text overlay menu, created handlers for buttons for my menus for backend integration
       </TabPanel>
       <TabPanel value={value} index={3}>
         <ColorMenu />
