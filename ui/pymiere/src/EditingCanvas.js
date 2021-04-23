@@ -66,6 +66,12 @@ class EditingCanvas extends Component {
     this.insertImage("logo512.png"); // TODO remove this when there's ability to import image
   }
 
+  // This is the core of this class. all updates to the canvas has to be followed up by a draw call
+  // The order is:
+  //        1 - Clear the canvas
+  //        2 - Redraw the image and the border around it
+  //        3 - Redraw all edits the user made
+  //        4 - Update the UI for any tool currently in use
   draw = () => {
     let width = this.canvas.width;
     let height = this.canvas.height;
@@ -77,8 +83,12 @@ class EditingCanvas extends Component {
     this.context.imageSmoothingEnabled = false;
     // Repopulate the canvas
     this.context.drawImage(...this.canvasState.image);
-    // Update functions
     this.drawOutline();
+
+    // Redraw all edits the user made
+    this.drawPencil();
+    
+    // Update functions tool draw
     switch (this.canvasState.activeFunction) {
       case "crop":
         this.drawCropTool();
@@ -86,7 +96,6 @@ class EditingCanvas extends Component {
       default:
         break;
     }
-    this.drawPencil(); // We want to keep the strokes even after exiting the tool
   }
 
   cropHandlePositions = (box) => {
@@ -102,6 +111,7 @@ class EditingCanvas extends Component {
     const box = this.canvasState.functions.crop.boundingBox;
     // Draw crop box and bounding gizmos
     this.context.strokeStyle = '#FF0000';
+    this.context.lineWidth = 2;
     this.context.strokeRect(...box);
     this.cropHandlePositions(box).forEach((p, i) => {
       if (i === this.canvasState.functions.crop.resize)
@@ -147,10 +157,20 @@ class EditingCanvas extends Component {
   }
   
   drawOutline = () => {
-    const box = this.canvasState.functions.crop.boundingBox;
+    const img = this.canvasState.image;
     // Draw crop box and bounding gizmos
     this.context.strokeStyle = 'black';
-    this.context.strokeRect(0, 0, this.canvasState.image[3], this.canvasState.image[4]);
+    this.context.lineWidth = 4;
+    this.context.strokeRect(img[5], img[6], img[7], img[8]);
+  }
+  
+  clamp = (n, min, max) => { // Inclusive
+    if (n >= min) {
+      if (n <= max)
+        return n;
+      return max;
+    }
+    return min;
   }
 
   handleMouseMove = (e) => {
@@ -169,22 +189,23 @@ class EditingCanvas extends Component {
           const dY = e.movementY / canvasTransform[3];
           switch (crop.resize) {
             case 0:
-              crop.boundingBox[1] += dY;
-              crop.boundingBox[3] -= dY;
+              crop.boundingBox[3] = this.clamp(crop.boundingBox[3] - dY, 0, this.canvasState.image[0].height);
+              crop.boundingBox[1] = this.clamp(crop.boundingBox[1] + dY, 0, this.canvasState.image[0].height - crop.boundingBox[3]);
               break;
             case 1:
-              crop.boundingBox[0] += dX;
-              crop.boundingBox[2] -= dX;
+              crop.boundingBox[2] = this.clamp(crop.boundingBox[2] - dX, 0, this.canvasState.image[0].width);
+              crop.boundingBox[0] = this.clamp(crop.boundingBox[0] + dX, 0, this.canvasState.image[0].width - crop.boundingBox[2]);
               break;
             case 2:
-              crop.boundingBox[3] += dY;
+              crop.boundingBox[3] = this.clamp(crop.boundingBox[3] + dY, 0, this.canvasState.image[0].height - crop.boundingBox[1]);
               break;
             case 3:
-              crop.boundingBox[2] += dX;
+              crop.boundingBox[2] = this.clamp(crop.boundingBox[2] + dX, 0, this.canvasState.image[0].width - crop.boundingBox[0]);
               break;
             default:
-              crop.boundingBox[0] += dX;
-              crop.boundingBox[1] += dY;
+              // Case for moving cropping box
+              crop.boundingBox[0] = this.clamp(crop.boundingBox[0] + dX, 0, this.canvasState.image[0].width - crop.boundingBox[2]);
+              crop.boundingBox[1] = this.clamp(crop.boundingBox[1] + dY, 0, this.canvasState.image[0].height - crop.boundingBox[3]);
               break;
           }
           break;
@@ -232,8 +253,6 @@ class EditingCanvas extends Component {
         break;
     }
   }
-
-  
 
   render() {
     return (
