@@ -27,6 +27,9 @@ const UploadImageToEdit = (props) => {
             .then(data => {
                 console.log(data);
                 props.insertImage(data["location"]);
+                setTimeout(() => {
+                    props.insertImage(data["location"])
+                }, 50);
             })
             .catch(err => console.error(err))
     }

@@ -71,15 +71,12 @@ class EditingCanvas extends Component {
   insertImage = (src) => {
     console.log(src);
     const img = new Image();
-    img.src = src;
-    img.onload = () => {this.draw()};
-    
+    img.onload = () => {
+      this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
+      this.draw()
+    };
     img.id = "mainImage";
-    // Center the image in the canvas
-    this.canvasState.transform[4] += (this.canvas.width - img.width) / 2;
-    this.canvasState.transform[5] += (this.canvas.height - img.height) / 2;
-    this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
-    this.draw();
+    img.src = src;
   }
 
   componentDidMount() {
