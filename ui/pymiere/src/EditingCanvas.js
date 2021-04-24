@@ -3,6 +3,9 @@ import "./EditingCanvas.css";
 
 class EditingCanvas extends Component {
 
+  image_name = "";
+  usingWorkingCopy = false;
+  
   constructor(props) {
     super(props);
     this.img = null;
@@ -41,12 +44,16 @@ class EditingCanvas extends Component {
   }
 
   updateImage = (effect, parameters) => {
+    this.usingWorkingCopy = true;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
     const body = `{
       "effect" : ${effect},
-      "specifications" : ${parameters} 
+      "specifications" : ${parameters},
+      "is_working_copy" : ${this.usingWorkingCopy},
+      "file_extension": "png",
+      "image_name" : ${this.image_name},
      }`;
 
     const init = {
@@ -62,14 +69,26 @@ class EditingCanvas extends Component {
     })
     .then((text) => {
       this.insertImage(text.url);
+      setTimeout(() => {
+        this.insertImage(text.url)
+      }, 50);
     })
     .catch((e) => {
-      // error in e.message
+      console.log(e);
     });
   }
   
   insertImage = (src) => {
     console.log(src);
+    if(this.usingWorkingCopy === false) {
+      let splitUrl = src.split('/');
+      let imgName = splitUrl[splitUrl.length - 1];
+      let imgNameSplit =  imgName.split('.');
+      let imgNamewithoutURL = imgNameSplit[0];
+      this.image_name = imgNamewithoutURL;
+      console.log(this.image_name);
+    }
+    
     const img = new Image();
     img.onload = () => {
       this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
