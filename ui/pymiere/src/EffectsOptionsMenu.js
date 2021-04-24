@@ -17,6 +17,7 @@ import TransformationEditingMenu from "./TransformationEditingMenu.js";
 import SizeEditingMenu from "./SizeEditingMenu.js";
 import StoreLocalFilesystem from "./StoreLocalFilesystem";
 import UploadNSTFilterForm from "./UploadNSTFilterForm";
+import ViewNSTOutputMenu from "./ViewNSTOutputMenu.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -93,6 +94,7 @@ export default function VerticalTabs(props) {
         <Tab label="Size Editing Menu" {...a11yProps(9)} />
         <Tab label="Save As" {...a11yProps(10)} />
         <Tab label="NST Filters" {...a11yProps(11)} /> 
+        <Tab label="View NST outputs" {...a11yProps(12)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <TextOverlayMenu />
@@ -139,6 +141,9 @@ export default function VerticalTabs(props) {
       </TabPanel>
       <TabPanel value={value} index={11}>
         <UploadNSTFilterForm/>
+      </TabPanel>
+      <TabPanel value={value} index={12}>
+        <ViewNSTOutputMenu applyfilter={props.applyFilter}/>
       </TabPanel>
     </div>
   );
