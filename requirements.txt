@@ -6,3 +6,4 @@ boto3~=1.17.47
 ipython~=7.22.0
 requests~=2.25.1
 flask~=1.1.2
+Flask-Cors~=3.0.10
