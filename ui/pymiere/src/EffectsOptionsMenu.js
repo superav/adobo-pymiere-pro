@@ -17,6 +17,7 @@ import TransformationEditingMenu from "./TransformationEditingMenu.js";
 import SizeEditingMenu from "./SizeEditingMenu.js";
 import StoreLocalFilesystem from "./StoreLocalFilesystem";
 import UploadNSTFilterForm from "./UploadNSTFilterForm";
+import UploadImageToEdit from "./UploadImageToEdit";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -81,63 +82,67 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Text Overlay" {...a11yProps(0)} />
-        <Tab label="Zoom" {...a11yProps(1)} />
-        <Tab label="Pixel Viewer" {...a11yProps(2)} />
-        <Tab label="Color Menu" {...a11yProps(3)} />
-        <Tab label="Lighting Options" {...a11yProps(4)} />
-        <Tab label="Special Effects" {...a11yProps(5)} />
-        <Tab label="Pen Tool" {...a11yProps(6)} />
-        <Tab label="Vignette" {...a11yProps(7)} />
-        <Tab label="Transformation Menu" {...a11yProps(8)} />
-        <Tab label="Size Editing Menu" {...a11yProps(9)} />
-        <Tab label="Save As" {...a11yProps(10)} />
-        <Tab label="NST Filters" {...a11yProps(11)} />
+        <Tab label="Upload Image" {...a11yProps(0)} />
+        <Tab label="Text Overlay" {...a11yProps(1)} />
+        <Tab label="Zoom" {...a11yProps(2)} />
+        <Tab label="Pixel Viewer" {...a11yProps(3)} />
+        <Tab label="Color Menu" {...a11yProps(4)} />
+        <Tab label="Lighting Options" {...a11yProps(5)} />
+        <Tab label="Special Effects" {...a11yProps(6)} />
+        <Tab label="Pen Tool" {...a11yProps(7)} />
+        <Tab label="Vignette" {...a11yProps(8)} />
+        <Tab label="Transformation Menu" {...a11yProps(9)} />
+        <Tab label="Size Editing Menu" {...a11yProps(10)} />
+        <Tab label="Save As" {...a11yProps(11)} />
+        <Tab label="NST Filters" {...a11yProps(12)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <TextOverlayMenu applyfilter={props.applyFilter} />
+        <UploadImageToEdit insertImage={props.insertImage} />
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <TextOverlayMenu applyfilter={props.applyFilter} />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
         <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       {/* TODO: pixel viewer text does not change from on to off when toggled*/}
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={3}>
         <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={4}>
         <ColorMenu applyfilter={props.applyFilter} />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={5}>
         <LightingOptionsMenu />
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={6}>
         <SpecialEffectsOptions />
       </TabPanel>
-      <TabPanel value={value} index={6}>
+      <TabPanel value={value} index={7}>
         <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
-      <TabPanel value={value} index={7}>
+      <TabPanel value={value} index={8}>
         <VignetteEffectPage
           getCanvas={props.getCanvas}
           setCanvas={props.setCanvas}
         />
       </TabPanel>
-      <TabPanel value={value} index={8}>
+      <TabPanel value={value} index={9}>
         <TransformationEditingMenu
           applyFilter={props.applyFilter}
         ></TransformationEditingMenu>
       </TabPanel>
-      <TabPanel value={value} index={9}>
+      <TabPanel value={value} index={10}>
         <SizeEditingMenu
           getCanvas={props.getCanvas}
           setCanvas={props.setCanvas}
           applyFilter={props.applyFilter}
         ></SizeEditingMenu>
       </TabPanel>
-      <TabPanel value={value} index={10}>
+      <TabPanel value={value} index={11}>
         <StoreLocalFilesystem applyFilter={props.applyFilter} />
       </TabPanel>
-      <TabPanel value={value} index={11}>
+      <TabPanel value={value} index={12}>
         <UploadNSTFilterForm />
       </TabPanel>
     </div>

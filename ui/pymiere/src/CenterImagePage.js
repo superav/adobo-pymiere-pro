@@ -21,6 +21,10 @@ class CenterImagePage extends Component {
     this.canvas.updateImage(effect, parameters);
   }
 
+  insertImage = (imageUrl) => {
+    this.canvas.insertImage(imageUrl);
+  }
+
   render(){
     return (
       //three horizontal boxes taking up the entire vertical space 
@@ -28,7 +32,7 @@ class CenterImagePage extends Component {
       //UI for view of current effect options
       //View Image
       <div id="mainImageUIandEffectsBar">
-        <VerticalTabs getCanvas={this.handleGetCanvas} setCanvas={this.handleSetCanvas} applyFilter={this.applyFilter}/>
+        <VerticalTabs getCanvas={this.handleGetCanvas} setCanvas={this.handleSetCanvas} applyFilter={this.applyFilter} insertImage={this.insertImage}/>
         <div id="imageDisplay">
           <EditingCanvas ref={ref => (this.canvas = ref)}/>
         </div>

@@ -62,7 +62,6 @@ class EditingCanvas extends Component {
     })
     .then((text) => {
       this.insertImage(text.url);
-      this.draw();
     })
     .catch((e) => {
       // error in e.message
@@ -70,6 +69,7 @@ class EditingCanvas extends Component {
   }
   
   insertImage = (src) => {
+    console.log(src);
     const img = new Image();
     img.src = src;
     img.onload = () => {this.draw()};
@@ -79,6 +79,7 @@ class EditingCanvas extends Component {
     this.canvasState.transform[4] += (this.canvas.width - img.width) / 2;
     this.canvasState.transform[5] += (this.canvas.height - img.height) / 2;
     this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
+    this.draw();
   }
 
   componentDidMount() {
