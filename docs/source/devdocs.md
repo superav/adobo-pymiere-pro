@@ -61,7 +61,7 @@ def update_game(request: dict) -> dict:
 
         Returns:
             <Return Type>: dictionary describing the game's new state.
-    """"
+    """
 ```
 
 ### React/JavaScript
