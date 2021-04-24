@@ -4,14 +4,17 @@ from logic.asset_manager import AssetManager
 from logic import jz_image_proc
 from logic import as_image_proc
 from logic import john_logic
+from flask_cors import CORS
+
 
 ass_man = AssetManager("test_user_1")
 
 
 def create_app():
     flask_app = Flask(__name__)
-
-    @flask_app.route("/logic/image_editor", methods=["GET"])
+    CORS(flask_app)
+    
+    @flask_app.route("/logic/image_editor", methods=["POST"])
     def get_apply_effect():
         # Receive input
         ui_input = request.get_json()

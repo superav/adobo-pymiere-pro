@@ -45,24 +45,24 @@ class EditingCanvas extends Component {
 
   updateImage = (effect, parameters) => {
     this.usingWorkingCopy = true;
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
 
-    const body = `{
-      "effect" : ${effect},
-      "specifications" : ${parameters},
-      "is_working_copy" : ${this.usingWorkingCopy},
+    const body = {
+      "effect" : effect,
+      "specifications" : parameters,
+      "is_working_copy" : this.usingWorkingCopy,
       "file_extension": "png",
-      "image_name" : ${this.image_name},
-     }`;
+      "image_name" : this.image_name,
+     };
 
     const init = {
       method: 'POST',
-      headers,
-      body
+      headers : {
+        "Content-Type": "application/json"
+      },
+      body : JSON.stringify(body)
     };
 
-    const url = 'localhost:5000/logic/image_editor'
+    const url = 'http://localhost:5000/logic/image_editor'
     fetch(url, init)
     .then((response) => {
       return response.json(); // or .text() or .blob() ...
