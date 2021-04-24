@@ -6,13 +6,17 @@ The software is divided into 3 major portions: the UI, an S3 bucket, and an AWS 
 
 - **UI** - What the user sees and interacts with.
 - **S3 Bucket** - Stores project assets and work in progress files.
-- **EC2 Instance** - Server with a Docker container that holds the Flask backend. Performs the video and image processing.
+- **EC2 Instance** - Server with a Docker container that holds the Flask backend. Performs the image processing.
 
-When a user wants to perform a specific action on the image/video, the relevant file will be pulled from the S3 bucket and passed into the backend (on the EC2 instance). The backend will perform the image/video processing and then return the resulting image/video back to the S3 bucket and the UI will display the updated image.
+When a user wants to perform a specific action on the image, the relevant file will be pulled from the S3 bucket and
+passed into the backend (on the EC2 instance). The backend will perform the image processing and then return
+the resulting image back to the S3 bucket and the UI will display the updated image.
 
 An example of how all 3 components interact with each other when a user wants to crop an image:
 
 ![sequence diagram](./sequence_diagram.png)
+
+--
 
 ## UI
 
@@ -21,13 +25,13 @@ An example of how all 3 components interact with each other when a user wants to
 
 ## Logic
 
-- Using Pillow for image processing and MoviePy for video processing
+- Using Pillow for image processing
   - Check [resources](#python) for links to documentation
 - Using requirements.txt to track required packages.
 
 ## EC2
 
-### S3
+## S3
 
 Files within the S3 bucket will be organized as such:
 
@@ -48,6 +52,8 @@ Files within the S3 bucket will be organized as such:
 ```
 
 Uploading and import assets to and from the S3 bucket is handled by ```AssetManager``` in ```asset_manager.py```.
+
+--
 
 
 ## Resources

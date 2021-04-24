@@ -6,14 +6,16 @@
 Welcome to Adobo Pymiere Pro's documentation!
 =============================================
 
-Developer Documentation
----------------------------------------------
-
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Documentation:
 
    userdocs
    devdocs
+
+.. toctree::
+   :maxdepth: 2
+   :caption: More Info:
+
    architecture
    modules
