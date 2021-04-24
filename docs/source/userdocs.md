@@ -12,7 +12,13 @@ Clone the git repository through:
 
 Make sure Docker Desktop is installed.
 
-Run `docker compose up` in the top-level directory. This will build and run docker images for both UI and backend.
+Build both docker images with:
+
+```docker compose build```
+
+Run both docker images with:
+
+```docker compose up```
 
 UI will be on port 3000 and backend will be on port 5000.
 
