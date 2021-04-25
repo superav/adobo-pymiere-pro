@@ -201,7 +201,10 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
             PIL.Image: Image with color mask applied changed
     """
     # Have to make rgba image rgb
-    rgb_image = __convert_to_rgb(input_img.copy())
+    if input_img.mode == 'RGBA':
+        rgb_image = __convert_to_rgb(input_img.copy())
+    else:
+        rgb_image = input_img
 
     output_img = ImageOps.solarize(rgb_image, threshold=specifications)
     return output_img.convert('RGBA')
@@ -271,7 +274,7 @@ def __convert_to_rgb(image: Image):
         image: RGBA image
 
     Returns:
-
+        PIL.Image: converted RGB image
     """
     image.load()
     background = Image.new('RGB', image.size, (255, 255, 255))
@@ -296,7 +299,7 @@ def __color_val_in_range(red: int, green: int, blue: int) -> bool:
 
 
 def __crop_in_given_dimensions(width: int, height: int, top: int, left: int,
-                             right: int, bottom: int) -> bool:
+                               right: int, bottom: int) -> bool:
     """
        Args:
            width: width to be checked
