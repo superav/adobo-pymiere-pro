@@ -3,7 +3,7 @@ import numpy as np
 import colorsys
 
 
-def hue_editor(input_img: Image, specifications: int) -> Image:
+def hue_editor(input_img: Image, specifications: int) -> Image.Image:
     """
        Args:
            input_img:  The image to be changed
@@ -37,7 +37,7 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
 
 
 def crop_editor(input_img: Image,
-                specifications: list = [int, int, int, int]) -> Image:
+                specifications: list = [int, int, int, int]) -> Image.Image:
     """
        Args:
            input_img:  The image to be changed
@@ -77,7 +77,7 @@ def crop_in_given_dimensions(width: int, height: int, top: int, left: int,
         return False
 
 
-def opacity_editor(input_img: Image, specifications: int) -> Image:
+def opacity_editor(input_img: Image, specifications: int) -> Image.Image:
     """
        Args:
                input_img:  The image to be changed
@@ -101,7 +101,7 @@ def opacity_editor(input_img: Image, specifications: int) -> Image:
 
 
 def apply_color_editor(input_img: Image,
-                       specifications: list = [255, 255, 255, 255]) -> Image:
+                       specifications: list = [255, 255, 255, 255]) -> Image.Image:
     """
        Args:
             input_img:  The image to be changed
@@ -181,7 +181,7 @@ def color_val_in_range(red: int, green: int, blue: int) -> bool:
         return True
 
 
-def apply_mirror(input_img: Image, specifications: int) -> Image:
+def apply_mirror(input_img: Image, specifications: int) -> Image.Image:
     """
         Args:
             input_img:  The image to be changed
