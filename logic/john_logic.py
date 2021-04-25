@@ -37,20 +37,3 @@ def add_text_to_image(image=Image, specifications: list = [str, str, int, list, 
     draw = ImageDraw.Draw(image)
     draw.text(offset, text, color, font=font)
     return image
-
-
-def store_image_in_filesystem(image=Image, filename=str) -> Image:
-    """
-    Args:
-        image: Image to be stored in local filesystem
-        filename: Name to give to new stored file
-
-    Return:
-        PIL.Image: Image that was saved to local filesystem. Returns ``None`` if unsuccessful.
-    """
-    valid_parameters = isinstance(image, Image.Image)
-    valid_parameters = valid_parameters and isinstance(filename, str)
-    if not valid_parameters:
-        return None
-    image.save(filename)
-    return image
