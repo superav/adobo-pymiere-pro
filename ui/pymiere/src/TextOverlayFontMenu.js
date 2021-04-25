@@ -15,12 +15,12 @@ export default function TextOverlayFontMenu (props) {
     }
     return (
         <div>
-            <p>Fonts: </p>
+            {/*<p>Fonts: </p>
             <FontPicker 
                 apiKey="AIzaSyD85O_DqqgZb3xNBSCn2pkq7HMtDqQ1ISY"
                 activeFontFamily={activeFontFamily}
                 onChange={onFontSelect}
-            />
+            />*/}
             <TextOverlayFontSizeMenu setFontSize={props.setFontSize}/>
         </div>
     )

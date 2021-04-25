@@ -17,8 +17,10 @@ class SizeEditingMenu extends Component {
       shrinkValue: val,
     });
   };
+
   shrinkImage = () => {
     console.log("shrink by: " + this.state.shrinkValue);
+    this.props.applyFilter("downscale-resolution", [this.state.shrinkValue])
   };
 
   render() {
@@ -28,6 +30,7 @@ class SizeEditingMenu extends Component {
         <CropEffect
           getCanvas={this.props.getCanvas}
           setCanvas={this.props.setCanvas}
+          applyFilter={this.props.applyFilter}
         ></CropEffect>
         <h4>Shrink:</h4>
         <Slider

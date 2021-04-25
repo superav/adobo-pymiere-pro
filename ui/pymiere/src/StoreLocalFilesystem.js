@@ -18,6 +18,7 @@ class StoreLocalFilesystem extends Component {
 
   saveImage = () => {
     console.log("image name: " + this.state.fileName);
+    this.props.applyFilter("save", [this.state.fileName])
   };
 
   render() {

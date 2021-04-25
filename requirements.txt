@@ -6,3 +6,4 @@ ipython~=7.22.0
 requests~=2.25.1
 flask~=1.1.2
 # tensorflow~=2.4.1
+Flask-Cors~=3.0.10

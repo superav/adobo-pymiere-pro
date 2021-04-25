@@ -28,6 +28,11 @@ class PencilTool extends Component {
     this.updateCanvas();
   }
 
+  componentWillUnmount() {
+    if (this.pencilTool)
+      this.TogglePencilTool();
+  }
+
   TogglePencilTool = () => {
     this.pencilTool = !this.pencilTool;
     this.setState({ buttonText: this.pencilTool ? "Hide Pencil" : "Show Pencil" });

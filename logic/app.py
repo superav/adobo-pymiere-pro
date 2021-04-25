@@ -5,6 +5,7 @@ from logic.jz_image_proc import *
 from logic.as_image_proc import *
 from logic.john_logic import *
 from logic.draw_on_image import *
+from flask_cors import CORS
 
 ass_man = AssetManager("test_user_1")
 
@@ -12,6 +13,8 @@ ass_man = AssetManager("test_user_1")
 def create_app():
     flask_app = Flask(__name__)
 
+    CORS(flask_app)
+    
     @flask_app.route("/logic/image_editor", methods=["POST"])
     def get_apply_effect():
         # Receive input

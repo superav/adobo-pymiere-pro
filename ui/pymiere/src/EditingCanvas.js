@@ -3,6 +3,10 @@ import "./EditingCanvas.css";
 
 class EditingCanvas extends Component {
 
+  image_name = "";
+  version = 0;
+  usingWorkingCopy = false;
+  
   constructor(props) {
     super(props);
     this.img = null;
@@ -40,16 +44,55 @@ class EditingCanvas extends Component {
     this.draw();
   }
 
+  updateImage = (effect, parameters) => {
+    this.usingWorkingCopy = true;
+
+    const body = {
+      "effect" : effect,
+      "specifications" : parameters,
+      "is_working_copy" : this.usingWorkingCopy,
+      "file_extension": "png",
+      "image_name" : this.image_name,
+     };
+
+    const init = {
+      method: 'POST',
+      headers : {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body : JSON.stringify(body)
+    };
+
+    const url = 'http://localhost:5000/logic/image_editor'
+    fetch(url, init)
+    .then((response) => {
+      return response.json(); // or .text() or .blob() ...
+    })
+    .then((text) => {
+      this.insertImage(text.url);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
+  
   insertImage = (src) => {
+    console.log(src);
+    let splitUrl = src.split('/');
+    let imgName = splitUrl[splitUrl.length - 1];
+    let imgNameSplit =  imgName.split('.');
+    let imgNamewithoutURL = imgNameSplit[0];
+    this.image_name = imgNamewithoutURL;
+   
     const img = new Image();
-    img.src = src;
-    img.onload = () => {this.draw()};
-    
+    img.onload = () => {
+      this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
+      this.draw()
+    };
     img.id = "mainImage";
-    // Center the image in the canvas
-    this.canvasState.transform[4] += (this.canvas.width - img.width) / 2;
-    this.canvasState.transform[5] += (this.canvas.height - img.height) / 2;
-    this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
+    img.src = src + "?version=" + this.version;
+    this.version++;
   }
 
   componentDidMount() {
@@ -63,7 +106,8 @@ class EditingCanvas extends Component {
     
     this.canvas.width = width;
     this.canvas.height = height;
-    this.insertImage("logo512.png"); // TODO remove this when there's ability to import image
+    
+    this.insertImage("https://www.google.com/logos/doodles/2021/celebrating-the-letter-n-6753651837108360.2-l.png"); // TODO remove this when there's ability to import image
   }
 
   // This is the core of this class. all updates to the canvas has to be followed up by a draw call

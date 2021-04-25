@@ -33,7 +33,7 @@ export default function LightingOptionsMenu() {
         <Grid item xs>
         <Slider
           value={brightness}
-          onChangeCommitted={handleChange}
+          onChange={handleChange}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
           max={1}

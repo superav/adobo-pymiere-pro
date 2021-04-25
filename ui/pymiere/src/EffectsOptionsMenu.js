@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import ZoomEffect from "./Effects/ZoomEffect";
 import PixelViewer from "./Effects/PixelViewer";
-import TextOverlayMenu from './TextOverlayMenu'
+import TextOverlayMenu from "./TextOverlayMenu";
 import LightingOptionsMenu from "./LightingOptionsMenu";
 import VignetteEffectPage from "./VignetteEffectPage";
 import SpecialEffectsOptions from "./SpecialEffectsOptions";
@@ -18,6 +18,7 @@ import SizeEditingMenu from "./SizeEditingMenu.js";
 import StoreLocalFilesystem from "./StoreLocalFilesystem";
 import UploadNSTFilterForm from "./UploadNSTFilterForm";
 import ViewNSTOutputMenu from "./ViewNSTOutputMenu.js";
+import UploadImageToEdit from "./UploadImageToEdit";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,67 +83,71 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Text Overlay" {...a11yProps(0)} />
-        <Tab label="Zoom" {...a11yProps(1)} />
-        <Tab label="Pixel Viewer" {...a11yProps(2)} />
-        <Tab label="Color Menu" {...a11yProps(3)} />
-        <Tab label="Lighting Options" {...a11yProps(4)} />
-        <Tab label="Special Effects" {...a11yProps(5)} />
-        <Tab label="Pen Tool" {...a11yProps(6)} />
-        <Tab label="Vignette" {...a11yProps(7)} />
-        <Tab label="Transformation Menu" {...a11yProps(8)} />
-        <Tab label="Size Editing Menu" {...a11yProps(9)} />
-        <Tab label="Save As" {...a11yProps(10)} />
-        <Tab label="NST Filters" {...a11yProps(11)} /> 
-        <Tab label="View NST outputs" {...a11yProps(12)} />
+        <Tab label="Upload Image" {...a11yProps(0)} />
+        <Tab label="Text Overlay" {...a11yProps(1)} />
+        <Tab label="Zoom" {...a11yProps(2)} />
+        <Tab label="Pixel Viewer" {...a11yProps(3)} />
+        <Tab label="Color Menu" {...a11yProps(4)} />
+        <Tab label="Lighting Options" {...a11yProps(5)} />
+        <Tab label="Special Effects" {...a11yProps(6)} />
+        <Tab label="Pen Tool" {...a11yProps(7)} />
+        <Tab label="Vignette" {...a11yProps(8)} />
+        <Tab label="Transformation Menu" {...a11yProps(9)} />
+        <Tab label="Size Editing Menu" {...a11yProps(10)} />
+        <Tab label="Save As" {...a11yProps(11)} />
+        <Tab label="NST Filters" {...a11yProps(12)} />
+        <Tab label="View NST outputs" {...a11yProps(13)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <TextOverlayMenu />
+        <UploadImageToEdit insertImage={props.insertImage} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-          <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <TextOverlayMenu applyfilter={props.applyFilter} />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       {/* TODO: pixel viewer text does not change from on to off when toggled*/}
-      <TabPanel value={value} index={2}>
-          <PixelViewer
-            getCanvas={props.getCanvas}
-            setCanvas={props.setCanvas}
-          />
-      </TabPanel>
       <TabPanel value={value} index={3}>
-        <ColorMenu />
+        <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <LightingOptionsMenu />
+        <ColorMenu applyfilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        <SpecialEffectsOptions />
+        <LightingOptionsMenu />
       </TabPanel>
       <TabPanel value={value} index={6}>
-        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <SpecialEffectsOptions />
       </TabPanel>
       <TabPanel value={value} index={7}>
+        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+      </TabPanel>
+      <TabPanel value={value} index={8}>
         <VignetteEffectPage
           getCanvas={props.getCanvas}
           setCanvas={props.setCanvas}
         />
       </TabPanel>
-      <TabPanel value={value} index={8}>
-        <TransformationEditingMenu></TransformationEditingMenu>
-      </TabPanel>
       <TabPanel value={value} index={9}>
+        <TransformationEditingMenu
+          applyFilter={props.applyFilter}
+        ></TransformationEditingMenu>
+      </TabPanel>
+      <TabPanel value={value} index={10}>
         <SizeEditingMenu
           getCanvas={props.getCanvas}
           setCanvas={props.setCanvas}
+          applyFilter={props.applyFilter}
         ></SizeEditingMenu>
       </TabPanel>
-      <TabPanel value={value} index={10}>
-        <StoreLocalFilesystem/>
-      </TabPanel>
       <TabPanel value={value} index={11}>
-        <UploadNSTFilterForm/>
+        <StoreLocalFilesystem applyFilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={12}>
+        <UploadNSTFilterForm />
+      </TabPanel>
+      <TabPanel value={value} index={13}>
         <ViewNSTOutputMenu applyfilter={props.applyFilter}/>
       </TabPanel>
     </div>

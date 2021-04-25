@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ColorMenu() {
+export default function ColorMenu(props) {
   const classes = useStyles();
   const [saturation, setSaturation] = React.useState(50);
   const [hue, setHue] = React.useState(50);
@@ -60,9 +60,7 @@ export default function ColorMenu() {
     setColorSecondary3(e.target.value);
   };
 
-  function confirmColorEffects() {
-    console.log(saturation);
-    console.log(hue);
+  function confirmGradient() {
     console.log(alpha);
     console.log(colorInit1);
     console.log(colorInit2);
@@ -70,6 +68,17 @@ export default function ColorMenu() {
     console.log(colorSecondary1);
     console.log(colorSecondary2);
     console.log(colorSecondary3);
+    props.applyfilter("color-gradient", [alpha, [colorInit1, colorInit2, colorInit3], [colorSecondary1, colorSecondary2, colorSecondary3]])
+  }
+
+  function confirmSaturation() {
+    console.log(saturation);
+    props.applyfilter("saturation", [saturation/255]);
+  }
+
+  function confirmHue() {
+    console.log(hue);
+    props.applyfilter("hue", [hue]);
   }
 
 
@@ -82,13 +91,15 @@ export default function ColorMenu() {
         <Grid item xs>
           <Slider
             value={saturation}
-            onChangeCommitted={handleChangeSaturation}
+            onChange={handleChangeSaturation}
             aria-labelledby="discrete-slider-small-steps"
             min={0}
             max={255}
             step={1}
             valueLabelDisplay="auto"
           ></Slider>
+          <Button variant="contained" color="primary" onClick={confirmSaturation}>Apply Saturation</Button>
+          <br></br>
           <br></br>
         </Grid>
       </Grid>
@@ -100,13 +111,15 @@ export default function ColorMenu() {
         <Grid item xs>
         <Slider
             value={hue}
-            onChangeCommitted={handleChangeHue}
+            onChange={handleChangeHue}
             aria-labelledby="discrete-slider-small-steps"
             min={0}
-            max={255}
+            max={360}
             step={1}
             valueLabelDisplay="auto"
           ></Slider>
+          <Button variant="contained" color="primary" onClick={confirmHue}>Apply Hue</Button>
+
         </Grid>
       </Grid>
 
@@ -139,7 +152,7 @@ export default function ColorMenu() {
       </Grid>
       <br></br>
       <br></br>
-      <Button variant="contained" color="primary" onClick={confirmColorEffects}>Apply Color Effects</Button>
+      <Button variant="contained" color="primary" onClick={confirmGradient}>Apply Gradient</Button>
       
     </div>
   );
