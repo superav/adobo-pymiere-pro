@@ -1,16 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import TextOverlayTextInputFont from './TextOverlayTextInputFont'
-import TextOverlayColorPicker from './TextOverlayColorPicker';
-import TextOverlayLocationSelector from './TextOverlayLocationSelector';
-import Button from '@material-ui/core/Button'
-import ZoomEffect from './Effects/ZoomEffect'
-import PixelViewer from './Effects/PixelViewer'
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import ZoomEffect from "./Effects/ZoomEffect";
+import PixelViewer from "./Effects/PixelViewer";
+import TextOverlayMenu from "./TextOverlayMenu";
+import LightingOptionsMenu from "./LightingOptionsMenu";
+import VignetteEffectPage from "./VignetteEffectPage";
+import SpecialEffectsOptions from "./SpecialEffectsOptions";
+import ColorMenu from "./ColorMenu";
+import PencilTool from "./Effects/PencilTool";
+import TransformationEditingMenu from "./TransformationEditingMenu.js";
+import SizeEditingMenu from "./SizeEditingMenu.js";
+import StoreLocalFilesystem from "./StoreLocalFilesystem";
+import UploadNSTFilterForm from "./UploadNSTFilterForm";
+import ViewNSTOutputMenu from "./ViewNSTOutputMenu.js";
+import UploadImageToEdit from "./UploadImageToEdit";
+import MemeMaker from "./MemeMaker"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,7 +50,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
 
@@ -49,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    display: 'flex',
+    display: "flex",
     height: 900,
   },
   tabs: {
@@ -75,44 +84,78 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Text Overlay" {...a11yProps(0)} />
-        <Tab label="Zoom" {...a11yProps(1)} />
-        <Tab label="Pixel Viewer" {...a11yProps(2)} />
-        <Tab label="Item Four" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Item Seven" {...a11yProps(6)} />
+        <Tab label="Upload Image" {...a11yProps(0)} />
+        <Tab label="Text Overlay" {...a11yProps(1)} />
+        <Tab label="Zoom" {...a11yProps(2)} />
+        <Tab label="Pixel Viewer" {...a11yProps(3)} />
+        <Tab label="Color Menu" {...a11yProps(4)} />
+        <Tab label="Lighting Options" {...a11yProps(5)} />
+        <Tab label="Special Effects" {...a11yProps(6)} />
+        <Tab label="Pen Tool" {...a11yProps(7)} />
+        <Tab label="Vignette" {...a11yProps(8)} />
+        <Tab label="Transformation Menu" {...a11yProps(9)} />
+        <Tab label="Size Editing Menu" {...a11yProps(10)} />
+        <Tab label="Save As" {...a11yProps(11)} />
+        <Tab label="NST Filters" {...a11yProps(12)} />
+        <Tab label="View NST outputs" {...a11yProps(13)} />
+        <Tab label="Meme Maker" {...a11yProps(14)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <ul>
-            <TextOverlayTextInputFont textLabel="Enter Text Below"/>
-            <TextOverlayLocationSelector />
-            <Button variant="contained" color="primary">Add Text Overlay</Button>
-
-        </ul>
+        <UploadImageToEdit insertImage={props.insertImage} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ul>
-          <ZoomEffect canvasTransform={props.canvasTransform} onTransform={props.onTransform}>Zoom</ZoomEffect>
-        </ul>
+        <TextOverlayMenu applyfilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ul>
-            <PixelViewer canvasTransform={props.canvasTransform} onTransform={props.onTransform}>Pixel Viewer</PixelViewer>
-        </ul>
+        <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
+      {/* TODO: pixel viewer text does not change from on to off when toggled*/}
       <TabPanel value={value} index={3}>
-        Item Four
+        <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Item Five
+        <ColorMenu applyfilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        Item Six
+        <LightingOptionsMenu applyfilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={6}>
-        Item Seven
+        <SpecialEffectsOptions applyfilter={props.applyFilter}/>
       </TabPanel>
+      <TabPanel value={value} index={7}>
+        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+      </TabPanel>
+      <TabPanel value={value} index={8}>
+        <VignetteEffectPage
+          getCanvas={props.getCanvas}
+          setCanvas={props.setCanvas}
+        />
+      </TabPanel>
+      <TabPanel value={value} index={9}>
+        <TransformationEditingMenu
+          applyFilter={props.applyFilter}
+        ></TransformationEditingMenu>
+      </TabPanel>
+      <TabPanel value={value} index={10}>
+        <SizeEditingMenu
+          getCanvas={props.getCanvas}
+          setCanvas={props.setCanvas}
+          applyFilter={props.applyFilter}
+        ></SizeEditingMenu>
+      </TabPanel>
+      <TabPanel value={value} index={11}>
+        <StoreLocalFilesystem applyFilter={props.applyFilter} />
+      </TabPanel>
+      <TabPanel value={value} index={12}>
+        <UploadNSTFilterForm />
+      </TabPanel>
+      <TabPanel value={value} index={13}>
+        <ViewNSTOutputMenu applyfilter={props.applyFilter}/>
+      </TabPanel>
+      <TabPanel value={value} index={14}>
+        <MemeMaker />
+      </TabPanel>
+
     </div>
   );
 }

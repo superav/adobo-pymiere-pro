@@ -1,13 +1,8 @@
 import unittest
 from logic.asset_manager import AssetManager
 from logic.john_logic import *
-
 import math
 import operator
-import requests
-import boto3
-
-from io import BytesIO
 from functools import reduce
 from PIL import Image
 
@@ -55,35 +50,6 @@ class YinjunSprintOneTests(unittest.TestCase):
         fin = Image.open('test_2_stored.png')
         rms = compare_images(im, fin)
         self.assertEqual(0, rms)
-
-    def test_change_volume_invalid_input(self):
-        cl = 5
-        self.assertEqual(None, change_volume(cl, 0.0))
-        cl = VideoFileClip("munobrars.mp4")
-        self.assertEqual(None, change_volume(cl, 1))
-
-    def test_change_volume_valid_input(self):
-        cl = VideoFileClip("munobrars.mp4")
-        self.assertNotEqual(None, change_volume(cl, 0.0))
-
-    def test_audio_normalize_effect_invalid_input(self):
-        cl = 5
-        self.assertEqual(None, audio_normalize_effect(cl))
-
-    def test_audio_normalize_effect_valid_input(self):
-        cl = VideoFileClip("munobrars.mp4")
-        self.assertNotEqual(None, audio_normalize_effect(cl))
-
-    def test_audio_fade_effect_invalid_input(self):
-        cl = 5
-        self.assertEqual(None, audio_fade_effect(cl, [5, 5]))
-        cl = VideoFileClip("munobrars.mp4")
-        self.assertEqual(None, audio_fade_effect(cl, [5.0, 5]))
-        self.assertEqual(None, audio_fade_effect(cl, [5, 5.0]))
-
-    def test_audio_fade_effect_valid_input(self):
-        cl = VideoFileClip("munobrars.mp4")
-        self.assertNotEqual(None, audio_fade_effect(cl, [5, 5]))
 
 
 if __name__ == '__main__':

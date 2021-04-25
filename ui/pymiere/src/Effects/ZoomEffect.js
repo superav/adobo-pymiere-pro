@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import { Autorenew } from '@material-ui/icons';
 
 class ZoomEffect extends Component {
   constructor(props) {
@@ -12,30 +13,30 @@ class ZoomEffect extends Component {
     };
   }
 
+  updateZoom = (newZoomLvl) => {
+    this.setState({ zoomLvl: newZoomLvl });
+    const oldTransform = this.props.getCanvas("transform");
+    oldTransform[0] = newZoomLvl;
+    oldTransform[3] = newZoomLvl;
+    this.props.setCanvas("transform", oldTransform);
+  }
+
   zoomIn = () => {
     var newZoomLvl = this.state.zoomLvl + this.zoomStep;
     if (newZoomLvl <= this.maxZoom) {
-      this.setState({ zoomLvl: newZoomLvl });
-      const oldTransform = this.props.canvasTransform;
-      oldTransform[0] = newZoomLvl;
-      oldTransform[3] = newZoomLvl;
-      this.props.onTransform(oldTransform);
+      this.updateZoom(newZoomLvl);
     }
   }
 
   zoomOut = () => {
     var newZoomLvl = this.state.zoomLvl - this.zoomStep;
     if (newZoomLvl >= this.minZoom) {
-      this.setState({ zoomLvl: newZoomLvl });
-      const oldTransform = this.props.canvasTransform;
-      oldTransform[0] = newZoomLvl;
-      oldTransform[3] = newZoomLvl;
-      this.props.onTransform(oldTransform);
+      this.updateZoom(newZoomLvl);
     }
   }
 
   componentDidMount() {
-    this.setState({ zoomLvl: this.props.canvasTransform[0] })
+    this.setState({ zoomLvl: this.props.getCanvas("transform")[0] })
   }
 
   render() {
@@ -43,6 +44,7 @@ class ZoomEffect extends Component {
       <div>
          <h4>Zoom Percentage {this.state.zoomLvl * 100} %</h4>
             <Button variant="contained" color="primary" onClick={this.zoomIn}>In</Button>
+            <div style={{"width": "10px", "height": "auto", "display": "inline-block"}}></div>
             <Button variant="contained" color="primary" onClick={this.zoomOut}>Out</Button>
       </div>
     );

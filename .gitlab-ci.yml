@@ -1,8 +1,9 @@
-image: "python:3.7"
+image: "python:3.8"
 
 before_script:
   - apt-get update
   - echo "y" | apt-get install ffmpeg
+  - pip install -U pip
   - pip install -r requirements.txt
   - pip install coverage pytest pytest-cov
 
@@ -41,6 +42,20 @@ pytest-john:
     - echo "This job runs the tests in the logic folder for John"
     - cd tests
     - python -m pytest john_logic_test.py -v --cov
+
+pytest-draw-on-:
+  stage: test
+  script:
+    - echo "This job runs the tests in the logic folder for John"
+    - cd tests
+    - python -m pytest test_draw_on_image.py -v --cov
+
+pytest-feature:
+  stage: test
+  script:
+    - echo "This job runs the flask server, testing the post and get endpoints"
+    - chmod +x ./feature_tests.sh
+    - ./feature_tests.sh
 
 # deploy-prod:
 #   stage: deploy
