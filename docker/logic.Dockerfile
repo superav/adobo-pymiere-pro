@@ -6,6 +6,7 @@ WORKDIR /docker_root
 RUN mkdir logic
 
 ADD /logic /docker_root/logic
+ADD /tests/arial.ttf /docker_root/logic/arial.ttf
 ADD requirements.txt /docker_root
 
 RUN pip install -r requirements.txt

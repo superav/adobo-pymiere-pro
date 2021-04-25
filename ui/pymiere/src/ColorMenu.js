@@ -93,7 +93,7 @@ export default function ColorMenu(props) {
             value={saturation}
             onChange={handleChangeSaturation}
             aria-labelledby="discrete-slider-small-steps"
-            min={0}
+            min={1}
             max={255}
             step={1}
             valueLabelDisplay="auto"
@@ -113,7 +113,7 @@ export default function ColorMenu(props) {
             value={hue}
             onChange={handleChangeHue}
             aria-labelledby="discrete-slider-small-steps"
-            min={0}
+            min={1}
             max={360}
             step={1}
             valueLabelDisplay="auto"
