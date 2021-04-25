@@ -88,7 +88,7 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image:
     return base_img
 
 
-def scale_image(input_img: Image, specifications: float) -> Image:
+def scale_image(input_img: Image, specifications: list) -> Image:
     """
     Args:
         input_img:  Image to be changed
@@ -98,7 +98,7 @@ def scale_image(input_img: Image, specifications: float) -> Image:
         PIL.Image: Scaled down image
     """
 
-    scale = specifications
+    scale = specifications[0]
 
     if not isinstance(input_img, Image.Image):
         return None

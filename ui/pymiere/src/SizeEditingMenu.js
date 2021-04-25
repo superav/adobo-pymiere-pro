@@ -20,7 +20,7 @@ class SizeEditingMenu extends Component {
 
   shrinkImage = () => {
     console.log("shrink by: " + this.state.shrinkValue);
-    this.props.applyFilter("downscale-resolution", [this.state.shrinkValue])
+    this.props.applyFilter("downscale-resolution", [parseFloat(this.state.shrinkValue)])
   };
 
   render() {
@@ -35,7 +35,7 @@ class SizeEditingMenu extends Component {
         <h4>Shrink:</h4>
         <Slider
           value={this.state.shrinkValue}
-          onChangeCommitted={this.handleShrinkValueChange}
+          onChange={this.handleShrinkValueChange}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
           max={1}
