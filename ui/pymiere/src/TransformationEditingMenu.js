@@ -166,7 +166,7 @@ class TransformationEditingMenu extends Component {
           id="outlined-basic"
           value={this.state.rValue}
           onChange={this.handleChange("rValue")}
-          label="R Value"
+          label="R Value (0 - 255)"
           variant="outlined"
         />
         <br />
@@ -174,7 +174,7 @@ class TransformationEditingMenu extends Component {
           id="outlined-basic"
           value={this.state.gValue}
           onChange={this.handleChange("gValue")}
-          label="G Value"
+          label="G Value (0 - 255)"
           variant="outlined"
         />
         <br />
@@ -182,7 +182,7 @@ class TransformationEditingMenu extends Component {
           id="outlined-basic"
           value={this.state.bValue}
           onChange={this.handleChange("bValue")}
-          label="B Value"
+          label="B Value (0 - 255)"
           variant="outlined"
         />
         <br />
@@ -190,7 +190,7 @@ class TransformationEditingMenu extends Component {
           id="outlined-basic"
           value={this.state.aValue}
           onChange={this.handleChange("aValue")}
-          label="A Value"
+          label="A Value (0 - 255)"
           variant="outlined"
         />
         <br />
