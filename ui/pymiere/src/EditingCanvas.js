@@ -268,7 +268,7 @@ class EditingCanvas extends Component {
           let highlightIdx = -1;
           this.cropHandlePositions(crop.boundingBox).forEach((p, i) => {
             const dist2 = Math.pow(p[0] - this.mousePos[0], 2) + Math.pow(p[1] - this.mousePos[1], 2);
-            if (dist2 <= 16) {
+            if (dist2 <= 100) {
               highlightIdx = i;
             }
           });

@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function LightingOptionsMenu() {
+export default function LightingOptionsMenu(props) {
   const classes = useStyles();
   const [brightness, setBrightness] = React.useState(1);
 
@@ -21,7 +21,8 @@ export default function LightingOptionsMenu() {
   };
 
   function confirmLightingEffects() {
-    console.log(brightness)
+    console.log(brightness);
+    props.applyfilter("brightness", [parseFloat(brightness)])
   }
 
   return (

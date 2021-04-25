@@ -29,11 +29,11 @@ class TransformationEditingMenu extends Component {
     console.log("r value: " + this.state.rValue);
     console.log("g value: " + this.state.gValue);
     console.log("b value: " + this.state.bValue);
-    this.applyFilter("recoloration", [
-      this.state.rValue,
-      this.state.gValue,
-      this.state.bValue,
-      this.state.aValue,
+    this.props.applyFilter("recoloration", [
+      parseInt(this.state.rValue),
+      parseInt(this.state.gValue),
+      parseInt(this.state.bValue),
+      parseInt(this.state.aValue),
     ]);
   };
 
@@ -58,17 +58,25 @@ class TransformationEditingMenu extends Component {
     this.setState({
       blurValue: val,
     });
-    console.log("Gaussian blur: " + this.state.blurValue);
-    this.props.applyFilter("blur", [this.state.blurValue]);
+
   };
 
   changeOpacity = (e, val) => {
     this.setState({
       opacityValue: val,
     });
-    console.log("Opacity: " + this.state.opacityValue);
-    this.props.applyFilter("opacity", [this.state.opacityValue]);
+    
   };
+
+  confirmOpacityChange = () => {
+    console.log("Opacity: " + this.state.opacityValue);
+    this.props.applyFilter("opacity", [parseInt(this.state.opacityValue)]);
+  }
+
+  confirmBlurChange = () => {
+    console.log("Opacity: " + this.state.blurValue);
+    this.props.applyFilter("blur", [parseInt(this.state.blurValue)]);
+  }
 
   render() {
     return (
@@ -79,10 +87,12 @@ class TransformationEditingMenu extends Component {
           onChange={this.changeOpacity}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
-          max={1}
-          step={0.1}
+          max={100}
+          step={1}
           valueLabelDisplay="auto"
         ></Slider>
+        <Button variant="contained" color="primary" onClick={this.confirmOpacityChange}>Change Opactiy</Button>
+
         <h4>Gaussian Blur:</h4>
         <Slider
           value={this.state.blurValue}
@@ -93,6 +103,8 @@ class TransformationEditingMenu extends Component {
           step={0.1}
           valueLabelDisplay="auto"
         ></Slider>
+        <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>
+
         <h4>Change Background:</h4>
         <TextField
           id="outlined-basic"

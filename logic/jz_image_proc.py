@@ -1,7 +1,7 @@
 from PIL import Image, ImageFilter, ImageEnhance
 
 
-def gaussian_blur(input_img: Image, specifications: int) -> Image:
+def gaussian_blur(input_img: Image, specifications: list) -> Image:
     """
     Args:
         input_img:  An image to be blurred
@@ -12,7 +12,7 @@ def gaussian_blur(input_img: Image, specifications: int) -> Image:
         PIL.Image: Blurred image. Will throw a TypeError for invalid input
     """
 
-    radius = specifications
+    radius = specifications[0]
 
     if not (isinstance(input_img, Image.Image) and type(radius) == int):
         return None
@@ -36,8 +36,7 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
     Returns:
         PIL.Image: Image with saturation changed
     """
-
-    factor = specifications
+    factor = specifications[0]
 
     if not (isinstance(input_img, Image.Image) and type(factor) == float):
         return None
@@ -45,9 +44,10 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
     if factor < 0.0:
         return None
 
+    print("paramters validated")
     converter = ImageEnhance.Color(input_img)
     output_img = converter.enhance(factor)
-
+    print("output image found")
     return output_img
 
 

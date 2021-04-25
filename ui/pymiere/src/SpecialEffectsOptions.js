@@ -6,7 +6,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import Radio from '@material-ui/core/Radio'
 import Button from '@material-ui/core/Button'
 
-export function SpecialEffectsOptions () {
+export function SpecialEffectsOptions (props) {
 
   const [effectChoice, setEffectChoice] = React.useState("None");
 
@@ -16,6 +16,8 @@ export function SpecialEffectsOptions () {
 
   function confirmSpecialEffects() {
     console.log(effectChoice);
+    props.applyfilter(effectChoice)
+
   }
 
   return (

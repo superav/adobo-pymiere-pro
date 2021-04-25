@@ -115,10 +115,10 @@ export default function VerticalTabs(props) {
         <ColorMenu applyfilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        <LightingOptionsMenu />
+        <LightingOptionsMenu applyfilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={6}>
-        <SpecialEffectsOptions />
+        <SpecialEffectsOptions applyfilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={7}>
         <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
