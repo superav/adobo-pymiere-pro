@@ -66,6 +66,7 @@ def create_app():
             altered_image = apply_red_eye_filter(
                 input_img, ui_input["specifications"])
         elif var == "solarize":
+            print(ui_input)
             altered_image = apply_solarize(
                 input_img, ui_input["specifications"])
         elif var == "mosaic":
