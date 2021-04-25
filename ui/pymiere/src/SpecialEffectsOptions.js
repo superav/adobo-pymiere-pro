@@ -16,7 +16,15 @@ export function SpecialEffectsOptions (props) {
 
   function confirmSpecialEffects() {
     console.log(effectChoice);
-    props.applyfilter(effectChoice)
+    if (effectChoice === "mosaic") {
+      props.applyfilter("mosaic")
+    }
+    else if (effectChoice === "solarize") {
+      props.applyfilter("solarize", [1])
+    }
+    else if (effectChoice == "autocontrast") {
+      props.applyfilter("autocontrast", [0.5])
+    }
 
   }
 
@@ -26,8 +34,8 @@ export function SpecialEffectsOptions (props) {
         <h3>Special Effects</h3>
         <RadioGroup aria-label="Special Effects" name="Special Effects" value={effectChoice} onChange={handleChangeEffectChoice}>
           <FormControlLabel value="mosaic" control={<Radio />} label="Mosaic Filter" />
-          <FormControlLabel value="solarize" control={<Radio />} label="Solarize" />
-          <FormControlLabel value="autocontrast" control={<Radio />} label="Autocontrast" />
+          <FormControlLabel value="solarize" disabled="true" control={<Radio />} label="Solarize" />
+          <FormControlLabel value="autocontrast" disabled="true" control={<Radio /> } label="Autocontrast" />
         </RadioGroup>
       </FormControl>
       <br></br>

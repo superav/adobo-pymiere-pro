@@ -219,7 +219,7 @@ def apply_frame(input_img: Image,
     return output_img
 
 
-def apply_solarize(input_img: Image, specifications: int) -> Image:
+def apply_solarize(input_img: Image, specifications: list) -> Image:
     """
         Args:
             input_img:  The image to be changed
@@ -230,9 +230,7 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
     """
     input_img.load()
     # Have to make rgba image rgb
-    output_img = Image.new("RGB", input_img.size, (255, 255, 255))
-    output_img.paste(input_img, mask=input_img.split()[3])
-    output_img = ImageOps.solarize(output_img, threshold=specifications)
+    output_img = ImageOps.solarize(input_img, threshold=specifications[0])
     return output_img
 
 

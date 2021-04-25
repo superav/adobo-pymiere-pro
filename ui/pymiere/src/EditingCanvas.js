@@ -107,7 +107,7 @@ class EditingCanvas extends Component {
     this.canvas.width = width;
     this.canvas.height = height;
     
-    this.insertImage("https://www.google.com/logos/doodles/2021/celebrating-the-letter-n-6753651837108360.2-l.png"); // TODO remove this when there's ability to import image
+    this.insertImage("https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg");
   }
 
   // This is the core of this class. all updates to the canvas has to be followed up by a draw call

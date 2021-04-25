@@ -119,6 +119,7 @@ class TransformationEditingMenu extends Component {
           variant="contained"
           color="primary"
           onClick={this.changeBackground}
+          disabled="true"
         >
           Select Background
         </Button>
@@ -156,7 +157,7 @@ class TransformationEditingMenu extends Component {
         />
         <br />
         <br />
-        <Button variant="contained" color="primary" onClick={this.addWatermark}>
+        <Button variant="contained" color="primary" disabled="true" onClick={this.addWatermark}>
           Add Watermark
         </Button>
         <br />
