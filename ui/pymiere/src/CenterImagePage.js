@@ -29,6 +29,10 @@ class CenterImagePage extends Component {
     return this.canvas.getImageResolution();
   }
 
+  downloadImage = (saveName) => {
+    this.canvas.downloadImage(saveName);
+  }
+
   render(){
     return (
       //three horizontal boxes taking up the entire vertical space 
@@ -36,7 +40,7 @@ class CenterImagePage extends Component {
       //UI for view of current effect options
       //View Image
       <div id="mainImageUIandEffectsBar">
-        <VerticalTabs getCanvas={this.handleGetCanvas} setCanvas={this.handleSetCanvas} applyFilter={this.applyFilter} insertImage={this.insertImage} imageResolution={this.imageResolution}/>
+        <VerticalTabs getCanvas={this.handleGetCanvas} setCanvas={this.handleSetCanvas} applyFilter={this.applyFilter} insertImage={this.insertImage} imageResolution={this.imageResolution} downloadImage={this.downloadImage}/>
         <div id="imageDisplay">
           <EditingCanvas ref={ref => (this.canvas = ref)}/>
         </div>
