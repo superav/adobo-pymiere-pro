@@ -25,7 +25,7 @@ def gaussian_blur(input_img: Image, specifications: list) -> Image:
     return output_img
 
 
-def change_saturation(input_img: Image, specifications: float) -> Image:
+def change_saturation(input_img: Image, specifications: list) -> Image:
     """
     Args:
         input_img:  The image to be changed
@@ -41,7 +41,7 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
     if not (isinstance(input_img, Image.Image) and type(factor) == float):
         return None
 
-    if factor < 0.0:
+    if factor < 0:
         return None
 
     print("paramters validated")
