@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function LightingOptionsMenu() {
+export default function LightingOptionsMenu(props) {
   const classes = useStyles();
   const [brightness, setBrightness] = React.useState(1);
 
@@ -21,7 +21,8 @@ export default function LightingOptionsMenu() {
   };
 
   function confirmLightingEffects() {
-    console.log(brightness)
+    console.log(brightness);
+    props.applyfilter("brightness", [parseFloat(brightness)])
   }
 
   return (
@@ -39,12 +40,13 @@ export default function LightingOptionsMenu() {
           max={1}
           step={0.1}
           valueLabelDisplay="auto"
+          disabled="true"
         ></Slider>
 
         </Grid>
       </Grid>
       <br></br>
-      <Button variant="contained" color="primary" onClick={confirmLightingEffects}>Add Lighting Effects</Button>
+      <Button variant="contained" color="primary" disabled="true" onClick={confirmLightingEffects}>Add Lighting Effects</Button>
     </div>
   );
 }

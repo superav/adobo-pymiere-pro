@@ -8,6 +8,7 @@ import PhotoSizeSelectSmallRoundedIcon from '@material-ui/icons/PhotoSizeSelectS
 import BlurOnIcon from '@material-ui/icons/BlurOn';
 import GradientIcon from '@material-ui/icons/Gradient';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles({
     root: {
@@ -170,6 +171,8 @@ export default function VignetteEffectPage() {
                     />
                 </Grid>
             </Grid>
+            <Button variant="contained" color="primary" disabled="true">Add Vignette Effects</Button>
+
         </div>
     );
 }

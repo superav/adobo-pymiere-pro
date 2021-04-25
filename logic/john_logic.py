@@ -33,7 +33,7 @@ def add_text_to_image(image=Image, specifications: list = [str, str, int, list, 
         return None
     if len(offset) != 2 or len(color) != 3:
         return None
-    font = ImageFont.truetype("arial.ttf", size)
+    font = ImageFont.truetype("DejaVuSans.ttf", size)
     draw = ImageDraw.Draw(image)
     draw.text(offset, text, color, font=font)
     return image

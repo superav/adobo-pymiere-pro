@@ -68,17 +68,17 @@ export default function ColorMenu(props) {
     console.log(colorSecondary1);
     console.log(colorSecondary2);
     console.log(colorSecondary3);
-    props.applyfilter("color-gradient", [alpha, [colorInit1, colorInit2, colorInit3], [colorSecondary1, colorSecondary2, colorSecondary3]])
+    props.applyfilter("color-gradient", [parseInt(alpha), [parseInt(colorInit1), parseInt(colorInit2), parseInt(colorInit3)], [parseInt(colorSecondary1), parseInt(colorSecondary2), parseInt(colorSecondary3)]])
   }
 
   function confirmSaturation() {
     console.log(saturation);
-    props.applyfilter("saturation", [saturation/255]);
+    props.applyfilter("saturation", [parseFloat(saturation/255)]);
   }
 
   function confirmHue() {
     console.log(hue);
-    props.applyfilter("hue", [hue]);
+    props.applyfilter("hue", [parseInt(hue)]);
   }
 
 
@@ -126,29 +126,29 @@ export default function ColorMenu(props) {
       <h4>Gradient Selection</h4>
       <br></br>
       <Grid container spacing={1}>
-            <TextField id="outlined-basic" label="Alpha Value" variant="outlined" onChange={handleChangeAlpha}/>
+            <TextField id="outlined-basic" label="Alpha Value (0 - 255)" variant="outlined" onChange={handleChangeAlpha}/>
             <br />
             <br />
             <br />
             <br />
-            <TextField id="outlined-basic" label="Color initial 1" variant="outlined" onChange={handleChangeColorInit1}/>
+            <TextField id="outlined-basic" label="Color initial 1 (0 - 255)" variant="outlined" onChange={handleChangeColorInit1}/>
             <br />
             <br />
-            <TextField id="outlined-basic" label="Color initial 2" variant="outlined" onChange={handleChangeColorInit2}/>
+            <TextField id="outlined-basic" label="Color initial 2 (0 - 255)" variant="outlined" onChange={handleChangeColorInit2}/>
             <br />
             <br />
-            <TextField id="outlined-basic" label="Color initial 3" variant="outlined" onChange={handleChangeColorInit3}/>
+            <TextField id="outlined-basic" label="Color initial 3 (0 - 255)" variant="outlined" onChange={handleChangeColorInit3}/>
             <br />
             <br />
             <br />
             <br />
-            <TextField id="outlined-basic" label="Color secondary 1" variant="outlined" onChange={handleChangeColorSecondary1}/>
+            <TextField id="outlined-basic" label="Color secondary 1 (0 - 255)" variant="outlined" onChange={handleChangeColorSecondary1}/>
             <br />
             <br />
-            <TextField id="outlined-basic" label="Color secondary 2" variant="outlined" onChange={handleChangeColorSecondary2}/>
+            <TextField id="outlined-basic" label="Color secondary 2 (0 - 255)" variant="outlined" onChange={handleChangeColorSecondary2}/>
             <br />
             <br />
-            <TextField id="outlined-basic" label="Color secondary 3" variant="outlined" onChange={handleChangeColorSecondary3}/>
+            <TextField id="outlined-basic" label="Color secondary 3 (0 - 255)" variant="outlined" onChange={handleChangeColorSecondary3}/>
       </Grid>
       <br></br>
       <br></br>

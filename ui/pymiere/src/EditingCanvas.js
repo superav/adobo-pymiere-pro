@@ -107,7 +107,7 @@ class EditingCanvas extends Component {
     this.canvas.width = width;
     this.canvas.height = height;
     
-    this.insertImage("https://www.google.com/logos/doodles/2021/celebrating-the-letter-n-6753651837108360.2-l.png"); // TODO remove this when there's ability to import image
+    this.insertImage("https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg");
   }
 
   // This is the core of this class. all updates to the canvas has to be followed up by a draw call
@@ -268,7 +268,7 @@ class EditingCanvas extends Component {
           let highlightIdx = -1;
           this.cropHandlePositions(crop.boundingBox).forEach((p, i) => {
             const dist2 = Math.pow(p[0] - this.mousePos[0], 2) + Math.pow(p[1] - this.mousePos[1], 2);
-            if (dist2 <= 16) {
+            if (dist2 <= 100) {
               highlightIdx = i;
             }
           });

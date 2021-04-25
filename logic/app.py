@@ -19,10 +19,8 @@ def create_app():
     def get_apply_effect():
         # Receive input
         ui_input = request.get_json()
-
         # Call pull helper method
         input_img = pull_pillow_image(ui_input)
-
         # Call alteration method specified by request
         var = ui_input["effect"]
         if var == "saturation":

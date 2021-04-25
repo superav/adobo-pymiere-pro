@@ -3,7 +3,7 @@ import numpy as np
 import colorsys
 
 
-def hue_editor(input_img: Image, specifications: int) -> Image:
+def hue_editor(input_img: Image, specifications: list) -> Image:
     """
        Args:
            input_img:  The image to be changed
@@ -15,7 +15,7 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
     # https://stackoverflow.com/questions/7274221/
     #                           changing-image-hue-with-python-pil
 
-    if specifications > 360 or specifications < 0:
+    if specifications[0] > 360 or specifications[0] < 0:
         return None
 
     img = input_img.convert('RGBA')
@@ -26,7 +26,7 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
 
     red, green, blue, alpha = np.rollaxis(arr, axis=-1)
     hue, saturation, value = rgb_to_hsv(red, green, blue)
-    hue = (hue + specifications / 360.) % 1
+    hue = (hue + specifications[0] / 360.) % 1
     red, green, blue = hsv_to_rgb(hue, saturation, value)
     arr = np.dstack((red, green, blue, alpha))
 
@@ -75,7 +75,7 @@ def crop_in_given_dimensions(width: int, height: int, top: int, left: int,
         return False
 
 
-def opacity_editor(input_img: Image, specifications: int) -> Image:
+def opacity_editor(input_img: Image, specifications: list) -> Image:
     """
        Args:
                input_img:  The image to be changed
@@ -86,10 +86,10 @@ def opacity_editor(input_img: Image, specifications: int) -> Image:
            PIL.Image: Image with opacity changed
     """
 
-    if specifications > 100 or specifications < 0:
+    if specifications[0] > 100 or specifications[0] < 0:
         return None
 
-    input_img.putalpha(int(specifications * 2.55))
+    input_img.putalpha(int(specifications[0] * 2.55))
     return input_img
 
 
@@ -219,7 +219,7 @@ def apply_frame(input_img: Image,
     return output_img
 
 
-def apply_solarize(input_img: Image, specifications: int) -> Image:
+def apply_solarize(input_img: Image, specifications: list) -> Image:
     """
         Args:
             input_img:  The image to be changed
@@ -230,9 +230,7 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
     """
     input_img.load()
     # Have to make rgba image rgb
-    output_img = Image.new("RGB", input_img.size, (255, 255, 255))
-    output_img.paste(input_img, mask=input_img.split()[3])
-    output_img = ImageOps.solarize(output_img, threshold=specifications)
+    output_img = ImageOps.solarize(input_img, threshold=specifications[0])
     return output_img
 
 
