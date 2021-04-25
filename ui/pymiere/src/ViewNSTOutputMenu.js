@@ -32,7 +32,7 @@ export default class ViewNSTOutputMenu extends Component {
             valueLabelDisplay="auto"
           ></Slider>
         <p>{this.state.generation}</p>
-        <Button variant="contained" color="primary" onClick={this.confirmNSTOutput}>Select NST View</Button>
+        <Button variant="contained" color="primary" disabled="true" onClick={this.confirmNSTOutput}>Select NST View</Button>
 
     </div>);
   }

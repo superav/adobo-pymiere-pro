@@ -34,7 +34,7 @@ class StoreLocalFilesystem extends Component {
         />
         <br></br>
         <br></br>
-        <Button variant="contained" color="primary" onClick={this.saveImage}>
+        <Button variant="contained" color="primary" disabled="true" onClick={this.saveImage}>
           Save
         </Button>
       </div>

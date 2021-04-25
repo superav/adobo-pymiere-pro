@@ -19,6 +19,7 @@ import StoreLocalFilesystem from "./StoreLocalFilesystem";
 import UploadNSTFilterForm from "./UploadNSTFilterForm";
 import ViewNSTOutputMenu from "./ViewNSTOutputMenu.js";
 import UploadImageToEdit from "./UploadImageToEdit";
+import MemeMaker from "./MemeMaker"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -97,6 +98,7 @@ export default function VerticalTabs(props) {
         <Tab label="Save As" {...a11yProps(11)} />
         <Tab label="NST Filters" {...a11yProps(12)} />
         <Tab label="View NST outputs" {...a11yProps(13)} />
+        <Tab label="Meme Maker" {...a11yProps(14)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <UploadImageToEdit insertImage={props.insertImage} />
@@ -150,6 +152,10 @@ export default function VerticalTabs(props) {
       <TabPanel value={value} index={13}>
         <ViewNSTOutputMenu applyfilter={props.applyFilter}/>
       </TabPanel>
+      <TabPanel value={value} index={14}>
+        <MemeMaker />
+      </TabPanel>
+
     </div>
   );
 }
