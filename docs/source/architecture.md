@@ -16,7 +16,7 @@ An example of how all 3 components interact with each other when a user wants to
 
 ![sequence diagram](./sequence_diagram.png)
 
---
+---
 
 ## UI
 
@@ -53,7 +53,7 @@ Files within the S3 bucket will be organized as such:
 
 Uploading and import assets to and from the S3 bucket is handled by ```AssetManager``` in ```asset_manager.py```.
 
---
+---
 
 
 ## Resources

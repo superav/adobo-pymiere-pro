@@ -14,7 +14,7 @@ Check out [Architecture](./architecture.md) and the [style guide](#style-guide) 
 
 See [Useful Links](#useful-links) for quick links to more documents about sprint and product backlogs.
 
---
+---
 
 ## How to Test Features
 
@@ -39,7 +39,7 @@ python -m pytest john_logic_test.py -v --cov
 
 To run the UI, you can run `npm start` in `ui/pymiere`.
 
---
+---
 
 ## Style Guide
 
@@ -73,7 +73,7 @@ def update_game(request: dict) -> dict:
 
 - Indentation - **2 spaces**, no tabs
 
---
+---
 
 ## Useful Links
 
@@ -82,7 +82,7 @@ def update_game(request: dict) -> dict:
 - [Product Backlog](https://docs.google.com/spreadsheets/d/1unLgkR4rvNnqmJrZjnZdQsl4nE7awgJnOwqOPmWbu08/edit#gid=0)
 - [Figma UI Mockup](https://www.figma.com/file/bmx8HOgE1KYulGbAN5Yn50/Adobe-Pymiere?node-id=0%3A1)
 
---
+---
 
 ## Teams
 
