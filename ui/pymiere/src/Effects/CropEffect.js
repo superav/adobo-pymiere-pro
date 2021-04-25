@@ -33,7 +33,7 @@ class CropEffect extends Component {
     const crop = this.props.getCanvas("functions").crop.boundingBox;
     let right = crop[0] + crop[2];
     let bottom = crop[1] + crop[3];
-    this.props.applyFilter("crop", [crop[2], crop[3], crop[0], crop[1], right, bottom]);
+    this.props.applyFilter("crop", [crop[2], crop[3], crop[0], crop[1]]);
   }
 
   Crop = () => {
