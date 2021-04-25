@@ -7,7 +7,7 @@ def hue_editor(input_img: Image, specifications: int) -> Image.Image:
     """
        Args:
            input_img:  The image to be changed
-           specifications:     The hue factor that will be set -
+           specifications:     The hue factor that will be set
 
        Returns:
            PIL.Image: Image with hue changed
@@ -108,9 +108,9 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
            input_img:  The image to be changed
            specifications: list containing the next 3 values ->
 
-                           * alpha: the alpha value of the mask to be applied
-                           * color_initial: A list of three ints, being the rgb for the first half of the color mask
-                           * color_secondary: A list of three ints, being the rgb for the second half of the color mask
+                * alpha: the alpha value of the mask to be applied
+                * color_initial: A list of three ints, being the rgb for the first half of the color mask
+                * color_secondary: A list of three ints, being the rgb for the second half of the color mask
 
        Returns:
            PIL.Image: Image with color mask applied changed
@@ -150,10 +150,10 @@ def apply_mirror(input_img: Image, specifications: int) -> Image.Image:
     """
         Args:
             input_img:  The image to be changed
-            specifications: int determining if its a horizontal or vertical
-                            mirror:
-                            * 0 -> flip across the y axis
-                            * 1 -> flip across the x axis
+            specifications: int determining if its a horizontal or vertical mirror:
+
+                * 0 -> flip across the y axis
+                * 1 -> flip across the x axis
 
         Returns:
             PIL.Image: Image with color mask applied changed
@@ -195,7 +195,7 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
     """
         Args:
             input_img:  The image to be changed
-            specifications: int to determine the threshold of the solarization effect
+            specifications: int to determine the threshold of the solarization effect. Should be in range [0, 255]
 
         Returns:
             PIL.Image: Image with color mask applied changed
@@ -236,6 +236,7 @@ def apply_red_eye_filter(input_img: Image,
     Args:
         input_img:  Input image
         specifications: List of integers denoting area to perform red eye removal.
+
             * Integers should be in this format: [left x value, top y value, right x value, bottom y value]
 
     Returns:
