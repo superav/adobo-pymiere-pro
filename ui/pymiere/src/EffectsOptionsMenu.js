@@ -146,7 +146,7 @@ export default function VerticalTabs(props) {
         ></SizeEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={11}>
-        <StoreLocalFilesystem applyFilter={props.applyFilter} />
+        <StoreLocalFilesystem downloadImage={props.downloadImage} />
       </TabPanel>
       <TabPanel value={value} index={12}>
         <UploadNSTFilterForm />

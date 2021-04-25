@@ -18,7 +18,7 @@ class StoreLocalFilesystem extends Component {
 
   saveImage = () => {
     console.log("image name: " + this.state.fileName);
-    this.props.applyFilter("save", [this.state.fileName])
+    this.props.downloadImage(this.state.fileName);
   };
 
   render() {
@@ -34,7 +34,11 @@ class StoreLocalFilesystem extends Component {
         />
         <br></br>
         <br></br>
-        <Button variant="contained" color="primary" disabled="true" onClick={this.saveImage}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.saveImage}
+        >
           Save
         </Button>
       </div>
