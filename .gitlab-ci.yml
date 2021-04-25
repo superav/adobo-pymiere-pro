@@ -43,6 +43,20 @@ pytest-john:
     - cd tests
     - python -m pytest john_logic_test.py -v --cov
 
+pytest-draw-on-:
+  stage: test
+  script:
+    - echo "This job runs the tests in the logic folder for John"
+    - cd tests
+    - python -m pytest test_draw_on_image.py -v --cov
+
+pytest-feature:
+  stage: test
+  script:
+    - echo "This job runs the flask server, testing the post and get endpoints"
+    - chmod +x ./feature_tests.sh
+    - ./feature_tests.sh
+
 # deploy-prod:
 #   stage: deploy
 #   script:
