@@ -8,7 +8,7 @@ Clone the git repository through:
 
 ---
 
-## Quickstart
+### Quickstart
 
 Make sure Docker Desktop is installed.
 
@@ -24,7 +24,7 @@ UI will be on port 3000 and backend will be on port 5000.
 
 ---
 
-## Building the Backend
+### Building the Backend
 
 To build the logic docker image:
 
@@ -38,7 +38,7 @@ The container will accessible on port 3000
 
 ---
 
-## Building the Frontend
+### Building the Frontend
 
 Building the UI docker image:
 
@@ -52,7 +52,7 @@ The container will be accessible on port 3000
 
 ---
 
-## Running the Backend Test Suite
+### Running the Backend Test Suite
 
 In the top-level directory, run: `python -m pip install -r requirements.txt`
 
@@ -65,3 +65,10 @@ python -m pytest jz_image_proc_tests.py -v --cov
 
 python -m pytest john_logic_test.py -v --cov
 ``` 
+
+## How to Use
+
+When you first open the web app, you must upload you own image to S3 first through the "Upload Image" tab.
+
+You can edit your image by clicking through different editing tabs on the left-hand side.
+After you edit the image, you can view the results on the right.
