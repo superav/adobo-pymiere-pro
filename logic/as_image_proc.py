@@ -28,7 +28,7 @@ def hue_editor(input_img: Image, specifications: int) -> Image.Image:
 
     red, green, blue, alpha = np.rollaxis(arr, axis=-1)
     hue, saturation, value = rgb_to_hsv(red, green, blue)
-    hue = (hue + specifications[0] / 360.) % 1
+    hue = (hue + factor / 360.) % 1
     red, green, blue = hsv_to_rgb(hue, saturation, value)
     arr = np.dstack((red, green, blue, alpha))
 
@@ -52,29 +52,10 @@ def crop_editor(input_img: Image,
     left, top, right, bottom = specifications
     width, height = input_img.size
     # Determines if the crop dimensions will fit in the given image
-    if not crop_in_given_dimensions(width, height, top, left, right, bottom):
+    if not __crop_in_given_dimensions(width, height, top, left, right, bottom):
         return None
     output_img = input_img.crop((left, top, right, bottom))
     return output_img
-
-
-def crop_in_given_dimensions(width: int, height: int, top: int, left: int,
-                             right: int, bottom: int) -> bool:
-    """
-       Args:
-           width: width to be checked
-           height: height to be checked
-           top: top y coordinate
-           left: left x coordinate
-           right: right x coordinate
-           bottom: bottom y coordinate
-       Returns:
-           bool: bool that says if the crop will fit in the dimensions
-    """
-    if width > right > left >= 0 and height > bottom > top >= 0:
-        return True
-    else:
-        return False
 
 
 def opacity_editor(input_img: Image, specifications: int) -> Image.Image:
@@ -112,7 +93,7 @@ def apply_color_editor(input_img: Image,
     """
 
     red, green, blue, alpha = specifications
-    if color_val_in_range(red, green, blue):
+    if __color_val_in_range(red, green, blue):
         return None
 
     color = Image.new('RGB', input_img.size, (red, green, blue))
@@ -143,9 +124,9 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     red, green, blue = color_initial
     red_secondary, green_secondary, blue_secondary = color_secondary
 
-    if color_val_in_range(red, green, blue):
+    if __color_val_in_range(red, green, blue):
         return None
-    if color_val_in_range(red_secondary, green_secondary, blue_secondary):
+    if __color_val_in_range(red_secondary, green_secondary, blue_secondary):
         return None
     if alpha < 0 or alpha > 255:
         return None
@@ -163,22 +144,6 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     mask = Image.new('RGBA', input_img.size, (0, 0, 0, alpha))
     output_image = Image.composite(input_img, color, mask).convert('RGB')
     return output_image
-
-
-def color_val_in_range(red: int, green: int, blue: int) -> bool:
-    """ Checks that all color values are in the range [0, 255]
-    Args:
-        red:    Red color value
-        green:  Green color value
-        blue:   Blue color value
-
-    Returns:
-        bool:   True if all color values are in range
-    """
-    if 255 >= red >= 0 and 255 >= green >= 0 and 255 >= blue >= 0:
-        return False
-    else:
-        return True
 
 
 def apply_mirror(input_img: Image, specifications: int) -> Image.Image:
@@ -236,10 +201,10 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
             PIL.Image: Image with color mask applied changed
     """
     # Have to make rgba image rgb
-    # TODO: Convert RGBA to RGB
+    rgb_image = __convert_to_rgb(input_img.copy())
 
-    output_img = ImageOps.solarize(input_img, threshold=specifications)
-    return output_img
+    output_img = ImageOps.solarize(rgb_image, threshold=specifications)
+    return output_img.convert('RGBA')
 
 
 def apply_mosaic_filter(input_img: Image) -> Image:
@@ -295,3 +260,55 @@ def apply_red_eye_filter(input_img: Image,
                 pixels[row, column] = (int(red / 5), green, blue)
 
     return output_img
+
+# HELPER METHODS
+
+
+def __convert_to_rgb(image: Image):
+    """Converts an RGBA image to RGB
+
+    Args:
+        image: RGBA image
+
+    Returns:
+
+    """
+    image.load()
+    background = Image.new('RGB', image.size, (255, 255, 255))
+    background.paste(image, mask=image.split()[3])
+    return background
+
+
+def __color_val_in_range(red: int, green: int, blue: int) -> bool:
+    """ Checks that all color values are in the range [0, 255]
+    Args:
+        red:    Red color value
+        green:  Green color value
+        blue:   Blue color value
+
+    Returns:
+        bool:   True if all color values are in range
+    """
+    if 255 >= red >= 0 and 255 >= green >= 0 and 255 >= blue >= 0:
+        return False
+    else:
+        return True
+
+
+def __crop_in_given_dimensions(width: int, height: int, top: int, left: int,
+                             right: int, bottom: int) -> bool:
+    """
+       Args:
+           width: width to be checked
+           height: height to be checked
+           top: top y coordinate
+           left: left x coordinate
+           right: right x coordinate
+           bottom: bottom y coordinate
+       Returns:
+           bool: bool that says if the crop will fit in the dimensions
+    """
+    if width > right > left >= 0 and height > bottom > top >= 0:
+        return True
+    else:
+        return False
