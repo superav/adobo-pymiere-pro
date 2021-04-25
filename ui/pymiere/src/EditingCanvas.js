@@ -6,6 +6,7 @@ class EditingCanvas extends Component {
   image_name = "";
   version = 0;
   usingWorkingCopy = false;
+  imageResolution = [0,0];
   
   constructor(props) {
     super(props);
@@ -42,6 +43,10 @@ class EditingCanvas extends Component {
   setCanvasState = (property, value) => {
     this.canvasState[property] = value;
     this.draw();
+  }
+
+  getImageResolution = () => {
+    return this.imageResolution;
   }
 
   updateImage = (effect, parameters) => {
@@ -88,7 +93,8 @@ class EditingCanvas extends Component {
     const img = new Image();
     img.onload = () => {
       this.canvasState.image = [img, 0, 0, img.width, img.height, 0, 0, img.width, img.height];
-      this.draw()
+      this.draw();
+      this.imageResolution = [img.naturalHeight, img.naturalWidth];
     };
     img.id = "mainImage";
     img.src = src + "?version=" + this.version;
