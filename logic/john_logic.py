@@ -47,6 +47,14 @@ def add_text_to_image(image=Image, specifications: list = [str, str, int, list, 
 
 
 def __specifications_are_valid(specifications: list) -> bool:
+    """ Checks that specification values are valid
+
+    Args:
+        specifications: specifications being passed in
+
+    Returns:
+        bool: True if specifications are of correct type and value
+    """
     if len(specifications) != 5:
         return False
 
@@ -72,6 +80,14 @@ def __specifications_are_valid(specifications: list) -> bool:
 
 
 def __colors_in_valid_range(color: tuple) -> bool:
+    """ Checks that RGB color tuple is of correct type and value
+
+    Args:
+        color: Tuple of RGB color value, should be integers in range [0, 255]
+
+    Returns:
+        bool: True if color tuple is of correct type and value
+    """
     if len(color) != 3:
         return False
 
@@ -87,6 +103,14 @@ def __colors_in_valid_range(color: tuple) -> bool:
 
 
 def __offset_is_valid(offset: tuple) -> bool:
+    """ Checks that offset is correct value and type
+
+    Args:
+        offset: A position tuple (x, y)
+
+    Returns:
+        bool: True if offset of correct type
+    """
     if len(offset) != 2:
         return False
 
