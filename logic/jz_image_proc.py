@@ -37,8 +37,8 @@ def change_saturation(input_img: Image, specifications: float) -> Image.Image:
         PIL.Image: Image with saturation changed
     """
     factor = specifications
-
-    if not (isinstance(input_img, Image.Image) and type(factor) == float):
+    print(factor)
+    if not (isinstance(input_img, Image.Image) and (type(factor) == float or type(factor) == int)):
         return None
 
     if factor < 0:
@@ -103,7 +103,7 @@ def scale_image(input_img: Image, specifications: float) -> Image.Image:
     if not isinstance(input_img, Image.Image):
         return None
 
-    if not (type(scale) == float and 0.0 <= scale <= 1.0):
+    if not ((type(scale) == float or type(scale) == int) and 0.0 < scale <= 1.0):
         return None
 
     output_img = input_img.copy()

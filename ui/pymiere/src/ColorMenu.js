@@ -73,12 +73,12 @@ export default function ColorMenu(props) {
 
   function confirmSaturation() {
     console.log(saturation);
-    props.applyfilter("saturation", [parseFloat(saturation/255)]);
+    props.applyfilter("saturation", parseFloat(saturation/255));
   }
 
   function confirmHue() {
     console.log(hue);
-    props.applyfilter("hue", [parseInt(hue)]);
+    props.applyfilter("hue", parseInt(hue));
   }
 
 
@@ -93,8 +93,8 @@ export default function ColorMenu(props) {
             value={saturation}
             onChange={handleChangeSaturation}
             aria-labelledby="discrete-slider-small-steps"
-            min={1}
-            max={255}
+            min={0}
+            max={600}
             step={1}
             valueLabelDisplay="auto"
           ></Slider>

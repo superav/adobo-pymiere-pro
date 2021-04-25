@@ -70,12 +70,12 @@ class TransformationEditingMenu extends Component {
 
   confirmOpacityChange = () => {
     console.log("Opacity: " + this.state.opacityValue);
-    this.props.applyFilter("opacity", [parseInt(this.state.opacityValue)]);
+    this.props.applyFilter("opacity", parseInt(this.state.opacityValue));
   }
 
   confirmBlurChange = () => {
     console.log("Opacity: " + this.state.blurValue);
-    this.props.applyFilter("blur", [parseInt(this.state.blurValue)]);
+    this.props.applyFilter("blur", parseInt(this.state.blurValue));
   }
 
   render() {
@@ -99,8 +99,8 @@ class TransformationEditingMenu extends Component {
           onChange={this.applyGaussianBlur}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
-          max={1}
-          step={0.1}
+          max={9}
+          step={1}
           valueLabelDisplay="auto"
         ></Slider>
         <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>

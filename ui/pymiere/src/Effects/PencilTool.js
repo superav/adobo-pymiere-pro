@@ -90,6 +90,10 @@ class PencilTool extends Component {
     ctx.fill();
   }
 
+  confirmPencilChanges = () => {
+    
+  }
+
   render() {
     return <div>
       <Button
@@ -152,6 +156,8 @@ class PencilTool extends Component {
       />
 
       <canvas ref={this.canvas} width={100} height={100}/>
+      <br></br>
+      <Button variant="contained" color="primary" disabled = "true" onClick={this.confirmPencilChanges}>Save Drawing</Button>
     </div>
   }
 }
