@@ -3,7 +3,7 @@ import numpy as np
 import colorsys
 
 
-def hue_editor(input_img: Image, specifications: list) -> Image:
+def hue_editor(input_img: Image, specifications: int) -> Image.Image:
     """
        Args:
            input_img:  The image to be changed
@@ -15,7 +15,9 @@ def hue_editor(input_img: Image, specifications: list) -> Image:
     # https://stackoverflow.com/questions/7274221/
     #                           changing-image-hue-with-python-pil
 
-    if specifications[0] > 360 or specifications[0] < 0:
+    factor = specifications
+
+    if factor > 360 or factor < 0:
         return None
 
     img = input_img.convert('RGBA')
@@ -35,7 +37,7 @@ def hue_editor(input_img: Image, specifications: list) -> Image:
 
 
 def crop_editor(input_img: Image,
-                specifications: list = [int, int, int, int]) -> Image:
+                specifications: list = [int, int, int, int]) -> Image.Image:
     """
        Args:
            input_img:  The image to be changed
@@ -75,7 +77,7 @@ def crop_in_given_dimensions(width: int, height: int, top: int, left: int,
         return False
 
 
-def opacity_editor(input_img: Image, specifications: list) -> Image:
+def opacity_editor(input_img: Image, specifications: int) -> Image.Image:
     """
        Args:
                input_img:  The image to be changed
@@ -86,15 +88,20 @@ def opacity_editor(input_img: Image, specifications: list) -> Image:
            PIL.Image: Image with opacity changed
     """
 
-    if specifications[0] > 100 or specifications[0] < 0:
+    value = specifications
+
+    if type(value) != int:
         return None
 
-    input_img.putalpha(int(specifications[0] * 2.55))
+    if value > 100 or value < 0:
+        return None
+
+    input_img.putalpha(int(value * 2.55))
     return input_img
 
 
 def apply_color_editor(input_img: Image,
-                       specifications: list = [255, 255, 255, 255]) -> Image:
+                       specifications: list = [255, 255, 255, 255]) -> Image.Image:
     """
        Args:
             input_img:  The image to be changed
@@ -174,7 +181,7 @@ def color_val_in_range(red: int, green: int, blue: int) -> bool:
         return True
 
 
-def apply_mirror(input_img: Image, specifications: int) -> Image:
+def apply_mirror(input_img: Image, specifications: int) -> Image.Image:
     """
         Args:
             input_img:  The image to be changed
@@ -219,7 +226,7 @@ def apply_frame(input_img: Image,
     return output_img
 
 
-def apply_solarize(input_img: Image, specifications: list) -> Image:
+def apply_solarize(input_img: Image, specifications: int) -> Image:
     """
         Args:
             input_img:  The image to be changed
@@ -228,9 +235,10 @@ def apply_solarize(input_img: Image, specifications: list) -> Image:
         Returns:
             PIL.Image: Image with color mask applied changed
     """
-    input_img.load()
     # Have to make rgba image rgb
-    output_img = ImageOps.solarize(input_img, threshold=specifications[0])
+    # TODO: Convert RGBA to RGB
+
+    output_img = ImageOps.solarize(input_img, threshold=specifications)
     return output_img
 
 
