@@ -55,10 +55,9 @@ export default function TextOverlayMenu(props) {
             <TextOverlayFontMenu inputText={curTextInput} fontType={fontType} setFontType={setFontType} fontSize={fontSize} 
                 setFontSize={setFontSize}/>
             <br></br>
-            <TextOverlayColorPicker setRColor={setColorRed} setGColor={setColorGreen} setBColor={setColorBlue}/>
+            <TextOverlayColorPicker setRColor={setColorRed} setGColor={setColorGreen} setBColor={setColorBlue} colorRed={colorRed} colorGreen={colorGreen} colorBlue={colorBlue}/>
             {colorStr = "rgb(" + colorRed + "," + colorGreen + "," + colorBlue + ")"}
             
-            <p className="apply-font" style={{"color": colorStr, "font-size": fontSize*1.6}}>{curTextInput}</p>
             <TextOverlayLocationSelector xCoord={locationX} yCoord={locationY} setLocationX={setLocationX} setLocationY={setLocationY}/>
             <br></br>
             <Button variant="contained" color="primary" onClick={confirmTextOverlay}>Add Text Overlay</Button>
