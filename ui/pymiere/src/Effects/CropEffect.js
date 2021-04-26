@@ -65,8 +65,8 @@ class CropEffect extends Component {
   render() {
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.ToggleCropFrame}>{this.state.cropFrameText}</Button><br/>
-        <Button variant="contained" color="primary" onClick={this.Crop}>Crop</Button>
+        <Button variant="contained" color="primary" disabled="true" onClick={this.ToggleCropFrame}>{this.state.cropFrameText}</Button><br/>
+        <Button variant="contained" color="primary" disabled="true" onClick={this.Crop}>Crop</Button>
       </div>
     );
   }

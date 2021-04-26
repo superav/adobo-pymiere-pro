@@ -4,7 +4,6 @@ from logic.john_logic import *
 import math
 import operator
 from functools import reduce
-from PIL import Image
 
 ASSET_MANAGER = AssetManager('test_user_1')
 
@@ -35,19 +34,6 @@ class YinjunSprintOneTests(unittest.TestCase):
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
         self.assertNotEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
         fin = ASSET_MANAGER.import_image_from_s3('test_2_hello.png', False)
-        rms = compare_images(im, fin)
-        self.assertEqual(0, rms)
-
-    def test_store_image_in_filesystem_invalid_input(self):
-        im = 5
-        self.assertEqual(None, store_image_in_filesystem(im, "hellohop.jpg"))
-        im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        self.assertEqual(None, store_image_in_filesystem(im, 5))
-
-    def test_store_image_in_filesystem_valid_input(self):
-        im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        self.assertNotEqual(None, store_image_in_filesystem(im, "test_2_stored.png"))
-        fin = Image.open('test_2_stored.png')
         rms = compare_images(im, fin)
         self.assertEqual(0, rms)
 

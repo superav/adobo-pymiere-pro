@@ -15,13 +15,13 @@ export default function TextOverlayColorPicker(props) {
     return (
         <div>
             <h3>Color Selection</h3>
-            <TextField id="outlined-basic" label="R Value" variant="outlined" onChange={handleChangeR}/>
+            <TextField id="outlined-basic" value={props.colorRed} label="R Value (0 - 255)" variant="outlined" onChange={handleChangeR}/>
             <br />
             <br />
-            <TextField id="outlined-basic" label="G Value" variant="outlined" onChange={handleChangeG}/>
+            <TextField id="outlined-basic" value={props.colorGreen} label="G Value (0 - 255)" variant="outlined" onChange={handleChangeG}/>
             <br />
             <br />
-            <TextField id="outlined-basic" label="B Value" variant="outlined" onChange={handleChangeB}/>
+            <TextField id="outlined-basic" value={props.colorBlue} label="B Value (0 - 255)" variant="outlined" onChange={handleChangeB}/>
         </div>
     )
 }

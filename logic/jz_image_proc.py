@@ -1,7 +1,7 @@
 from PIL import Image, ImageFilter, ImageEnhance
 
 
-def gaussian_blur(input_img: Image, specifications: list) -> Image:
+def gaussian_blur(input_img: Image, specifications: int) -> Image.Image:
     """
     Args:
         input_img:  An image to be blurred
@@ -12,7 +12,7 @@ def gaussian_blur(input_img: Image, specifications: list) -> Image:
         PIL.Image: Blurred image. Will throw a TypeError for invalid input
     """
 
-    radius = specifications[0]
+    radius = specifications
 
     if not (isinstance(input_img, Image.Image) and type(radius) == int):
         return None
@@ -25,7 +25,7 @@ def gaussian_blur(input_img: Image, specifications: list) -> Image:
     return output_img
 
 
-def change_saturation(input_img: Image, specifications: list) -> Image:
+def change_saturation(input_img: Image, specifications: float) -> Image.Image:
     """
     Args:
         input_img:  The image to be changed
@@ -36,9 +36,9 @@ def change_saturation(input_img: Image, specifications: list) -> Image:
     Returns:
         PIL.Image: Image with saturation changed
     """
-    factor = specifications[0]
-
-    if not (isinstance(input_img, Image.Image) and type(factor) == float):
+    factor = specifications
+    print(factor)
+    if not (isinstance(input_img, Image.Image) and (type(factor) == float or type(factor) == int)):
         return None
 
     if factor < 0:
@@ -51,7 +51,7 @@ def change_saturation(input_img: Image, specifications: list) -> Image:
     return output_img
 
 
-def add_watermark_image(input_img: Image, specifications: list) -> Image:
+def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     """ Adds a watermark image on top of the base image
 
     Args:
@@ -88,7 +88,7 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image:
     return base_img
 
 
-def scale_image(input_img: Image, specifications: list) -> Image:
+def scale_image(input_img: Image, specifications: float) -> Image.Image:
     """
     Args:
         input_img:  Image to be changed
@@ -98,12 +98,12 @@ def scale_image(input_img: Image, specifications: list) -> Image:
         PIL.Image: Scaled down image
     """
 
-    scale = specifications[0]
+    scale = specifications
 
     if not isinstance(input_img, Image.Image):
         return None
 
-    if not (type(scale) == float and 0.0 <= scale <= 1.0):
+    if not ((type(scale) == float or type(scale) == int) and 0.0 < scale <= 1.0):
         return None
 
     output_img = input_img.copy()
@@ -114,7 +114,7 @@ def scale_image(input_img: Image, specifications: list) -> Image:
     return output_img
 
 
-def rotate_image(input_img: Image, specifications: int) -> Image:
+def rotate_image(input_img: Image, specifications: int) -> Image.Image:
     """
     Args:
         input_img:  Image to be changed
