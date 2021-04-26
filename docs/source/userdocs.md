@@ -68,7 +68,9 @@ python -m pytest john_logic_test.py -v --cov
 
 ## How to Use
 
-When you first open the web app, you must upload you own image to S3 first through the "Upload Image" tab.
+When you first open the web app, you must upload you own PNG image to S3 first through the "Upload Image" tab.
 
 You can edit your image by clicking through different editing tabs on the left-hand side.
 After you edit the image, you can view the results on the right.
+
+A test image `insta_test.png` is provided for you to upload and test with.
