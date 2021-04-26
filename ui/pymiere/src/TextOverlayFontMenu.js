@@ -40,8 +40,7 @@ export default function TextOverlayFontMenu(props) {
           <MenuItem value={"comic_sans"}>Comic Sans</MenuItem>
           <MenuItem value={"futura"}>Futura </MenuItem>
           <MenuItem value={"papyrus"}>Papyrus</MenuItem>
-          <MenuItem value={"windings"}>Windings</MenuItem>
-          <MenuItem value={"helvetica"}>Helvetica</MenuItem>
+          <MenuItem value={"wingdings"}>Windings</MenuItem>
           <MenuItem value={"roboto"}>Roboto</MenuItem>
           <MenuItem value={"times_newer_roman"}>Times Newer Roman</MenuItem>
           <MenuItem value={"inconsolata"}>Inconsolata</MenuItem>
