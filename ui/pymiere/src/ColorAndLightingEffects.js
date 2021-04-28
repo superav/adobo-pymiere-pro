@@ -9,7 +9,7 @@ import LightingOptionsMenu from "./LightingOptionsMenu";
 import VignetteEffectPage from "./VignetteEffectPage";
 import SpecialEffectsOptions from "./SpecialEffectsOptions";
 import ColorMenu from "./ColorMenu";
-
+import TransformationEditingMenu from "./TransformationEditingMenu"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -74,10 +74,11 @@ export default function ColorAndLightingEffects(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Color Menu" {...a11yProps(0)} />
-        <Tab label="Lighting Options" {...a11yProps(1)} />
+        <Tab label="Color" {...a11yProps(0)} />
+        <Tab label="Lighting" {...a11yProps(1)} />
         <Tab label="Special Effects" {...a11yProps(2)} />
         <Tab label="Vignette" {...a11yProps(3)} />
+        <Tab label="Transformation" {...a11yProps(3)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
@@ -94,6 +95,11 @@ export default function ColorAndLightingEffects(props) {
           getCanvas={props.getCanvas}
           setCanvas={props.setCanvas}
         />
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        <TransformationEditingMenu
+            applyFilter={props.applyfilter}
+          ></TransformationEditingMenu>
       </TabPanel>
 
     </div>

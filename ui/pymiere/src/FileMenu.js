@@ -5,10 +5,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import PixelViewer from "./Effects/PixelViewer";
-import ImageResolution from "./ImageResolution"
-import ZoomEffect from "./Effects/ZoomEffect";
-import SizeEditingMenu from "./SizeEditingMenu"
+import UploadImageToEdit from "./UploadImageToEdit"
+import StoreLocalFilesystem from "./StoreLocalFilesystem"
 
 
 function TabPanel(props) {
@@ -57,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // TODO Add callbacks to TabPanel child elements to save their states between tab switches
-export default function ViewingEffects(props) {
+export default function FileMenu(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -74,28 +72,17 @@ export default function ViewingEffects(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Zoom" {...a11yProps(0)} />
-        <Tab label="Pixel Viewer" {...a11yProps(1)} />
-        <Tab label="Image Resolution" {...a11yProps(2)} />
-        <Tab label="Size Editing" {...a11yProps(3)} />
+        <Tab label="Upload Image" {...a11yProps(0)} />      
+        <Tab label="Save As" {...a11yProps(1)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <ZoomEffect getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <UploadImageToEdit insertImage={props.insertImage} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <PixelViewer getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <StoreLocalFilesystem downloadImage={props.downloadImage} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        <ImageResolution imageResolution={props.imageResolution}/>
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <SizeEditingMenu
-          getCanvas={props.getCanvas}
-          setCanvas={props.setCanvas}
-          applyFilter={props.applyFilter}
-        ></SizeEditingMenu>
-      </TabPanel>
+
     </div>
   );
 }

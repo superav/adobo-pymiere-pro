@@ -9,6 +9,8 @@ import OverlayEffects from "./OverlayEffects"
 import ColorAndLightingEffects from "./ColorAndLightingEffects"
 import ViewingEffects from "./ViewingEffects";
 import UploadImageToEdit from "./UploadImageToEdit"
+import NSTEffects from "./NSTEffects";
+import FileMenu from "./FileMenu";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,23 +75,28 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Overlays" {...a11yProps(0)} />
-        <Tab label="Color and Lighting" {...a11yProps(1)} />
-        <Tab label="Viewing" {...a11yProps(2)} />
-        <Tab label="Upload Image" {...a11yProps(3)} />
+        <Tab label="File" {...a11yProps(0)} />
+        <Tab label="Overlays" {...a11yProps(1)} />
+        <Tab label="Color and Lighting" {...a11yProps(2)} />
+        <Tab label="Viewing" {...a11yProps(3)} />
+        <Tab label="NST" {...a11yProps(4)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <OverlayEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <FileMenu insertImage={props.insertImage} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ColorAndLightingEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <OverlayEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ViewingEffects imageResolution={props.imageResolution} applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <ColorAndLightingEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <UploadImageToEdit insertImage={props.insertImage} />
+        <ViewingEffects imageResolution={props.imageResolution} applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
+      <TabPanel value={value} index={4}>
+        <NSTEffects applyfilter={props.applyFilter} />
+      </TabPanel>
+      
     </div>
   );
 }
