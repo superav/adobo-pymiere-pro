@@ -43,7 +43,7 @@ export default function TextOverlayMenu(props) {
         console.log(colorBlue);
         console.log(locationX);
         console.log(locationY);
-        props.applyfilter("add-text", [curTextInput, fontType + ".ttf", parseInt(fontSize), [parseInt(locationX), parseInt(locationY)], [parseInt(colorRed), parseInt(colorGreen), parseInt(colorBlue)]])
+        props.applyFilter("add-text", [curTextInput, fontType + ".ttf", parseInt(fontSize), [parseInt(locationX), parseInt(locationY)], [parseInt(colorRed), parseInt(colorGreen), parseInt(colorBlue)]])
     }
 
     return (

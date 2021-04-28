@@ -5,12 +5,11 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import OverlayEffects from "./OverlayEffects"
-import ColorAndLightingEffects from "./ColorAndLightingEffects"
-import ViewingEffects from "./ViewingEffects";
-import UploadImageToEdit from "./UploadImageToEdit"
-import NSTEffects from "./NSTEffects";
-import FileMenu from "./FileMenu";
+import LightingOptionsMenu from "./LightingOptionsMenu";
+import VignetteEffectPage from "./VignetteEffectPage";
+import SpecialEffectsOptions from "./SpecialEffectsOptions";
+import ColorMenu from "./ColorMenu";
+import TransformationEditingMenu from "./TransformationEditingMenu"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // TODO Add callbacks to TabPanel child elements to save their states between tab switches
-export default function VerticalTabs(props) {
+export default function ColorAndLightingEffects(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -75,28 +74,34 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="File" {...a11yProps(0)} />
-        <Tab label="Overlays" {...a11yProps(1)} />
-        <Tab label="Color and Lighting" {...a11yProps(2)} />
-        <Tab label="Viewing" {...a11yProps(3)} />
-        <Tab label="NST" {...a11yProps(4)} />
+        <Tab label="Color" {...a11yProps(0)} />
+        <Tab label="Lighting" {...a11yProps(1)} />
+        <Tab label="Special Effects" {...a11yProps(2)} />
+        <Tab label="Vignette" {...a11yProps(3)} />
+        <Tab label="Transformation" {...a11yProps(3)} />
       </Tabs>
+
       <TabPanel value={value} index={0}>
-        <FileMenu insertImage={props.insertImage} />
+        <ColorMenu applyFilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <OverlayEffects applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <LightingOptionsMenu applyFilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ColorAndLightingEffects applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <SpecialEffectsOptions applyFilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ViewingEffects imageResolution={props.imageResolution} applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <VignetteEffectPage
+          getCanvas={props.getCanvas}
+          setCanvas={props.setCanvas}
+        />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <NSTEffects applyFilter={props.applyFilter} />
+        <TransformationEditingMenu
+            applyFilter={props.applyFilter}
+          ></TransformationEditingMenu>
       </TabPanel>
-      
+
     </div>
   );
 }
