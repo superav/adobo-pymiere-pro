@@ -82,13 +82,13 @@ export default function ColorAndLightingEffects(props) {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <ColorMenu applyfilter={props.applyfilter} />
+        <ColorMenu applyFilter={props.applyFilter} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <LightingOptionsMenu applyfilter={props.applyfilter}/>
+        <LightingOptionsMenu applyFilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <SpecialEffectsOptions applyfilter={props.applyfilter}/>
+        <SpecialEffectsOptions applyFilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
         <VignetteEffectPage
@@ -98,7 +98,7 @@ export default function ColorAndLightingEffects(props) {
       </TabPanel>
       <TabPanel value={value} index={4}>
         <TransformationEditingMenu
-            applyFilter={props.applyfilter}
+            applyFilter={props.applyFilter}
           ></TransformationEditingMenu>
       </TabPanel>
 

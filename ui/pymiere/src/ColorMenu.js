@@ -68,17 +68,17 @@ export default function ColorMenu(props) {
     console.log(colorSecondary1);
     console.log(colorSecondary2);
     console.log(colorSecondary3);
-    props.applyfilter("color-gradient", [parseInt(alpha), [parseInt(colorInit1), parseInt(colorInit2), parseInt(colorInit3)], [parseInt(colorSecondary1), parseInt(colorSecondary2), parseInt(colorSecondary3)]])
+    props.applyFilter("color-gradient", [parseInt(alpha), [parseInt(colorInit1), parseInt(colorInit2), parseInt(colorInit3)], [parseInt(colorSecondary1), parseInt(colorSecondary2), parseInt(colorSecondary3)]])
   }
 
   function confirmSaturation() {
     console.log(saturation);
-    props.applyfilter("saturation", parseFloat(saturation/255));
+    props.applyFilter("saturation", parseFloat(saturation/255));
   }
 
   function confirmHue() {
     console.log(hue);
-    props.applyfilter("hue", parseInt(hue));
+    props.applyFilter("hue", parseInt(hue));
   }
 
 

@@ -26,13 +26,13 @@ export function SpecialEffectsOptions (props) {
     console.log(effectChoice);
     console.log(solarizeValue);
     if (effectChoice === "mosaic") {
-      props.applyfilter("mosaic");
+      props.applyFilter("mosaic");
     }
     else if (effectChoice === "solarize") {
-      props.applyfilter("solarize", parseInt(solarizeValue));
+      props.applyFilter("solarize", parseInt(solarizeValue));
     }
     else if (effectChoice == "autocontrast") {
-      props.applyfilter("autocontrast", [0.5]);
+      props.applyFilter("autocontrast", [0.5]);
     }
   }
 

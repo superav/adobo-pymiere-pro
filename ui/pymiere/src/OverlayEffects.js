@@ -80,7 +80,7 @@ export default function OverlayEffects(props) {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <TextOverlayMenu applyfilter={props.applyfilter} />
+        <TextOverlayMenu applyFilter={props.applyFilter} />
       </TabPanel>
       
       <TabPanel value={value} index={1}>
@@ -88,7 +88,7 @@ export default function OverlayEffects(props) {
       </TabPanel>
      
       <TabPanel value={value} index={2}>
-        <MemeMaker applyfilter={props.applyfilter}/>
+        <MemeMaker applyFilter={props.applyFilter}/>
       </TabPanel>
 
       <TabPanel value={value} index={3}>

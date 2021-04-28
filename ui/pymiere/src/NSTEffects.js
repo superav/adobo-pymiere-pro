@@ -79,7 +79,7 @@ export default function NSTEffects(props) {
         <UploadNSTFilterForm />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ViewNSTOutputMenu applyfilter={props.applyfilter}/>
+        <ViewNSTOutputMenu applyFilter={props.applyFilter}/>
       </TabPanel>
 
     </div>

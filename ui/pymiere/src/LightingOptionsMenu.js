@@ -22,7 +22,7 @@ export default function LightingOptionsMenu(props) {
 
   function confirmLightingEffects() {
     console.log(brightness);
-    props.applyfilter("brightness", [parseFloat(brightness)])
+    props.applyFilter("brightness", [parseFloat(brightness)])
   }
 
   return (

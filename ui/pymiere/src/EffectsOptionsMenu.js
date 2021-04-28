@@ -85,16 +85,16 @@ export default function VerticalTabs(props) {
         <FileMenu insertImage={props.insertImage} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <OverlayEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <OverlayEffects applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ColorAndLightingEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <ColorAndLightingEffects applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ViewingEffects imageResolution={props.imageResolution} applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <ViewingEffects imageResolution={props.imageResolution} applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <NSTEffects applyfilter={props.applyFilter} />
+        <NSTEffects applyFilter={props.applyFilter} />
       </TabPanel>
       
     </div>

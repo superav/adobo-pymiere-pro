@@ -16,7 +16,7 @@ export default class ViewNSTOutputMenu extends Component {
 
   confirmNSTOutput = () => {
     console.log(this.state.generation);
-    this.props.applyfilter("nst-view", [this.state.generation]);
+    this.props.applyFilter("nst-view", [this.state.generation]);
   }
 
   render() {
