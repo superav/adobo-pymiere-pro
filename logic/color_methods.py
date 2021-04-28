@@ -9,7 +9,7 @@ Included Methods:
     * Change Saturation
     * Change Hue
     * Change Opacity
-    * Color Filter
+    * Recoloration Filter
     * Apply Color Gradient
 """
 

@@ -1,5 +1,5 @@
 from PIL import Image, ImageFont, ImageDraw
-from canvas_editing_methods import scale_image
+from logic.canvas_editing_methods import scale_image
 
 """
 Methods that overlay text or image(s) over the input image.
