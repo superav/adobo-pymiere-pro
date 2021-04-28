@@ -2,6 +2,17 @@ from PIL import Image, ImageEnhance, ImageDraw
 import colorsys
 import numpy as np
 
+"""
+Methods that change the color of the image.
+
+Included Methods:
+    * Change Saturation
+    * Change Hue
+    * Change Opacity
+    * Color Filter
+    * Apply Color Gradient
+"""
+
 
 def change_saturation(input_img: Image, specifications: float) -> Image:
     """
@@ -15,7 +26,7 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
         PIL.Image: Image with saturation changed
     """
     factor = specifications
-    print(factor)
+
     if not (isinstance(input_img, Image.Image) and (type(factor) == float or type(factor) == int)):
         return None
 
@@ -30,16 +41,16 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
 
 def hue_editor(input_img: Image, specifications: int) -> Image:
     """
-       Args:
-           input_img:  The image to be changed
-           specifications:     The hue factor that will be set
+    Args:
+        input_img:  The image to be changed
+        specifications:     The hue factor that will be set
 
-       Returns:
-           PIL.Image: Image with hue changed
+    Returns:
+        PIL.Image: Image with hue changed
+
+    References:
+        * https://stackoverflow.com/questions/7274221/changing-image-hue-with-python-pil
     """
-    # https://stackoverflow.com/questions/7274221/
-    #                           changing-image-hue-with-python-pil
-
     factor = specifications
 
     if factor > 360 or factor < 0:
@@ -64,13 +75,13 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
 
 def opacity_editor(input_img: Image, specifications: int) -> Image:
     """
-       Args:
-               input_img:  The image to be changed
-               specifications: The value determining how opaque the image will
-                        be - 0 being invisible, 100 being opaque
+    Args:
+        input_img:  The image to be changed
+        specifications: The value determining how opaque the image will
+                 be - 0 being invisible, 100 being opaque
 
-       Returns:
-           PIL.Image: Image with opacity changed
+    Returns:
+        PIL.Image: Image with opacity changed
     """
 
     value = specifications
@@ -88,7 +99,8 @@ def opacity_editor(input_img: Image, specifications: int) -> Image:
 
 def apply_color_editor(input_img: Image,
                        specifications: list = [255, 255, 255, 255]) -> Image.Image:
-    """
+    """ Applies a color filter over an image
+
        Args:
             input_img:  The image to be changed
             specifications: A list of four ints, being the rgba for the color mask
@@ -108,20 +120,22 @@ def apply_color_editor(input_img: Image,
 
 
 def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
-    """
-       Args:
-           input_img:  The image to be changed
-           specifications: list containing the next 3 values ->
+    """ Applies a color gradient over an image.
 
-                * alpha: the alpha value of the mask to be applied
-                * color_initial: A list of three ints, being the rgb for the first half of the color mask
-                * color_secondary: A list of three ints, being the rgb for the second half of the color mask
+    Args:
+        input_img:  The image to be changed
+        specifications: list containing the next 3 values:
 
-       Returns:
-           PIL.Image: Image with color mask applied changed
+             * alpha: the alpha value of the mask to be applied
+             * color_initial: A list of three ints, being the rgb for the first half of the color mask
+             * color_secondary: A list of three ints, being the rgb for the second half of the color mask
+
+    Returns:
+        PIL.Image: Image with color mask applied changed
+
+    References:
+        * https://python-catalin.blogspot.com/2013/10/how-to-make-color-gradient-and-images.html
     """
-    # https://python-catalin.blogspot.com/2013/10/
-    #                       how-to-make-color-gradient-and-images.html
     alpha = specifications[0]
     color_initial = specifications[1]
     color_secondary = specifications[2]

@@ -1,4 +1,13 @@
 from PIL import Image, ImageFont, ImageDraw
+from canvas_editing_methods import scale_image
+
+"""
+Methods that overlay text or image(s) over the input image.
+
+Included Methods:
+    * Text over Image
+    * Watermark
+"""
 
 
 def add_text_to_image(image: Image, specifications: list) -> Image:
