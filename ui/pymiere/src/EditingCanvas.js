@@ -103,17 +103,24 @@ class EditingCanvas extends Component {
     this.version++;
   };
 
-  componentDidMount() {
-    // Set up references for canvas and context
-    this.canvas = this.canvasRef.current;
-    this.rect = this.canvas.getBoundingClientRect(); // bounding box of canvas
-    this.context = this.canvas.getContext("2d");
-
-    let width = this.canvas.parentElement.offsetWidth;
-    let height = this.canvas.parentElement.offsetHeight;
+  resizeCanvas() {
+    let width = this.parent.offsetWidth;
+    let height = this.parent.offsetHeight;
 
     this.canvas.width = width;
     this.canvas.height = height;
+    
+    this.draw();
+  }
+
+  componentDidMount() {
+    // Set up references for canvas and context
+    this.canvas = this.canvasRef.current;
+    this.parent = this.canvas.parentElement;
+    this.rect = this.canvas.getBoundingClientRect(); // bounding box of canvas
+    this.context = this.canvas.getContext("2d");
+
+    this.resizeCanvas();
 
     this.insertImage(
       "https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg"
@@ -136,8 +143,11 @@ class EditingCanvas extends Component {
     this.context.setTransform(...this.canvasState.transform);
     this.context.imageSmoothingEnabled = false;
     // Repopulate the canvas
-    this.context.drawImage(...this.canvasState.image);
-    this.drawOutline();
+    if (this.canvasState.image) {
+      this.context.drawImage(...this.canvasState.image);
+      this.drawOutline();
+    }
+      
 
     // Redraw all edits the user made
     this.drawPencil();
@@ -229,9 +239,10 @@ class EditingCanvas extends Component {
   handleMouseMove = (e) => {
     // Update actual mouse position in canvas
     const canvasTransform = this.canvasState.transform;
+    const rect = this.parent.getBoundingClientRect();
     this.mousePos = [
-      (e.clientX - this.rect.left - canvasTransform[4]) / canvasTransform[0],
-      (e.clientY - this.rect.top - canvasTransform[5]) / canvasTransform[3],
+      (e.clientX - rect.x - canvasTransform[4]) / canvasTransform[0],
+      (e.clientY - rect.y - canvasTransform[5]) / canvasTransform[3],
     ];
 
     if (e.buttons === 1) {

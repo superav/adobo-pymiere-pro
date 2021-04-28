@@ -33,14 +33,27 @@ class CenterImagePage extends Component {
     this.canvas.downloadImage(saveName);
   }
 
+  resizeCanvas = () => {
+    if (this.canvas)
+      this.canvas.resizeCanvas()
+  }
+
   render(){
+    window.addEventListener('resize', this.resizeCanvas);
     return (
       //three horizontal boxes taking up the entire vertical space 
       //List of different effects
       //UI for view of current effect options
       //View Image
       <div id="mainImageUIandEffectsBar">
-        <VerticalTabs getCanvas={this.handleGetCanvas} setCanvas={this.handleSetCanvas} applyFilter={this.applyFilter} insertImage={this.insertImage} imageResolution={this.imageResolution} downloadImage={this.downloadImage}/>
+        <VerticalTabs
+          getCanvas={this.handleGetCanvas}
+          setCanvas={this.handleSetCanvas}
+          applyFilter={this.applyFilter}
+          insertImage={this.insertImage}
+          imageResolution={this.imageResolution}
+          downloadImage={this.downloadImage}
+        />
         <div id="imageDisplay">
           <EditingCanvas ref={ref => (this.canvas = ref)}/>
         </div>
