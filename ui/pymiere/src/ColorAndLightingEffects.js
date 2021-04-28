@@ -5,10 +5,11 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import OverlayEffects from "./OverlayEffects"
-import ColorAndLightingEffects from "./ColorAndLightingEffects"
-import ViewingEffects from "./ViewingEffects";
-import UploadImageToEdit from "./UploadImageToEdit"
+import LightingOptionsMenu from "./LightingOptionsMenu";
+import VignetteEffectPage from "./VignetteEffectPage";
+import SpecialEffectsOptions from "./SpecialEffectsOptions";
+import ColorMenu from "./ColorMenu";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // TODO Add callbacks to TabPanel child elements to save their states between tab switches
-export default function VerticalTabs(props) {
+export default function ColorAndLightingEffects(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -73,23 +74,28 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Overlays" {...a11yProps(0)} />
-        <Tab label="Color and Lighting" {...a11yProps(1)} />
-        <Tab label="Viewing" {...a11yProps(2)} />
-        <Tab label="Upload Image" {...a11yProps(3)} />
+        <Tab label="Color Menu" {...a11yProps(0)} />
+        <Tab label="Lighting Options" {...a11yProps(1)} />
+        <Tab label="Special Effects" {...a11yProps(2)} />
+        <Tab label="Vignette" {...a11yProps(3)} />
       </Tabs>
+
       <TabPanel value={value} index={0}>
-        <OverlayEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <ColorMenu applyfilter={props.applyfilter} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ColorAndLightingEffects applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <LightingOptionsMenu applyfilter={props.applyfilter}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ViewingEffects imageResolution={props.imageResolution} applyfilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <SpecialEffectsOptions applyfilter={props.applyfilter}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <UploadImageToEdit insertImage={props.insertImage} />
+        <VignetteEffectPage
+          getCanvas={props.getCanvas}
+          setCanvas={props.setCanvas}
+        />
       </TabPanel>
+
     </div>
   );
 }

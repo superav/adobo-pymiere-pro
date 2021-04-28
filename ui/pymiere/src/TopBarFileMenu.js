@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import StoreLocalFilesystem from './StoreLocalFilesystem'
 
 const StyledMenu = withStyles({
   paper: {
@@ -37,7 +37,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function CustomizedMenus(props) {
+export default function FileMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -67,7 +67,7 @@ export default function CustomizedMenus(props) {
         onClose={handleClose}
       >
         <StyledMenuItem>
-          <ListItemText primary="Menu Item 1" />
+          <StoreLocalFilesystem downloadImage={props.downloadImage} />
         </StyledMenuItem>
         <StyledMenuItem>
           <ListItemText primary="Menu Item 2" />
