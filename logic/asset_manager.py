@@ -62,6 +62,38 @@ class AssetManager:
 
         return bucket_list
 
+    def list_styles(self) -> list:
+        """
+        Lists the style images of the S3 bucket
+
+        Returns:
+            list:    List of all objects in the bucket
+        """
+
+        bucket_list = []
+
+        for key in self.s3_client.list_objects(Bucket=BUCKET_NAME)['Contents']:
+            if 'styles/' in key['Key']:
+                bucket_list.append(key['Key'])
+
+        return bucket_list
+
+    def list_nst_outputs(self) -> list:
+        """
+        Lists the contents of the S3 bucket
+
+        Returns:
+            list:    List of all objects in the bucket
+        """
+
+        bucket_list = []
+
+        for key in self.s3_client.list_objects(Bucket=BUCKET_NAME)['Contents']:
+            if self.username in key['Key'] and '/temp/' in key['Key']:
+                bucket_list.append(key['Key'])
+
+        return bucket_list
+
     def import_image_from_s3(self,
                              image_name: str = "working_copy.png", is_working_copy: bool = True) -> Image:
         """
