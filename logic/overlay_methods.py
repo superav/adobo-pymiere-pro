@@ -71,6 +71,8 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
         PIL.Image: Watermarked image
     """
 
+    print(specifications)
+
     if not __watermark_specifications_are_valid(specifications):
         return None
 
@@ -85,7 +87,6 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     base_img = input_img.copy()
     watermark_img = scale_image(watermark, size)
     mask = watermark_img.convert('L').point(lambda x: int(x * opacity))
-    print(mask)
     watermark_img.putalpha(mask)
 
     base_img.paste(watermark_img, position, watermark_img)
@@ -119,7 +120,7 @@ def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
         return None
 
     # TODO: Might have to fix this for Docker
-    watermark_path = path.abspath("../ui/pymiere/public/emojis/%s" % watermark_file)
+    watermark_path = path.abspath("./ui/pymiere/public/emojis/%s" % watermark_file)
 
     try:
         watermark_image = Image.open(watermark_path)
@@ -127,6 +128,7 @@ def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
         return add_watermark_image(input_image, specifications)
 
     except FileNotFoundError:
+        print("ERROR (add_emoji_overlay): %s not found" % watermark_path)
         return None
 
 # HELPER METHOD
