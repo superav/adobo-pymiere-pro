@@ -32,6 +32,7 @@ class EditingCanvas extends Component {
           fill: [0, 0, 0],
           width: 4,
         },
+        emoji: [null, 0, 0, 1, 255]
       },
     };
     this.mousePos = [0, 0];
@@ -157,6 +158,16 @@ class EditingCanvas extends Component {
       case "crop":
         this.drawCropTool();
         break;
+      case "emoji":
+        const emoji = this.canvasState.functions.emoji;
+        if (emoji[0]) {
+          const img = emoji[0];
+          const w = img.width * emoji[3];
+          const h = img.height * emoji[3];
+          this.context.globalAlpha = emoji[4]/255;
+          this.context.drawImage(img, 0, 0, img.width, img.height, emoji[1], emoji[2], w, h);
+          this.context.globalAlpha = 1;
+        }
       default:
         break;
     }
@@ -246,11 +257,11 @@ class EditingCanvas extends Component {
     ];
 
     if (e.buttons === 1) {
+      const dX = e.movementX / canvasTransform[0];
+      const dY = e.movementY / canvasTransform[3];
       switch (this.canvasState.activeFunction) {
         case "crop":
           const crop = this.canvasState.functions.crop;
-          const dX = e.movementX / canvasTransform[0];
-          const dY = e.movementY / canvasTransform[3];
           switch (crop.resize) {
             case 0:
               crop.boundingBox[3] = this.clamp(
@@ -309,6 +320,11 @@ class EditingCanvas extends Component {
           this.canvasState.functions.pencil.currentStroke.points.push(
             this.mousePos
           );
+          break;
+        case "emoji":
+          const emoji = this.canvasState.functions.emoji;
+          emoji[1] += dX;
+          emoji[2] += dY;
           break;
         default:
           this.canvasState.transform[4] += e.movementX;
