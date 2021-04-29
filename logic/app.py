@@ -9,7 +9,7 @@ from logic.color_methods import *
 from logic.misc_methods import *
 from logic.asset_manager import AssetManager
 
-ass_man = AssetManager("test_user_1")
+ass_man = AssetManager("test_user_integration")
 
 
 def create_app():
