@@ -118,6 +118,7 @@ def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
         print("ERROR (add_emoji_overlay): emoji file %s should have \".png\" extension" % watermark_file)
         return None
 
+    # TODO: Might have to fix this for Docker
     watermark_path = path.abspath("../ui/pymiere/public/emojis/%s" % watermark_file)
 
     try:
