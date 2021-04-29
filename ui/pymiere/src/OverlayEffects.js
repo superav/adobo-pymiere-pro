@@ -92,7 +92,7 @@ export default function OverlayEffects(props) {
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        <EmojiOverlay getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+        <EmojiOverlay applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
       </TabPanel>
 
     </div>

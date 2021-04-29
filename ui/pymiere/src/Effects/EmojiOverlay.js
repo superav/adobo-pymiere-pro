@@ -73,8 +73,14 @@ export default class EmojiOverlay extends Component {
     this.props.setCanvas("functions", functions);
   }
 
-  onApply = () => {
+  updateEmojiBackend = () => {
+    const emoji = this.props.getCanvas("functions").emoji;
+    const name = "bugcat_" + this.emojiList[this.emojiIdx] + ".png"
+    this.props.applyFilter("watermark", [name, [emoji[1], emoji[2]], emoji[3], emoji[4]]);
+  }
 
+  onApply = () => {
+    this.updateEmojiBackend();
   }
 
   render() {
