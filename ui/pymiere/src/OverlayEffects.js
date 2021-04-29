@@ -84,7 +84,7 @@ export default function OverlayEffects(props) {
       </TabPanel>
       
       <TabPanel value={value} index={1}>
-        <PencilTool getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
+        <PencilTool applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />
       </TabPanel>
      
       <TabPanel value={value} index={2}>

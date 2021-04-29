@@ -91,7 +91,17 @@ class PencilTool extends Component {
   }
 
   confirmPencilChanges = () => {
-    
+    const strokes = this.props.getCanvas("functions").pencil.strokes;
+    strokes.forEach(stroke => {
+      stroke.points.map((point) => {
+        point[0] = parseFloat(point[0]);
+        point[1] = parseFloat(point[1]);
+        return point;
+      });
+      stroke.fill.map((num) => {return parseInt(num)});
+      this.props.applyFilter("draw-line", [stroke.points, parseInt(stroke.width), stroke.fill]);
+      // TODO create a way to wait for response for each stroke before sending the next stroke. Maybe create progress bar?
+    });
   }
 
   render() {
@@ -157,7 +167,7 @@ class PencilTool extends Component {
 
       <canvas ref={this.canvas} width={100} height={100}/>
       <br></br>
-      <Button variant="contained" color="primary" disabled = "true" onClick={this.confirmPencilChanges}>Save Drawing</Button>
+      <Button variant="contained" color="primary" onClick={this.confirmPencilChanges}>Save Drawing</Button>
     </div>
   }
 }
