@@ -13,7 +13,7 @@ export default class EmojiOverlay extends Component {
     ];
     this.state = {
       scale: 1,
-      opacity: 255
+      opacity: 1
     }
     this.emojiIdx = 0;
   }
@@ -76,7 +76,7 @@ export default class EmojiOverlay extends Component {
   updateEmojiBackend = () => {
     const emoji = this.props.getCanvas("functions").emoji;
     const name = "bugcat_" + this.emojiList[this.emojiIdx] + ".png"
-    this.props.applyFilter("watermark", [name, [emoji[1], emoji[2]], emoji[3], emoji[4]]);
+    this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), parseFloat(emoji[4])]);
   }
 
   onApply = () => {
@@ -105,10 +105,11 @@ export default class EmojiOverlay extends Component {
       <Slider
         value = {this.state.opacity}
         onChange={this.onOpacityChange}
-        aria-labelledby="discrete-slider"
+        aria-labelledby="continuous-slider"
         valueLabelDisplay="auto"
+        step={0.001}
         min={0}
-        max={255}
+        max={1}
       />
       <br/><br/>
       <Button variant="contained" color="primary" onClick={this.onApply}>Apply</Button>

@@ -32,7 +32,7 @@ class EditingCanvas extends Component {
           fill: [0, 0, 0],
           width: 4,
         },
-        emoji: [null, 0, 0, 1, 255]
+        emoji: [null, 0, 0, 1, 1]
       },
     };
     this.mousePos = [0, 0];
@@ -164,7 +164,7 @@ class EditingCanvas extends Component {
           const img = emoji[0];
           const w = img.width * emoji[3];
           const h = img.height * emoji[3];
-          this.context.globalAlpha = emoji[4]/255;
+          this.context.globalAlpha = emoji[4];
           this.context.drawImage(img, 0, 0, img.width, img.height, emoji[1], emoji[2], w, h);
           this.context.globalAlpha = 1;
         }

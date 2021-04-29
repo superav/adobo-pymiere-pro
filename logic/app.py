@@ -40,6 +40,9 @@ def create_app():
         elif var == "watermark":
             altered_image = add_watermark_image(
                 input_img, ui_input["specifications"])
+        elif var == "emoji":
+            altered_image = add_emoji_overlay(
+                input_img, ui_input["specifications"])
         elif var == "blur":
             altered_image = gaussian_blur(
                 input_img, ui_input["specifications"])
