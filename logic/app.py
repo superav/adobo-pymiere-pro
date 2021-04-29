@@ -2,12 +2,12 @@ from flask import Flask, request
 from PIL.Image import Image
 from flask_cors import CORS
 
-from filter_methods import *
-from overlay_methods import *
-from canvas_editing_methods import *
-from color_methods import *
-from misc_methods import *
-from asset_manager import AssetManager
+from logic.filter_methods import *
+from logic.overlay_methods import *
+from logic.canvas_editing_methods import *
+from logic.color_methods import *
+from logic.misc_methods import *
+from logic.asset_manager import AssetManager
 
 ass_man = AssetManager("test_user_1")
 
