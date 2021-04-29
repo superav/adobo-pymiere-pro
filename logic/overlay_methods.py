@@ -1,3 +1,5 @@
+import os.path as path
+
 from PIL import Image, ImageFont, ImageDraw
 from logic.canvas_editing_methods import scale_image
 
@@ -83,6 +85,7 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     base_img = input_img.copy()
     watermark_img = scale_image(watermark, size)
     mask = watermark_img.convert('L').point(lambda x: int(x * opacity))
+    print(mask)
     watermark_img.putalpha(mask)
 
     base_img.paste(watermark_img, position, watermark_img)
@@ -108,9 +111,14 @@ def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
     watermark_file = specifications[0]
 
     if type(watermark_file) != str:
+        print("ERROR (add_emoji_overlay): specifications[0] should be a string!")
         return None
 
-    watermark_path = "../ui/pymiere/public/emojis/%s" % watermark_file
+    if watermark_file[-4:] != '.png':
+        print("ERROR (add_emoji_overlay): emoji file %s should have \".png\" extension" % watermark_file)
+        return None
+
+    watermark_path = path.abspath("../ui/pymiere/public/emojis/%s" % watermark_file)
 
     try:
         watermark_image = Image.open(watermark_path)
@@ -218,10 +226,13 @@ def __watermark_specifications_are_valid(specifications: list):
     size = specifications[2]
     opacity = specifications[3]
 
-    if not (isinstance(watermark, Image.Image) and type(size) == float and type(opacity)):
+    if not isinstance(watermark, Image.Image):
+        return False
+    if not ((type(size) == float or type(size) == int)
+            and (type(opacity) or type(opacity) == int)):
         return False
 
-    if type(position) != list:
+    if not (type(position) == list or type(position) == tuple):
         return False
 
     if not __position_is_valid(position):
