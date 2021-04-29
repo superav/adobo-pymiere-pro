@@ -1,7 +1,10 @@
 Image Processing Methods
 ========================
 
-Simple image processing features that are stored across different files.
+Image processing features. Methods for these features are grouped in
+separate files based on what they do.
+
+---------------------------
 
 Canvas Editing Methods
 ----------------------------
@@ -13,6 +16,8 @@ Methods that change the size, scale, or rotation of the image.
    :undoc-members:
    :show-inheritance:
 
+---------------------------
+
 Color Editing Methods
 ---------------------------
 
@@ -22,6 +27,8 @@ Methods that change the color of the image.
    :members:
    :undoc-members:
    :show-inheritance:
+
+---------------------------
 
 Image Overlay Methods
 ---------------------------
@@ -33,6 +40,8 @@ Methods that overlay text or image(s) over the input image.
    :undoc-members:
    :show-inheritance:
 
+---------------------------
+
 Filter Methods
 ------------------------
 
@@ -43,6 +52,8 @@ that apply a complex mathematical operation across the image.
    :members:
    :undoc-members:
    :show-inheritance:
+
+---------------------------
 
 Miscellaneous Methods
 ----------------------------
