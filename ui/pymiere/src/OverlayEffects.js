@@ -9,6 +9,8 @@ import TextOverlayMenu from "./TextOverlayMenu";
 import PencilTool from "./Effects/PencilTool";
 import MemeMaker from "./MemeMaker"
 import EmojiOverlay from "./Effects/EmojiOverlay";
+import FrameMenu from "./FrameMenu";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,6 +79,7 @@ export default function OverlayEffects(props) {
         <Tab label="Pen Tool" {...a11yProps(1)} />
         <Tab label="Meme Maker" {...a11yProps(2)} />
         <Tab label="Emoji Overlay" {...a11yProps(3)} />
+        <Tab label="Add Frame" {...a11yProps(4)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
@@ -93,6 +96,10 @@ export default function OverlayEffects(props) {
 
       <TabPanel value={value} index={3}>
         <EmojiOverlay applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
+      </TabPanel>
+
+      <TabPanel value={value} index={4}>
+        <FrameMenu applyFilter={props.applyFilter} />
       </TabPanel>
 
     </div>

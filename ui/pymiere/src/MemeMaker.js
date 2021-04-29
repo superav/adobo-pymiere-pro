@@ -49,6 +49,7 @@ class MemeMaker extends Component {
                         value={this.state.bottomText}
                         onChange={this.handleChange('bottomText')} />
                 </Grid>
+                <br></br>
                 <Button
                     variant="contained"
                     color="primary"
