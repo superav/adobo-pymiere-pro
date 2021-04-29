@@ -27,8 +27,6 @@ export default class EmojiOverlay extends Component {
       
       const functions = this.props.getCanvas("functions");
       functions.emoji[0] = this.img;
-      functions.emoji[1] = 0;
-      functions.emoji[2] = 0;
       this.props.setCanvas("functions", functions);
     }
     this.img.src = "./emojis/bugcat_" + this.emojiList[this.emojiIdx] + ".png";
