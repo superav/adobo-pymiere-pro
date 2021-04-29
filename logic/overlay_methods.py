@@ -60,8 +60,8 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
         input_img:  The image (PNG) to be changed
         specifications:
 
-            * watermark:  The image (PNG) to be watermarked
-            * position:   Tuple (x, y) of where watermark should be placed
+            * watermark:  The watermark image
+            * position:   List [x, y] of where watermark should be placed
             * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
             * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
 
@@ -88,6 +88,37 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     base_img.paste(watermark_img, position, watermark_img)
 
     return base_img
+
+
+def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
+    """
+    Args:
+        input_image: Input image
+        specifications:
+
+            * watermark:  The filename for the emoji image
+            * position:   List [x, y] of where watermark should be placed
+            * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
+
+    Returns:
+
+    """
+
+    watermark_file = specifications[0]
+
+    if type(watermark_file) != str:
+        return None
+
+    watermark_path = "../ui/pymiere/public/emojis/%s" % watermark_file
+
+    try:
+        watermark_image = Image.open(watermark_path)
+        specifications[0] = watermark_image
+        return add_watermark_image(input_image, specifications)
+
+    except FileNotFoundError:
+        return None
 
 # HELPER METHOD
 
@@ -187,11 +218,10 @@ def __watermark_specifications_are_valid(specifications: list):
     size = specifications[2]
     opacity = specifications[3]
 
-    if not (isinstance(watermark, Image.Image)
-            and type(size) == float and type(opacity)):
+    if not (isinstance(watermark, Image.Image) and type(size) == float and type(opacity)):
         return False
 
-    if type(position) != tuple:
+    if type(position) != list:
         return False
 
     if not __position_is_valid(position):

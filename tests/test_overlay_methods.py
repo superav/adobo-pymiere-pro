@@ -67,7 +67,7 @@ class TestOverlayInputValidation(unittest.TestCase):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = Image.open("./test_assets/images/test_2.png")
 
-        specifications = [watermark, (40, 40), 0.4, 1.0]
+        specifications = [watermark, [40, 40], 0.4, 1.0]
         output = add_watermark_image(input_img, specifications)
 
         self.assertTrue(isinstance(output, Image.Image))
@@ -80,6 +80,17 @@ class TestOverlayInputValidation(unittest.TestCase):
         self.assertEqual(None, add_text_to_image(im, ["hello", 5, 50, [50, 50], [200, 200, 200]]))
         self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50, 50], [200, 200, 200]]))
         self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200]]))
+
+    def test_add_emoji_correct_input(self):
+        input_img = Image.open("./test_assets/images/test_1.png")
+        emoji_image = "bugcat_blush.png"
+
+        specifications = [emoji_image, [40, 40], 0.4, 1.0]
+        output = add_emoji_overlay(input_img, specifications)
+
+        output.show()
+
+        # self.assertTrue(isinstance(output, Image.Image))
 
 
 class TestOverlayImageProc(unittest.TestCase):
