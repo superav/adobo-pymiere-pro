@@ -8,7 +8,7 @@ import Box from "@material-ui/core/Box";
 import TextOverlayMenu from "./TextOverlayMenu";
 import PencilTool from "./Effects/PencilTool";
 import MemeMaker from "./MemeMaker"
-
+import EmojiOverlay from "./Effects/EmojiOverlay";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,7 +92,7 @@ export default function OverlayEffects(props) {
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        <p>Emoji Overlay</p>
+        <EmojiOverlay applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas}/>
       </TabPanel>
 
     </div>

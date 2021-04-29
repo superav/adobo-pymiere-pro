@@ -1,3 +1,5 @@
+import os.path as path
+
 from PIL import Image, ImageFont, ImageDraw
 from logic.canvas_editing_methods import scale_image
 
@@ -60,14 +62,16 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
         input_img:  The image (PNG) to be changed
         specifications:
 
-            * watermark:  The image (PNG) to be watermarked
-            * position:   Tuple (x, y) of where watermark should be placed
+            * watermark:  The watermark image
+            * position:   List [x, y] of where watermark should be placed
             * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
             * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
 
     Returns:
         PIL.Image: Watermarked image
     """
+
+    print(specifications)
 
     if not __watermark_specifications_are_valid(specifications):
         return None
@@ -88,6 +92,44 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     base_img.paste(watermark_img, position, watermark_img)
 
     return base_img
+
+
+def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
+    """
+    Args:
+        input_image: Input image
+        specifications:
+
+            * watermark:  The filename for the emoji image
+            * position:   List [x, y] of where watermark should be placed
+            * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
+
+    Returns:
+
+    """
+
+    watermark_file = specifications[0]
+
+    if type(watermark_file) != str:
+        print("ERROR (add_emoji_overlay): specifications[0] should be a string!")
+        return None
+
+    if watermark_file[-4:] != '.png':
+        print("ERROR (add_emoji_overlay): emoji file %s should have \".png\" extension" % watermark_file)
+        return None
+
+    # TODO: Might have to fix this for Docker
+    watermark_path = path.abspath("./ui/pymiere/public/emojis/%s" % watermark_file)
+
+    try:
+        watermark_image = Image.open(watermark_path)
+        specifications[0] = watermark_image
+        return add_watermark_image(input_image, specifications)
+
+    except FileNotFoundError:
+        print("ERROR (add_emoji_overlay): %s not found" % watermark_path)
+        return None
 
 # HELPER METHOD
 
@@ -187,11 +229,13 @@ def __watermark_specifications_are_valid(specifications: list):
     size = specifications[2]
     opacity = specifications[3]
 
-    if not (isinstance(watermark, Image.Image)
-            and type(size) == float and type(opacity)):
+    if not isinstance(watermark, Image.Image):
+        return False
+    if not ((type(size) == float or type(size) == int)
+            and (type(opacity) or type(opacity) == int)):
         return False
 
-    if type(position) != tuple:
+    if not (type(position) == list or type(position) == tuple):
         return False
 
     if not __position_is_valid(position):
