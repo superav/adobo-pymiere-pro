@@ -1,11 +1,13 @@
 from flask import Flask, request
 from PIL.Image import Image
-from logic.asset_manager import AssetManager
-from logic.jz_image_proc import *
-from logic.as_image_proc import *
-from logic.john_logic import *
-from logic.draw_on_image import *
 from flask_cors import CORS
+
+from filter_methods import *
+from overlay_methods import *
+from canvas_editing_methods import *
+from color_methods import *
+from misc_methods import *
+from asset_manager import AssetManager
 
 ass_man = AssetManager("test_user_1")
 
