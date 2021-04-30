@@ -91,7 +91,24 @@ class PencilTool extends Component {
   }
 
   confirmPencilChanges = () => {
+    const functions = this.props.getCanvas("functions");
+    const strokes = functions.pencil.strokes;
     
+    const filter = [];
+    strokes.reduce((acc, stroke) => {
+      stroke.points.map((point) => {
+        point[0] = parseInt(point[0]);
+        point[1] = parseInt(point[1]);
+        return point;
+      });
+      stroke.fill.map((num) => {return parseInt(num)});
+      acc.push([stroke.points, parseInt(stroke.width), stroke.fill]);
+      return acc;
+    }, filter);
+
+    this.props.applyFilter("draw-lines", filter);
+    // TODO clean up the strokes in Editing Canvas
+    functions.pencil.strokes = [];
   }
 
   render() {
@@ -157,7 +174,7 @@ class PencilTool extends Component {
 
       <canvas ref={this.canvas} width={100} height={100}/>
       <br></br>
-      <Button variant="contained" color="primary" disabled = "true" onClick={this.confirmPencilChanges}>Save Drawing</Button>
+      <Button variant="contained" color="primary" onClick={this.confirmPencilChanges}>Save Drawing</Button>
     </div>
   }
 }
