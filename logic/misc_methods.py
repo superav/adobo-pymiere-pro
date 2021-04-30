@@ -66,8 +66,7 @@ def draw_lines(image: Image, specifications: list) -> Image:
         image:  Input image
         specifications: A list of specs (in order)
             * points: A list of points to draw the line. Is a list of tuples
-                ``[(x1, y1), (x2, y2)...]``.
-            Must be at least 2 tuples.
+            ``[(x1, y1), (x2, y2)...]``. Must be at least 2 tuples.
 
             * stroke_size:    Size of line
             * color:  Line color, formatted as (R, G, B)

@@ -83,7 +83,7 @@ def apply_red_eye_filter(input_img: Image, specifications: list) -> Image:
             removal.
 
             * Integers should be in this format: [left x value, top y value,
-                right x value, bottom y value]
+            right x value, bottom y value]
 
     Returns:
         PIL.Image: Image with red eye removed

@@ -21,8 +21,9 @@ def add_text_to_image(image: Image, specifications: list) -> Image:
             * text: the text to be added on top of the image
             * font: the font type of the added text
             * size: the size of the added text
-            * offset: an (x,y) tuple containing coordinates for text offset
-                on the image
+            * offset: an (x,y) tuple containing coordinates for text offset on
+            the image
+
             * color: an (R,G,B) tuple containing the color values for the text
 
     Return:
@@ -67,9 +68,10 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
             * watermark:  The watermark image
             * position:   List [x, y] of where watermark should be placed
             * size:       Size of image (scaled downwards). Must be in range
-                [0.0, 0.1]. Default is 1.0
+            [0.0, 0.1]. Default is 1.0
+
             * opacity:    Opacity of the image. Must be in range [0.0, 0.1].
-                Default is 1.0
+            Default is 1.0
 
     Returns:
         PIL.Image: Watermarked image
@@ -108,9 +110,10 @@ def add_emoji_overlay(input_image: Image, specifications: list,
             * watermark:  The filename for the emoji image
             * position:   List [x, y] of where watermark should be placed
             * size:       Size of image (scaled downwards). Must be in range
-                [0.0, 0.1]. Default is 1.0
+            [0.0, 0.1]. Default is 1.0
+
             * opacity:    Opacity of the image. Must be in range [0.0, 0.1].
-                Default is 1.0
+            Default is 1.0
 
         is_test: Boolean for unit testing. Default is False
 
