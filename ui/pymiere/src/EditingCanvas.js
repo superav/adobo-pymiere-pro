@@ -370,7 +370,7 @@ class EditingCanvas extends Component {
     }
   };
 
-  downloadImage = (saveName) => {
+  downloadImage = (saveName, saveExtension) => {
     const img = new Image();
     img.crossOrigin = "anonymous"; 
     img.src = this.image_sourceName;
@@ -383,8 +383,8 @@ class EditingCanvas extends Component {
       ctx.drawImage(img, 0, 0);
       // create a tag
       const a = document.createElement("a");
-      a.download = saveName + ".png";
-      a.href = canvas.toDataURL("image/png");
+      a.download = saveName + "." + saveExtension;
+      a.href = canvas.toDataURL("image/" + saveExtension);
       a.click();
     };
   };

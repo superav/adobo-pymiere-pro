@@ -82,7 +82,7 @@ export default function VerticalTabs(props) {
         <Tab label="NST" {...a11yProps(4)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <FileMenu insertImage={props.insertImage} />
+        <FileMenu insertImage={props.insertImage} downloadImage={props.downloadImage}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <OverlayEffects applyFilter={props.applyFilter} getCanvas={props.getCanvas} setCanvas={props.setCanvas} />

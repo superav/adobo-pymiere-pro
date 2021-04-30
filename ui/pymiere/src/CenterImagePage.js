@@ -29,8 +29,13 @@ class CenterImagePage extends Component {
     return this.canvas.getImageResolution();
   }
 
-  downloadImage = (saveName) => {
-    this.canvas.downloadImage(saveName);
+  downloadImage = (saveName, saveExtension) => {
+    this.canvas.downloadImage(saveName, saveExtension);
+  }
+
+  resizeCanvas = () => {
+    if (this.canvas)
+      this.canvas.resizeCanvas()
   }
 
   resizeCanvas = () => {

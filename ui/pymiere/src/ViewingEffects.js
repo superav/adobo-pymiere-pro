@@ -8,7 +8,8 @@ import Box from "@material-ui/core/Box";
 import PixelViewer from "./Effects/PixelViewer";
 import ImageResolution from "./ImageResolution"
 import ZoomEffect from "./Effects/ZoomEffect";
-import SizeEditingMenu from "./SizeEditingMenu"
+import SizeEditingMenu from "./SizeEditingMenu";
+import RotateImage from "./RotateImage";
 
 
 function TabPanel(props) {
@@ -78,6 +79,7 @@ export default function ViewingEffects(props) {
         <Tab label="Pixel Viewer" {...a11yProps(1)} />
         <Tab label="Image Resolution" {...a11yProps(2)} />
         <Tab label="Size Editing" {...a11yProps(3)} />
+        <Tab label="Rotate Image" {...a11yProps(4)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
@@ -95,6 +97,9 @@ export default function ViewingEffects(props) {
           setCanvas={props.setCanvas}
           applyFilter={props.applyFilter}
         ></SizeEditingMenu>
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        <RotateImage applyFilter={props.applyFilter}></RotateImage>
       </TabPanel>
     </div>
   );

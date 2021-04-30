@@ -9,7 +9,8 @@ import LightingOptionsMenu from "./LightingOptionsMenu";
 import VignetteEffectPage from "./VignetteEffectPage";
 import SpecialEffectsOptions from "./SpecialEffectsOptions";
 import ColorMenu from "./ColorMenu";
-import TransformationEditingMenu from "./TransformationEditingMenu"
+import TransformationEditingMenu from "./TransformationEditingMenu";
+import ChangeContrast from "./ChangeContrast";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -78,7 +79,8 @@ export default function ColorAndLightingEffects(props) {
         <Tab label="Lighting" {...a11yProps(1)} />
         <Tab label="Special Effects" {...a11yProps(2)} />
         <Tab label="Vignette" {...a11yProps(3)} />
-        <Tab label="Transformation" {...a11yProps(3)} />
+        <Tab label="Transformation" {...a11yProps(4)} />
+        <Tab label="Change Contrast" {...a11yProps(5)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
@@ -101,7 +103,11 @@ export default function ColorAndLightingEffects(props) {
             applyFilter={props.applyFilter}
           ></TransformationEditingMenu>
       </TabPanel>
-
+      <TabPanel value={value} index={5}>
+        <ChangeContrast>
+          applyFilter={props.applyFilter}
+        </ChangeContrast>
+      </TabPanel>
     </div>
   );
 }
