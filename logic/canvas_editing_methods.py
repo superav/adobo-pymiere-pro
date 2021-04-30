@@ -25,7 +25,8 @@ def scale_image(input_img: Image, specifications: float) -> Image:
     if not isinstance(input_img, Image.Image):
         return None
 
-    if not ((type(scale) == float or type(scale) == int) and 0.0 < scale <= 1.0):
+    if not ((type(scale) == float or type(scale) == int)
+            and 0.0 < scale <= 1.0):
         return None
 
     output_img = input_img.copy()

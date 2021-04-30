@@ -21,11 +21,13 @@ def add_text_to_image(image: Image, specifications: list) -> Image:
             * text: the text to be added on top of the image
             * font: the font type of the added text
             * size: the size of the added text
-            * offset: an (x,y) tuple containing coordinates for text offset on the image
+            * offset: an (x,y) tuple containing coordinates for text offset
+                on the image
             * color: an (R,G,B) tuple containing the color values for the text
 
     Return:
-        PIL.Image: Image with text added on top. Returns ``None`` if unsuccessful.
+        PIL.Image: Image with text added on top. Returns ``None``
+        if unsuccessful.
     """
     text = specifications[0]
     font = specifications[1]
@@ -64,8 +66,10 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
 
             * watermark:  The watermark image
             * position:   List [x, y] of where watermark should be placed
-            * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
-            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
+            * size:       Size of image (scaled downwards). Must be in range
+                [0.0, 0.1]. Default is 1.0
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1].
+                Default is 1.0
 
     Returns:
         PIL.Image: Watermarked image
@@ -86,7 +90,7 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
 
     base_img = input_img.copy()
     watermark_img = scale_image(watermark, size)
-    mask = watermark_img.convert('L').point(lambda x: int(x * opacity))
+    mask = watermark_img.convert('L').point(lambda pixel: int(pixel * opacity))
     watermark_img.putalpha(mask)
 
     base_img.paste(watermark_img, position, watermark_img)
@@ -94,7 +98,8 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     return base_img
 
 
-def add_emoji_overlay(input_image: Image, specifications: list, is_test: bool = False) -> Image:
+def add_emoji_overlay(input_image: Image, specifications: list,
+                      is_test: bool = False) -> Image:
     """
     Args:
         input_image: Input image
@@ -102,8 +107,10 @@ def add_emoji_overlay(input_image: Image, specifications: list, is_test: bool = 
 
             * watermark:  The filename for the emoji image
             * position:   List [x, y] of where watermark should be placed
-            * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
-            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
+            * size:       Size of image (scaled downwards). Must be in range
+                [0.0, 0.1]. Default is 1.0
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1].
+                Default is 1.0
 
         is_test: Boolean for unit testing. Default is False
 
@@ -114,18 +121,22 @@ def add_emoji_overlay(input_image: Image, specifications: list, is_test: bool = 
     watermark_file = specifications[0]
 
     if type(watermark_file) != str:
-        print("ERROR (add_emoji_overlay): specifications[0] should be a string!")
+        print("ERROR (add_emoji_overlay): specifications[0]"
+              "should be a string!")
         return None
 
     if watermark_file[-4:] != '.png':
-        print("ERROR (add_emoji_overlay): emoji file %s should have \".png\" extension" % watermark_file)
+        print("ERROR (add_emoji_overlay): emoji file %s"
+              "should have \".png\" extension" % watermark_file)
         return None
 
     # TODO: Might have to fix this for Docker
     if is_test:
-        watermark_path = path.abspath("../ui/pymiere/public/emojis/%s" % watermark_file)
+        watermark_path = path.abspath("../ui/pymiere/public/emojis/%s"
+                                      % watermark_file)
     else:
-        watermark_path = path.abspath("./ui/pymiere/public/emojis/%s" % watermark_file)
+        watermark_path = path.abspath("./ui/pymiere/public/emojis/%s"
+                                      % watermark_file)
 
     try:
         watermark_image = Image.open(watermark_path)
@@ -186,7 +197,8 @@ def __colors_in_valid_range(color: tuple) -> bool:
 
     red, green, blue = color
 
-    if not (isinstance(red, int) and isinstance(green, int) and isinstance(blue, int)):
+    if not (isinstance(red, int) and isinstance(green, int)
+            and isinstance(blue, int)):
         return False
 
     if not (0 <= red <= 255 and 0 <= green <= 255 and 0 <= blue <= 255):
@@ -220,7 +232,8 @@ def __watermark_specifications_are_valid(specifications: list):
             * size:       Size of image (scaled downwards).
                 Must be in range [0.0, 0.1]. Default is 1.0
 
-            * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
+            * opacity:    Opacity of the image. Must be in range [0.0, 0.1].
+                Default is 1.0
 
     Returns:
         bool:   True if all specification types and values are valid

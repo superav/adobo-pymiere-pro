@@ -20,14 +20,16 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
         input_img:  The image to be changed
         specifications:
             * factor:  Enhancement factor.
-                * 0.0 give a black and white image, 1.0 gives original image. Value must be above 0.0
+                * 0.0 give a black and white image, 1.0 gives original image.
+                Value must be above 0.0
 
     Returns:
         PIL.Image: Image with saturation changed
     """
     factor = specifications
 
-    if not (isinstance(input_img, Image.Image) and (type(factor) == float or type(factor) == int)):
+    if not (isinstance(input_img, Image.Image)
+            and (type(factor) == float or type(factor) == int)):
         return None
 
     if factor < 0:
@@ -103,7 +105,8 @@ def apply_color_editor(input_img: Image,
 
        Args:
             input_img:  The image to be changed
-            specifications: A list of four ints, being the rgba for the color mask
+            specifications: A list of four ints, being the rgba fo
+                        the color mask
 
        Returns:
            PIL.Image: Image with color mask applied changed
@@ -127,8 +130,10 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
         specifications: list containing the next 3 values:
 
              * alpha: the alpha value of the mask to be applied
-             * color_initial: A list of three ints, being the rgb for the first half of the color mask
-             * color_secondary: A list of three ints, being the rgb for the second half of the color mask
+             * color_initial: A list of three ints, being the rgb for the first
+                half of the color mask
+             * color_secondary: A list of three ints, being the rgb for the
+                second half of the color mask
 
     Returns:
         PIL.Image: Image with color mask applied changed

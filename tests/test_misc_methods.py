@@ -10,9 +10,8 @@ from logic.misc_methods import *
 ASSET_MANAGER = AssetManager('test_user_1')
 
 
+# Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
-
     h1 = image_1.histogram()
     h2 = image_2.histogram()
 
@@ -109,24 +108,27 @@ class TestMiscImageProc(unittest.TestCase):
 
     def test_draw_on_image_correct_output(self):
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_draw_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_draw_1.png',
+                                                          False)
 
-        specifications = [[(100, 1000), (900, 10), (300, 300), (500, 435)], 23, (10, 233, 245)]
+        specifications = [[(100, 1000), (900, 10), (300, 300),
+                           (500, 435)], 23, (10, 233, 245)]
         output = draw_line(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
         input_img = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_draw_2.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_draw_2.png',
+                                                          False)
 
         points = []
 
-        for i in range(150):
-            x = 50 + i * 2
-            y = int(x ** 2 / 250) + 10
+        for idx in range(150):
+            x_pos = 50 + idx * 2
+            y_pos = int(x_pos ** 2 / 250) + 10
 
-            points.append((x, y))
+            points.append((x_pos, y_pos))
 
         specifications = [points, 5, (255, 0, 0)]
 
