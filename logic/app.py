@@ -61,8 +61,8 @@ def create_app():
         elif var == "add-text":
             altered_image = add_text_to_image(
                 input_img, ui_input["specifications"])
-        elif var == "draw-line":
-            altered_image = draw_line(
+        elif var == "draw-lines":
+            altered_image = draw_lines(
                 input_img, ui_input["specifications"])
         elif var == "mirror":
             altered_image = apply_mirror(

@@ -97,8 +97,8 @@ class PencilTool extends Component {
     const filter = [];
     strokes.reduce((acc, stroke) => {
       stroke.points.map((point) => {
-        point[0] = parseFloat(point[0]);
-        point[1] = parseFloat(point[1]);
+        point[0] = parseInt(point[0]);
+        point[1] = parseInt(point[1]);
         return point;
       });
       stroke.fill.map((num) => {return parseInt(num)});
@@ -106,7 +106,7 @@ class PencilTool extends Component {
       return acc;
     }, filter);
 
-    this.props.applyFilter("draw-line", filter);
+    this.props.applyFilter("draw-lines", filter);
     // TODO clean up the strokes in Editing Canvas
     functions.pencil.strokes = [];
   }
