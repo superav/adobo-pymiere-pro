@@ -91,17 +91,24 @@ class PencilTool extends Component {
   }
 
   confirmPencilChanges = () => {
-    const strokes = this.props.getCanvas("functions").pencil.strokes;
-    strokes.forEach(stroke => {
+    const functions = this.props.getCanvas("functions");
+    const strokes = functions.pencil.strokes;
+    
+    const filter = [];
+    strokes.reduce((acc, stroke) => {
       stroke.points.map((point) => {
         point[0] = parseFloat(point[0]);
         point[1] = parseFloat(point[1]);
         return point;
       });
       stroke.fill.map((num) => {return parseInt(num)});
-      this.props.applyFilter("draw-line", [stroke.points, parseInt(stroke.width), stroke.fill]);
-      // TODO create a way to wait for response for each stroke before sending the next stroke. Maybe create progress bar?
-    });
+      acc.push([stroke.points, parseInt(stroke.width), stroke.fill]);
+      return acc;
+    }, filter);
+
+    this.props.applyFilter("draw-line", filter);
+    // TODO clean up the strokes in Editing Canvas
+    functions.pencil.strokes = [];
   }
 
   render() {
