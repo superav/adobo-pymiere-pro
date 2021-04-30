@@ -92,24 +92,25 @@ def deprocess_img(processed_img):
     Returns:
         deprocessed_img:    De-processed image
     """
-    x = processed_img.copy()
-    if len(x.shape) == 4:
-        x = np.squeeze(x, 0)
-    assert len(x.shape) == 3, ("Input to deprocess image must be an image of "
-                               "dimension [1, height, width, channel] or"
-                               "[height, width, channel]")
+    deprocessed_img = processed_img.copy()
+    if len(deprocessed_img.shape) == 4:
+        deprocessed_img = np.squeeze(deprocessed_img, 0)
+    assert len(deprocessed_img.shape) == 3,\
+        ("Input to deprocess image must be an image of "
+         "dimension [1, height, width, channel] or [height, width, channel]")
 
-    if len(x.shape) != 3:
+    if len(deprocessed_img.shape) != 3:
         raise ValueError("Invalid input to deprocessing image")
 
     # perform the inverse of the preprocessiing step
-    x[:, :, 0] += 103.939
-    x[:, :, 1] += 116.779
-    x[:, :, 2] += 123.68
-    x = x[:, :, ::-1]
+    deprocessed_img[:, :, 0] += 103.939
+    deprocessed_img[:, :, 1] += 116.779
+    deprocessed_img[:, :, 2] += 123.68
 
-    x = np.clip(x, 0, 255).astype('uint8')
-    return x
+    deprocessed_img = deprocessed_img[:, :, ::-1]
+    deprocessed_img = np.clip(deprocessed_img, 0, 255).astype('uint8')
+
+    return deprocessed_img
 
 
 # Content layer
@@ -161,9 +162,9 @@ def gram_matrix(input_tensor):
         gram_matrix:    Gram matrix of tensor
     """
     channels = int(input_tensor.shape[-1])
-    a = tf.reshape(input_tensor, [-1, channels])
-    n = tf.shape(a)[0]
-    gram = tf.matmul(a, a, transpose_a=True)
+    reshaped_tensor = tf.reshape(input_tensor, [-1, channels])
+    n = tf.shape(reshaped_tensor)[0]
+    gram = tf.matmul(reshaped_tensor, reshaped_tensor, transpose_a=True)
     return gram / tf.cast(n, tf.float32)
 
 
@@ -336,7 +337,7 @@ def run_style_transfer(content_path,
 
     imgs = []
 
-    for i in range(num_iterations):
+    for idx in range(num_iterations):
         grads, all_loss = compute_grads(cfg)
         loss, style_score, content_score = all_loss
         opt.apply_gradients([(grads, init_image)])
@@ -349,7 +350,7 @@ def run_style_transfer(content_path,
             best_loss = loss
             best_img = deprocess_img(init_image.numpy())
 
-        if i % display_interval == 0:
+        if idx % display_interval == 0:
             start_time = time.time()
 
             # get the concrete numpy array
@@ -358,11 +359,12 @@ def run_style_transfer(content_path,
             imgs.append(plot_img)
             IPython.display.clear_output(wait=True)
             IPython.display.display_png(Image.fromarray(plot_img))
-            print('Iteration: {}'.format(i))
+            print('Iteration: {}'.format(idx))
             print('Total loss: {:.4e}, '
                   'style loss: {:.4e}, '
                   'content loss: {:.4e}, '
-                  'time: {:.4f}s'.format(loss, style_score, content_score, time.time() - start_time))
+                  'time: {:.4f}s'.format(loss, style_score, content_score,
+                                         time.time() - start_time))
 
     print('Total time: {:.4f}s'.format(time.time() - global_start))
     IPython.display.clear_output(wait=True)
@@ -446,4 +448,3 @@ def run_nst(content_url: str, style_url: str,
                                          num_iterations=1000)
 
     return Image.fromarray(best), IMAGE_URLS
-    # return Image.fromarray(best)
