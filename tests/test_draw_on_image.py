@@ -80,7 +80,7 @@ class TestDrawOnImageCorrectOutputs(unittest.TestCase):
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_draw_1.png', False)
 
-        specifications = [[(100, 1000), (900, 10), (300, 300), (500, 435)], 23, (10, 233, 245)]
+        specifications = [[[100, 1000], [900, 10], [300, 300], [500, 435]], 23, [10, 233, 245]]
         output = draw_line(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
 
@@ -96,9 +96,9 @@ class TestDrawOnImageCorrectOutputs(unittest.TestCase):
             x = 50 + i * 2
             y = int(x ** 2 / 250) + 10
 
-            points.append((x, y))
+            points.append([x, y])
 
-        specifications = [points, 5, (255, 0, 0)]
+        specifications = [points, 5, [255, 0, 0]]
 
         output = draw_line(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
