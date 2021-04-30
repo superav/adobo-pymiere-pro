@@ -126,7 +126,7 @@ class TestOverlayInputValidation(unittest.TestCase):
         emoji_image = "bugcat_blush.png"
 
         specifications = [emoji_image, [40, 40], 0.4, 1.0]
-        output = add_emoji_overlay(input_img, specifications)
+        output = add_emoji_overlay(input_img, specifications, is_test=True)
 
         self.assertTrue(isinstance(output, Image.Image))
 
@@ -169,7 +169,7 @@ class TestOverlayImageProc(unittest.TestCase):
         emoji = "bugcat_cry.png"
 
         specifications = [emoji, [400, 400], 0.5, 1.0]
-        output = add_emoji_overlay(input_img, specifications)
+        output = add_emoji_overlay(input_img, specifications, is_test=True)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
@@ -180,7 +180,7 @@ class TestOverlayImageProc(unittest.TestCase):
         emoji = "bugcat_derp.png"
 
         specifications = [emoji, (40, 60), 0.5, 1.0]
-        output = add_emoji_overlay(input_img, specifications)
+        output = add_emoji_overlay(input_img, specifications, is_test=True)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)

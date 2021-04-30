@@ -94,7 +94,7 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     return base_img
 
 
-def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
+def add_emoji_overlay(input_image: Image, specifications: list, is_test: bool = False) -> Image:
     """
     Args:
         input_image: Input image
@@ -104,6 +104,8 @@ def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
             * position:   List [x, y] of where watermark should be placed
             * size:       Size of image (scaled downwards). Must be in range [0.0, 0.1]. Default is 1.0
             * opacity:    Opacity of the image. Must be in range [0.0, 0.1]. Default is 1.0
+
+        is_test: Boolean for unit testing. Default is False
 
     Returns:
 
@@ -120,7 +122,10 @@ def add_emoji_overlay(input_image: Image, specifications: list) -> Image:
         return None
 
     # TODO: Might have to fix this for Docker
-    watermark_path = path.abspath("./ui/pymiere/public/emojis/%s" % watermark_file)
+    if is_test:
+        watermark_path = path.abspath("../ui/pymiere/public/emojis/%s" % watermark_file)
+    else:
+        watermark_path = path.abspath("./ui/pymiere/public/emojis/%s" % watermark_file)
 
     try:
         watermark_image = Image.open(watermark_path)
