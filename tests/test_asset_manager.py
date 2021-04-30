@@ -64,7 +64,9 @@ class TestListBucket(unittest.TestCase):
 
     def test_list_all_files(self):
         asset_manager = AssetManager('test_asset_manager')
-        client = boto3.client('s3')
+        client = boto3.client('s3',
+                              aws_access_key_id='AKIAYA22OMIBDDNHCQWM',
+                              aws_secret_access_key='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')
         expected_list = []
 
         for key in client.list_objects(Bucket='adobo-pymiere')['Contents']:
