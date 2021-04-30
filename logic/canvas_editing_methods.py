@@ -94,7 +94,7 @@ def __crop_in_given_dimensions(width: int, height: int, top: int, left: int,
     Returns:
         bool: bool that says if the crop will fit in the dimensions
     """
-    if width > right > left >= 0 and height > bottom > top >= 0:
+    if width >= right > left >= 0 and height >= bottom > top >= 0:
         return True
     else:
         return False

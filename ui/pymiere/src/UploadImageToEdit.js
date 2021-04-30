@@ -11,7 +11,7 @@ const config = {
     region: REGION,
     accessKeyId: ACCESS_KEY,
     secretAccessKey: SECRET_ACCESS_KEY,
-    dirName: "test_user_1/image_projects",
+    dirName: "test_user_integration/image_projects",
 }
 
 const UploadImageToEdit = (props) => {
