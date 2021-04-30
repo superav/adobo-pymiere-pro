@@ -184,4 +184,5 @@ class AssetManager:
                 print(obj['Key'])
                 deletion_list['Objects'].append({'Key': obj['Key']})
 
-        self.s3_client.delete_objects(Bucket=BUCKET_NAME, Delete=deletion_list)
+        if deletion_list['Objects']:
+            self.s3_client.delete_objects(Bucket=BUCKET_NAME, Delete=deletion_list)
