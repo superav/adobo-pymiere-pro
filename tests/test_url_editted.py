@@ -10,9 +10,8 @@ from logic.asset_manager import AssetManager
 ASSET_MANAGER = AssetManager('test_user_1')
 
 
+# Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_hue_feature_test_images():
-    # Reference: https://stackoverflow.com/questions/
-    #               1927660/compare-two-images-the-python-linux-way
     ret = json.loads(sys.argv[1])
 
     file_name = ret["image_name"] + "." + ret["file_extension"]

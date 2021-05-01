@@ -10,8 +10,8 @@ from logic.color_methods import *
 ASSET_MANAGER = AssetManager('test_user_1')
 
 
+# Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 
     h1 = image_1.histogram()
     h2 = image_2.histogram()
@@ -103,7 +103,8 @@ class TestColorImageProc(unittest.TestCase):
     def test_saturation_correct_output(self):
         # Saturation: 0.5
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_saturation_1.png', False)
+        expected_img =\
+            ASSET_MANAGER.import_image_from_s3('test_2_saturation_1.png', False)
 
         output = change_saturation(input_img, 0.5)
         root_mean_square = compare_images(output, expected_img)
@@ -112,7 +113,8 @@ class TestColorImageProc(unittest.TestCase):
 
         # Saturation: 1.5
         input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_saturation_1.png', False)
+        expected_img =\
+            ASSET_MANAGER.import_image_from_s3('test_3_saturation_1.png', False)
 
         output = change_saturation(input_img, 1.5)
         root_mean_square = compare_images(output, expected_img)
@@ -128,21 +130,24 @@ class TestColorImageProc(unittest.TestCase):
 
     def test_opacity_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('opacity_expected_50.png', False)
+        fin =\
+            ASSET_MANAGER.import_image_from_s3('opacity_expected_50.png', False)
         im2 = opacity_editor(im1, 50)
 
         self.assertTrue(compare_images(fin, im2) == 0)
 
     def test_recoloration_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('gradient_expected_255_0_0_128.png', False)
+        fin =\
+            ASSET_MANAGER.import_image_from_s3('gradient_expected_255_0_0_128.png', False)
         im2 = apply_color_editor(im1, [255, 0, 0, 128])
 
         self.assertTrue(compare_images(fin, im2) == 0)
 
     def test_gradient_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('filter_expected_70_255_0_0_0_0_255.png', False)
+        fin =\
+            ASSET_MANAGER.import_image_from_s3('filter_expected_70_255_0_0_0_0_255.png', False)
         im2 = apply_gradient_editor(im1, [70, [255, 0, 0], [0, 0, 255]])
 
         self.assertTrue(compare_images(fin, im2) == 0)

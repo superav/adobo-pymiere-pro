@@ -64,9 +64,9 @@ def draw_lines(image: Image, specifications: list) -> Image:
 
     Args:
         image:  Input image
-        specifications: A list of strokes. Each stroke will consist of:
-            * points: A list of points to draw the line. Is a list of tuples ``[(x1, y1), (x2, y2)...]``.
-            Must be at least 2 tuples.
+        specifications: A list of specs (in order)
+            * points: A list of points to draw the line. Is a list of tuples
+            ``[(x1, y1), (x2, y2)...]``. Must be at least 2 tuples.
 
             * stroke_size:    Size of line
             * color:  Line color, formatted as (R, G, B)
@@ -126,8 +126,14 @@ def __all_points_are_valid(points: list) -> bool:
 def __strokes_are_valid(stroke: list) -> bool:
     """
     Args:
+<<<<<<< HEAD
         stroke:
             points: A list of points to draw the line. Is a list of tuples [(x1, y1), (x2, y2)...]
+=======
+        specifications:
+            points: A list of points to draw the line. Is a list of tuples
+                [(x1, y1), (x2, y2)...]
+>>>>>>> 0fddb08 (Style fixes)
                     Must be at least 2 tuples
             stroke_size:    Size of line
             color:  Line color, formatted as [R, G, B]

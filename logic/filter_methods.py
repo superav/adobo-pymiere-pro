@@ -1,8 +1,8 @@
 from PIL import Image, ImageFilter, ImageOps
 
 """
-Methods that generally apply a filter over an entire image. These are generally methods
-that apply a complex mathematical operation across the image.
+Methods that generally apply a filter over an entire image. These are
+generally methods that apply a complex mathematical operation across the image.
 
 Included Methods:
     * Gaussian Blur
@@ -41,7 +41,8 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
 
     Args:
         input_img:  The image to be changed
-        specifications: int to determine the threshold of the solarization effect. Should be in range [0, 255]
+        specifications: int to determine the threshold of the solarization
+            effect. Should be in range [0, 255]
 
     Returns:
         PIL.Image: Image with color mask applied changed
@@ -78,9 +79,11 @@ def apply_red_eye_filter(input_img: Image, specifications: list) -> Image:
 
     Args:
         input_img:  Input image
-        specifications: List of integers denoting area to perform red eye removal.
+        specifications: List of integers denoting area to perform red eye
+            removal.
 
-            * Integers should be in this format: [left x value, top y value, right x value, bottom y value]
+            * Integers should be in this format: [left x value, top y value,
+            right x value, bottom y value]
 
     Returns:
         PIL.Image: Image with red eye removed

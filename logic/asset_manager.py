@@ -6,7 +6,8 @@ BUCKET_NAME = 'adobo-pymiere'
 
 
 class AssetManager:
-    """ This is a class that will manage uploading and downloading assets from the S3 bucket.
+    """ This is a class that will manage uploading and downloading assets
+    from the S3 bucket.
 
     The file structure of the S3 bucket is as follows::
 
@@ -24,8 +25,8 @@ class AssetManager:
     $   └── _other_username/
     $       └── [same internal file structure as _username]
 
-    All images loaded into the S3 bucket will be in PNG format (so that we can also use the
-    alpha channel when doing image processing)
+    All images loaded into the S3 bucket will be in PNG format
+    (so that we can also use the alpha channel when doing image processing)
     """
 
     def __init__(self, username: str):
@@ -95,27 +96,35 @@ class AssetManager:
         return bucket_list
 
     def import_image_from_s3(self,
-                             image_name: str = "working_copy.png", is_working_copy: bool = True) -> Image:
+                             image_name: str = "working_copy.png",
+                             is_working_copy: bool = True) -> Image:
         """
         Args:
-            image_name: Name of image in S3 bucket to be read into a buffer. Must have .png extension
-            is_working_copy: If the image being imported is the working copy of the project
+            image_name: Name of image in S3 bucket to be read into a buffer.
+                        Must have .png extension
+
+            is_working_copy: If the image being imported is the working copy
+                        of the project
 
         Returns:
             PIL.Image:  A PIL.Image if image exists in bucket. Otherwise, None
         """
 
         if image_name[-4:] != '.png':
-            print("ERROR (import_image_from_s3): %s must have '.png' extension" % image_name)
+            print("ERROR (import_image_from_s3): %s must have '.png' extension"
+                  % image_name)
             return None
 
         try:
             if is_working_copy:
                 location = "%s/image_projects/%s" % (self.username, image_name)
             else:
-                location = "%s/image_projects/assets/%s" % (self.username, image_name)
+                location = "%s/image_projects/assets/%s"\
+                           % (self.username, image_name)
 
-            file_byte_string = self.s3_client.get_object(Bucket=BUCKET_NAME, Key=location)['Body'].read()
+            file_byte_string =\
+                self.s3_client.get_object(Bucket=BUCKET_NAME,
+                                          Key=location)['Body'].read()
 
             return Image.open(BytesIO(file_byte_string)).convert('RGBA')
 
@@ -124,15 +133,20 @@ class AssetManager:
             return None
 
     def upload_image_to_s3(self, input_image: Image,
-                           image_name: str = "working_copy.png", is_working_copy: bool = True) -> str:
+                           image_name: str = "working_copy.png",
+                           is_working_copy: bool = True) -> str:
         """
         Args:
             input_image:  A PIL.Image
-            image_name:   Name of the image (with the .png extension). Default is "working_copy.png"
-            is_working_copy: If the image to be uploaded is the working copy of the project. Default is True
+            image_name:   Name of the image (with the .png extension).
+                          Default is "working_copy.png"
+
+            is_working_copy: If the image to be uploaded is the working copy
+                          of the project. Default is True
 
         Returns:
-            str: The URL to the file in the S3 bucket on success. Otherwise, will return an appropriate error message
+            str: The URL to the file in the S3 bucket on success. Otherwise,
+            will return an appropriate error message
         """
 
         if image_name[-4:] != '.png':
@@ -143,7 +157,8 @@ class AssetManager:
         if is_working_copy:
             location = "%s/image_projects/%s" % (self.username, image_name)
         else:
-            location = "%s/image_projects/assets/%s" % (self.username, image_name)
+            location = "%s/image_projects/assets/%s"\
+                       % (self.username, image_name)
 
         self.s3_client.upload_file("__temp__.png", BUCKET_NAME, location)
 
@@ -151,20 +166,24 @@ class AssetManager:
 
         return url
 
-    def upload_temp_image_to_s3(self, input_image_path, s3_image_name: str) -> str:
+    def upload_temp_image_to_s3(self, input_image_path,
+                                s3_image_name: str) -> str:
         """
         Args:
             input_image_path:  Path to temp image on disk
-            s3_image_name:     Name of the image (with the .png extension) in s3.
+            s3_image_name:     Name of the image (with the
+                               .png extension) in s3.
 
         Returns:
-            str: The URL to the file in the S3 bucket on success. Otherwise, will return an appropriate error message
+            str: The URL to the file in the S3 bucket on success. Otherwise,
+            will return an appropriate error message
         """
 
         if s3_image_name[-4:] != '.png':
             return "Missing \".png\" extension!"
 
-        location = "%s/image_projects/assets/temp/%s" % (self.username, s3_image_name)
+        location = "%s/image_projects/assets/temp/%s"\
+                   % (self.username, s3_image_name)
 
         self.s3_client.upload_file(input_image_path, BUCKET_NAME, location)
 
@@ -176,7 +195,8 @@ class AssetManager:
         """
         Clears all temporary files from S3 bucket
         """
-        objects_list = self.s3_client.list_objects(Bucket=BUCKET_NAME).get('Contents', [])
+        objects_list =\
+            self.s3_client.list_objects(Bucket=BUCKET_NAME).get('Contents', [])
         deletion_list = {'Objects': []}
 
         for obj in objects_list:
@@ -184,4 +204,6 @@ class AssetManager:
                 print(obj['Key'])
                 deletion_list['Objects'].append({'Key': obj['Key']})
 
-        self.s3_client.delete_objects(Bucket=BUCKET_NAME, Delete=deletion_list)
+        if deletion_list['Objects']:
+            self.s3_client.delete_objects(Bucket=BUCKET_NAME,
+                                          Delete=deletion_list)

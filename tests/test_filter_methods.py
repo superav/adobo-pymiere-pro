@@ -10,8 +10,8 @@ from logic.filter_methods import *
 ASSET_MANAGER = AssetManager('test_user_1')
 
 
+# Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 
     h1 = image_1.histogram()
     h2 = image_2.histogram()
@@ -69,7 +69,8 @@ class TestFilterImageProc(unittest.TestCase):
     def test_gaussian_blur_correct_output(self):
         # Blur radius: 9
         input_img = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_gaussian_1.png', False)
+        expected_img =\
+            ASSET_MANAGER.import_image_from_s3('test_1_gaussian_1.png', False)
 
         output = gaussian_blur(input_img, 9)
         root_mean_square = compare_images(expected_img, output)
@@ -78,7 +79,8 @@ class TestFilterImageProc(unittest.TestCase):
 
         # Blur radius: 2
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_gaussian_1.png', False)
+        expected_img =\
+            ASSET_MANAGER.import_image_from_s3('test_2_gaussian_1.png', False)
 
         output = gaussian_blur(input_img, 2)
         root_mean_square = compare_images(expected_img, output)
@@ -87,7 +89,8 @@ class TestFilterImageProc(unittest.TestCase):
 
     def test_solarize_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('solarize_expected_128.png', False)
+        fin =\
+            ASSET_MANAGER.import_image_from_s3('solarize_expected_128.png', False)
         im2 = apply_solarize(im1, 128)
 
         self.assertTrue(compare_images(fin, im2) == 0)
@@ -101,7 +104,8 @@ class TestFilterImageProc(unittest.TestCase):
 
     def test_red_eye_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('redeye.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('red_eye_expected_35_110_150_150.png', False)
+        fin =\
+            ASSET_MANAGER.import_image_from_s3('red_eye_expected_35_110_150_150.png', False)
         im2 = apply_red_eye_filter(im1, [35, 110, 150, 150])
 
         self.assertTrue(compare_images(fin, im2) == 0)

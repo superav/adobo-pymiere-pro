@@ -10,8 +10,9 @@ from logic.overlay_methods import *
 ASSET_MANAGER = AssetManager('test_user_1')
 
 
+# Reference:
+# https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 
     h1 = image_1.histogram()
     h2 = image_2.histogram()
@@ -74,12 +75,24 @@ class TestOverlayInputValidation(unittest.TestCase):
 
     def test_add_text_to_image_invalid_input(self):
         im = 5
-        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
+        specifications = ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]
+
+        self.assertEqual(None, add_text_to_image(im, specifications))
+
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        self.assertEqual(None, add_text_to_image(im, [5, "arial.ttf", 50, [50, 50], [200, 200, 200]]))
-        self.assertEqual(None, add_text_to_image(im, ["hello", 5, 50, [50, 50], [200, 200, 200]]))
-        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50, 50], [200, 200, 200]]))
-        self.assertEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200]]))
+
+        specifications = [5, "arial.ttf", 50, [50, 50], [200, 200, 200]]
+        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        specifications = ["hello", 5, 50, [50, 50], [200, 200, 200]]
+        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        specifications = ["hello", "arial.ttf", 50, [50, 50, 50],
+                          [200, 200, 200]]
+        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        specifications = ["hello", "arial.ttf", 50, [50, 50], [200, 200]]
+        self.assertEqual(None, add_text_to_image(im, specifications))
 
     def test_add_emoji_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -126,7 +139,7 @@ class TestOverlayInputValidation(unittest.TestCase):
         emoji_image = "bugcat_blush.png"
 
         specifications = [emoji_image, [40, 40], 0.4, 1.0]
-        output = add_emoji_overlay(input_img, specifications)
+        output = add_emoji_overlay(input_img, specifications, is_test=True)
 
         self.assertTrue(isinstance(output, Image.Image))
 
@@ -136,7 +149,8 @@ class TestOverlayImageProc(unittest.TestCase):
         # Position: (40, 40), Size: 0.5, Opacity: 1.0
         input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
         watermark = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_watermark_1.png', False)
+        expected_img =\
+            ASSET_MANAGER.import_image_from_s3('test_3_watermark_1.png', False)
 
         specifications = [watermark, (40, 40), 0.5, 1.0]
         output = add_watermark_image(input_img, specifications)
@@ -147,7 +161,8 @@ class TestOverlayImageProc(unittest.TestCase):
         # Position: (40, 60), Size: 1.0, Opacity: 0.1
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
         watermark = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_watermark_1.png', False)
+        expected_img =\
+            ASSET_MANAGER.import_image_from_s3('test_2_watermark_1.png', False)
 
         specifications = [watermark, (40, 60), 1.0, 0.1]
         output = add_watermark_image(input_img, specifications)
@@ -157,30 +172,37 @@ class TestOverlayImageProc(unittest.TestCase):
 
     def test_add_text_to_image_correct_output(self):
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        self.assertNotEqual(None, add_text_to_image(im, ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]))
+        specifications = ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]
+
+        self.assertNotEqual(None, add_text_to_image(im, specifications))
+
         fin = ASSET_MANAGER.import_image_from_s3('test_2_hello.png', False)
         rms = compare_images(im, fin)
+
         self.assertEqual(0, rms)
 
     def test_add_emoji_correct_output(self):
-        # Watermark: "bugcat_cry.png" Position: (40, 40), Size: 0.5, Opacity: 1.0
+        # Watermark: "bugcat_cry.png"
+        # Position: (40, 40), Size: 0.5, Opacity: 1.0
         input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_emoji_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_emoji_1.png',
+                                                          False)
         emoji = "bugcat_cry.png"
 
         specifications = [emoji, [400, 400], 0.5, 1.0]
-        output = add_emoji_overlay(input_img, specifications)
+        output = add_emoji_overlay(input_img, specifications, is_test=True)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)
 
         # Emoji: "bugcat_derp.png" Position: (40, 60), Size: 0.5, Opacity: 1.0
         input_img = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_emoji_2.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_emoji_2.png',
+                                                          False)
         emoji = "bugcat_derp.png"
 
         specifications = [emoji, (40, 60), 0.5, 1.0]
-        output = add_emoji_overlay(input_img, specifications)
+        output = add_emoji_overlay(input_img, specifications, is_test=True)
         root_mean_square = compare_images(expected_img, output)
 
         self.assertEqual(0, root_mean_square)

@@ -10,8 +10,8 @@ from logic.canvas_editing_methods import *
 ASSET_MANAGER = AssetManager('test_user_1')
 
 
+# Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 
     h1 = image_1.histogram()
     h2 = image_2.histogram()
@@ -91,7 +91,8 @@ class TestCanvasEditingImageProc(unittest.TestCase):
     def test_rotate_image_correct_output(self):
         # 90 degrees
         input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_1.png',
+                                                          False)
 
         output = rotate_image(input_img, 90)
         root_mean_square = compare_images(expected_img, output)
@@ -100,7 +101,8 @@ class TestCanvasEditingImageProc(unittest.TestCase):
 
         # 370 degrees
         input_img = ASSET_MANAGER.import_image_from_s3('test_3.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_2.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_3_rotate_2.png',
+                                                          False)
 
         output = rotate_image(input_img, 370)
         root_mean_square = compare_images(expected_img, output)
@@ -110,7 +112,8 @@ class TestCanvasEditingImageProc(unittest.TestCase):
     def test_scale_image_correct_output(self):
         # 0.1
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_scale_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_2_scale_1.png',
+                                                          False)
 
         output = scale_image(input_img, 0.1)
         root_mean_square = compare_images(expected_img, output)
@@ -119,7 +122,8 @@ class TestCanvasEditingImageProc(unittest.TestCase):
 
         # 0.5
         input_img = ASSET_MANAGER.import_image_from_s3('test_1.png', False)
-        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_scale_1.png', False)
+        expected_img = ASSET_MANAGER.import_image_from_s3('test_1_scale_1.png',
+                                                          False)
 
         output = scale_image(input_img, 0.5)
         root_mean_square = compare_images(expected_img, output)

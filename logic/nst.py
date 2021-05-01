@@ -44,7 +44,8 @@ def load_img(path_to_im):
 
     long = max(img.size)
     scale = max_dim / long
-    img = img.resize((round(img.size[0] * scale), round(img.size[1] * scale)), Image.ANTIALIAS)
+    img = img.resize((round(img.size[0] * scale), round(img.size[1] * scale)),
+                     Image.ANTIALIAS)
 
     img = kp_image.img_to_array(img)
 
@@ -91,23 +92,25 @@ def deprocess_img(processed_img):
     Returns:
         deprocessed_img:    De-processed image
     """
-    x = processed_img.copy()
-    if len(x.shape) == 4:
-        x = np.squeeze(x, 0)
-    assert len(x.shape) == 3, ("Input to deprocess image must be an image of "
-                               "dimension [1, height, width, channel] or [height, width, channel]")
+    deprocessed_img = processed_img.copy()
+    if len(deprocessed_img.shape) == 4:
+        deprocessed_img = np.squeeze(deprocessed_img, 0)
+    assert len(deprocessed_img.shape) == 3,\
+        ("Input to deprocess image must be an image of "
+         "dimension [1, height, width, channel] or [height, width, channel]")
 
-    if len(x.shape) != 3:
+    if len(deprocessed_img.shape) != 3:
         raise ValueError("Invalid input to deprocessing image")
 
     # perform the inverse of the preprocessiing step
-    x[:, :, 0] += 103.939
-    x[:, :, 1] += 116.779
-    x[:, :, 2] += 123.68
-    x = x[:, :, ::-1]
+    deprocessed_img[:, :, 0] += 103.939
+    deprocessed_img[:, :, 1] += 116.779
+    deprocessed_img[:, :, 2] += 123.68
 
-    x = np.clip(x, 0, 255).astype('uint8')
-    return x
+    deprocessed_img = deprocessed_img[:, :, ::-1]
+    deprocessed_img = np.clip(deprocessed_img, 0, 255).astype('uint8')
+
+    return deprocessed_img
 
 
 # Content layer
@@ -129,7 +132,8 @@ def get_model():
     Returns:
         NST model
     """
-    vgg = tf.keras.applications.vgg19.VGG19(include_top=False, weights='imagenet')
+    vgg = tf.keras.applications.vgg19.VGG19(include_top=False,
+                                            weights='imagenet')
     vgg.trainable = False
     style_outputs = [vgg.get_layer(name).output for name in style_layers]
     content_outputs = [vgg.get_layer(name).output for name in content_layers]
@@ -158,9 +162,9 @@ def gram_matrix(input_tensor):
         gram_matrix:    Gram matrix of tensor
     """
     channels = int(input_tensor.shape[-1])
-    a = tf.reshape(input_tensor, [-1, channels])
-    n = tf.shape(a)[0]
-    gram = tf.matmul(a, a, transpose_a=True)
+    reshaped_tensor = tf.reshape(input_tensor, [-1, channels])
+    n = tf.shape(reshaped_tensor)[0]
+    gram = tf.matmul(reshaped_tensor, reshaped_tensor, transpose_a=True)
     return gram / tf.cast(n, tf.float32)
 
 
@@ -197,12 +201,15 @@ def get_feature_representations(model, content_path, style_path):
     style_outputs = model(style_image)
     content_outputs = model(content_image)
 
-    style_features = [style_layer[0] for style_layer in style_outputs[:num_style_layers]]
-    content_features = [content_layer[0] for content_layer in content_outputs[num_style_layers:]]
+    style_features = [style_layer[0] for style_layer
+                      in style_outputs[:num_style_layers]]
+    content_features = [content_layer[0] for content_layer
+                        in content_outputs[num_style_layers:]]
     return style_features, content_features
 
 
-def compute_loss(model, loss_weights, init_image, gram_style_features, content_features):
+def compute_loss(model, loss_weights, init_image, gram_style_features,
+                 content_features):
     """
     Args:
         model:  NST model
@@ -228,13 +235,17 @@ def compute_loss(model, loss_weights, init_image, gram_style_features, content_f
 
     weight_per_style_layer = 1.0 / float(num_style_layers)
 
-    for target_style, comb_style in zip(gram_style_features, style_output_features):
-        style_score += weight_per_style_layer * get_style_loss(comb_style[0], target_style)
+    for target_style, comb_style in zip(gram_style_features,
+                                        style_output_features):
+        style_score += weight_per_style_layer * get_style_loss(comb_style[0],
+                                                               target_style)
 
     weight_per_content_layer = 1.0 / float(num_content_layers)
 
-    for target_content, comb_content in zip(content_features, content_output_features):
-        content_score += weight_per_content_layer * get_content_loss(comb_content[0], target_content)
+    for target_content, comb_content in zip(content_features,
+                                            content_output_features):
+        content_score += weight_per_content_layer *\
+                         get_content_loss(comb_content[0], target_content)
 
     style_score *= style_weight
     content_score *= content_weight
@@ -285,8 +296,10 @@ def run_style_transfer(content_path,
     for layer in model.layers:
         layer.trainable = False
 
-    style_features, content_features = get_feature_representations(model, content_path, style_path)
-    gram_style_features = [gram_matrix(style_feature) for style_feature in style_features]
+    style_features, content_features =\
+        get_feature_representations(model, content_path, style_path)
+    gram_style_features = [gram_matrix(style_feature) for
+                           style_feature in style_features]
 
     # Set initial image
     init_image = load_and_process_img(content_path)
@@ -324,7 +337,7 @@ def run_style_transfer(content_path,
 
     imgs = []
 
-    for i in range(num_iterations):
+    for idx in range(num_iterations):
         grads, all_loss = compute_grads(cfg)
         loss, style_score, content_score = all_loss
         opt.apply_gradients([(grads, init_image)])
@@ -337,7 +350,7 @@ def run_style_transfer(content_path,
             best_loss = loss
             best_img = deprocess_img(init_image.numpy())
 
-        if i % display_interval == 0:
+        if idx % display_interval == 0:
             start_time = time.time()
 
             # get the concrete numpy array
@@ -346,22 +359,25 @@ def run_style_transfer(content_path,
             imgs.append(plot_img)
             IPython.display.clear_output(wait=True)
             IPython.display.display_png(Image.fromarray(plot_img))
-            print('Iteration: {}'.format(i))
+            print('Iteration: {}'.format(idx))
             print('Total loss: {:.4e}, '
                   'style loss: {:.4e}, '
                   'content loss: {:.4e}, '
-                  'time: {:.4f}s'.format(loss, style_score, content_score, time.time() - start_time))
+                  'time: {:.4f}s'.format(loss, style_score, content_score,
+                                         time.time() - start_time))
 
     print('Total time: {:.4f}s'.format(time.time() - global_start))
     IPython.display.clear_output(wait=True)
     plt.figure(figsize=(14, 4))
 
-    for i, img in enumerate(imgs):
+    for idx, img in enumerate(imgs):
         if ASSET_MANAGER:
             plt.axis('off')
             image_name = "__temp__.png"
             plt.savefig(image_name, bbox_inches='tight', pad_inches=0)
-            image_url = ASSET_MANAGER.upload_temp_image_to_s3("__temp__.png", "nst_temp_%s.png" % i)
+            image_url =\
+                ASSET_MANAGER.upload_temp_image_to_s3("__temp__.png",
+                                                      "nst_temp_%s.png" % idx)
             IMAGE_URLS.append(image_url)
         # plt.subplot(num_rows, num_cols, i + 1)
         # plt.imshow(img)
@@ -399,13 +415,16 @@ def show_results(best_img, content_path, style_path, show_large_final=True):
         plt.show()
 
 
-def run_nst(content_url: str, style_url: str, asset_manager: AssetManager) -> tuple:
-    """
-    Performs NST on the image. This is the only method you have to call to run NST
+def run_nst(content_url: str, style_url: str,
+            asset_manager: AssetManager) -> tuple:
+    """ Performs NST on the image. This is the only method you have to call
+    to run NST
 
     Args:
-        content_url:   URL of the image (in the S3 bucket) that will have NST performed on it
-        style_url:     URL of the image (in the S3 bucket) that will be the style reference for NST
+        content_url:   URL of the image (in the S3 bucket) that will have
+                       NST performed on it
+        style_url:     URL of the image (in the S3 bucket) that will be the
+                       style reference for NST
         asset_manager: AssetManager (to handle file uploading)
 
     Returns:
@@ -425,7 +444,7 @@ def run_nst(content_url: str, style_url: str, asset_manager: AssetManager) -> tu
     content_path = tf.keras.utils.get_file(os.path.basename(content_url)[-128:], content_url)
     style_path = tf.keras.utils.get_file(os.path.basename(style_url)[-128:], style_url)
 
-    best, best_loss = run_style_transfer(content_path, style_path, num_iterations=1000)
+    best, best_loss = run_style_transfer(content_path, style_path,
+                                         num_iterations=1000)
 
     return Image.fromarray(best), IMAGE_URLS
-    # return Image.fromarray(best)
