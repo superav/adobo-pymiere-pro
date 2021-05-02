@@ -5,7 +5,6 @@ RUN cd docker_root
 WORKDIR /docker_root
 RUN mkdir logic
 
-ADD /logic /docker_root/logic
 ADD requirements.txt /docker_root
 ADD /fonts/calibri.ttf /usr/share/fonts/truetype/calibri/calibri.ttf
 ADD /fonts/comic_sans.ttf /usr/share/fonts/truetype/comic_sans/comic_sans.ttf
