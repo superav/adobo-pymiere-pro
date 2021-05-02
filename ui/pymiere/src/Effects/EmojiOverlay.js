@@ -63,7 +63,7 @@ export default class EmojiOverlay extends Component {
     this.setState({ scale: v });
     const functions = this.props.getCanvas("functions");
     // Clamps scale to prevent errors
-    if (v < 0.001) v = 0.001;
+    if (v < 0.002) v = 0.002;
     if (v > 0.999) v = 0.999;
     functions.emoji[3] = v;
     this.props.setCanvas("functions", functions);
