@@ -32,7 +32,7 @@ class EditingCanvas extends Component {
           fill: [0, 0, 0],
           width: 4,
         },
-        emoji: [null, 0, 0, 1, 1]
+        emoji: [null, 0, 0, 0.999, 1]
       },
     };
     this.mousePos = [0, 0];

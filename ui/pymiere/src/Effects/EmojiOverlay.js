@@ -12,7 +12,7 @@ export default class EmojiOverlay extends Component {
       "okay", "owo", "punch", "shake", "shock", "smile", "sparkle", "stare"
     ];
     this.state = {
-      scale: 1,
+      scale: 0.999,
       opacity: 1
     }
     this.emojiIdx = 0;
@@ -62,6 +62,9 @@ export default class EmojiOverlay extends Component {
   onScaleChange = (e, v) => {
     this.setState({ scale: v });
     const functions = this.props.getCanvas("functions");
+    // Clamps scale to prevent errors
+    if (v < 0.001) v = 0.001;
+    if (v > 0.999) v = 0.999;
     functions.emoji[3] = v;
     this.props.setCanvas("functions", functions);
   }
