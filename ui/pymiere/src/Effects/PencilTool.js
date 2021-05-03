@@ -29,8 +29,10 @@ class PencilTool extends Component {
   }
 
   componentWillUnmount() {
-    if (this.pencilTool)
+    if (this.pencilTool) {
       this.TogglePencilTool();
+      this.confirmPencilChanges();
+    }
   }
 
   TogglePencilTool = () => {
