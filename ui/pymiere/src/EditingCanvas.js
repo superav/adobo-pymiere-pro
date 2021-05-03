@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./EditingCanvas.css";
+import { withSnackbar } from 'notistack';
 
 class EditingCanvas extends Component {
   image_name = "";
@@ -74,12 +75,27 @@ class EditingCanvas extends Component {
     const url = "http://localhost:5000/logic/image_editor";
     fetch(url, init)
       .then((response) => {
+        if (response.status == 200) {
+          this.props.enqueueSnackbar("Ur Image is being processed", { 
+            variant: 'success',
+            autoHideDuration: 2000,
+          });
+        } else if (response.status == 404 || response.status == 500) {
+          this.props.enqueueSnackbar("Response status was 404 or 500", { 
+            variant: 'error',
+            autoHideDuration: 2000,
+          });
+        }
         return response.json(); // or .text() or .blob() ...
       })
       .then((text) => {
         this.insertImage(text.url);
       })
       .catch((e) => {
+        this.props.enqueueSnackbar("message didn't get sent to server", {
+          variant: 'error',
+          autoHideDuration: 2000,
+        });
         console.log(e);
       });
   };
@@ -403,4 +419,4 @@ class EditingCanvas extends Component {
   }
 }
 
-export default EditingCanvas;
+export default withSnackbar(EditingCanvas);
