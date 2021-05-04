@@ -22,8 +22,10 @@ export default class ViewNSTFilters extends Component {
   }
 
   handleChange = (e, v) => {
-    this.setState({ generation: v });
-    this.setState({newURL: this.state.baseURL + this.state.filterArray[this.state.generation]});
+    this.setState({ generation: v }, () => {
+      this.setState({newURL: this.state.baseURL + this.state.filterArray[this.state.generation]});
+    });
+    
     console.log("Test URL " + this.state.newURL);
   };
 
@@ -36,13 +38,14 @@ export default class ViewNSTFilters extends Component {
       // Get filter array instead of hardcoding
   }
 
+
   render() {
     return (
       <div width="auto">
         <h4>View NST Filters:</h4>
         <br />
-        <Paper variant="outlined" style={{}}>
-          <img src={this.state.newURL}/>
+        <Paper variant="outlined">
+          <img src={this.state.newURL} style={{"max-width": "600px", "max-height": "600px"}}/>
         </Paper>
         <Slider
           value={this.state.generation}
