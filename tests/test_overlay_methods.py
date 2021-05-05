@@ -28,41 +28,47 @@ class TestOverlayInputValidation(unittest.TestCase):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = Image.open("./test_assets/images/test_2.png")
 
-        output = add_watermark_image("bad", 10)
-
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = add_watermark_image("bad", 10)
 
         specifications = [watermark, (10, 10), "nope", 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (10, "no"), "nope", 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (10, 3, 3), "nope", 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
     def test_watermark_image_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = Image.open("./test_assets/images/test_2.png")
 
         specifications = [watermark, (50, 50), 3.0, 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (50, 50), 1.0, 3.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (50, 50), 1.0, -1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (50, 50), -0.2, 3.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
     def test_watermark_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -77,62 +83,76 @@ class TestOverlayInputValidation(unittest.TestCase):
         im = 5
         specifications = ["hello", "arial.ttf", 50, [50, 50], [200, 200, 200]]
 
-        self.assertEqual(None, add_text_to_image(im, specifications))
+        with self.assertRaises(Exception):
+            _ = add_text_to_image(im, specifications)
 
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
 
         specifications = [5, "arial.ttf", 50, [50, 50], [200, 200, 200]]
-        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        with self.assertRaises(Exception):
+            _ = add_text_to_image(im, specifications)
 
         specifications = ["hello", 5, 50, [50, 50], [200, 200, 200]]
-        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        with self.assertRaises(Exception):
+            _ = add_text_to_image(im, specifications)
 
         specifications = ["hello", "arial.ttf", 50, [50, 50, 50],
                           [200, 200, 200]]
-        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        with self.assertRaises(Exception):
+            _ = add_text_to_image(im, specifications)
 
         specifications = ["hello", "arial.ttf", 50, [50, 50], [200, 200]]
-        self.assertEqual(None, add_text_to_image(im, specifications))
+
+        with self.assertRaises(Exception):
+            _ = add_text_to_image(im, specifications)
 
     def test_add_emoji_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = "bugcat_owo.png"
 
-        output = add_watermark_image("bad", 10)
-
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = add_watermark_image("bad", 10)
 
         specifications = [watermark, (10, 10), "nope", 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (10, "no"), "nope", 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (10, 3, 3), "nope", 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
     def test_add_emoji_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = "bugcat_heart.png"
 
         specifications = [watermark, (50, 50), 3.0, 1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (50, 50), 1.0, 3.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (50, 50), 1.0, -1.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
         specifications = [watermark, (50, 50), -0.2, 3.0]
-        output = add_watermark_image(input_img, specifications)
-        self.assertEqual(None, output)
+
+        with self.assertRaises(Exception):
+            _ = add_watermark_image(input_img, specifications)
 
     def test_add_emoji_correct_input(self):
         input_img = Image.open("./test_assets/images/test_2.png")

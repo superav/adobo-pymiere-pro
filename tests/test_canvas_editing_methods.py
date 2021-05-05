@@ -1,6 +1,7 @@
 import math
 import operator
 from functools import reduce
+from http.client import HTTPException
 
 import unittest
 
@@ -25,37 +26,41 @@ def compare_images(image_1, image_2):
 class TestCanvasEditingInputValidation(unittest.TestCase):
     def test_crop_invalid_value(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im2 = crop_editor(im1, [20, 30, 1500, 1000])
-        im3 = crop_editor(im1, [20, 30, 1000, 1500])
-        im4 = crop_editor(im1, [20, 30, 10, 1000])
-        im5 = crop_editor(im1, [20, 30, 1000, 10])
-        im6 = crop_editor(im1, [-20, 30, 700, 700])
-        im7 = crop_editor(im1, [20, -30, 700, 700])
+        with self.assertRaises(Exception):
+            _ = crop_editor(im1, [20, 30, 1500, 1000])
 
-        self.assertEqual(im2, None)
-        self.assertEqual(im3, None)
-        self.assertEqual(im4, None)
-        self.assertEqual(im5, None)
-        self.assertEqual(im6, None)
-        self.assertEqual(im7, None)
+        with self.assertRaises(Exception):
+            _ = crop_editor(im1, [20, 30, 1000, 1500])
+
+        with self.assertRaises(Exception):
+            _ = crop_editor(im1, [20, 30, 10, 1000])
+
+        with self.assertRaises(Exception):
+            _ = crop_editor(im1, [20, 30, 1000, 10])
+
+        with self.assertRaises(Exception):
+            _ = crop_editor(im1, [-20, 30, 700, 700])
+
+        with self.assertRaises(Exception):
+            _ = crop_editor(im1, [20, -30, 700, 700])
 
     def test_scale_image_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        output = scale_image("no", 0.4)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = scale_image("no", 0.4)
 
-        output = scale_image(input_img, input_img)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = scale_image(input_img, input_img)
 
     def test_scale_image_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        output = scale_image(input_img, -0.3)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = scale_image(input_img, -0.3)
 
-        output = scale_image(input_img, 2.0)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = scale_image(input_img, 2.0)
 
     def test_scale_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -66,11 +71,11 @@ class TestCanvasEditingInputValidation(unittest.TestCase):
     def test_rotate_image_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        output = rotate_image("no", 44)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = rotate_image("no", 44)
 
-        output = rotate_image(input_img, (9, 9))
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = rotate_image(input_img, (9, 9))
 
     def test_rotate_image_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")

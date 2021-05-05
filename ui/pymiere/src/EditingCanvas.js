@@ -80,8 +80,13 @@ class EditingCanvas extends Component {
             variant: 'success',
             autoHideDuration: 2000,
           });
-        } else if (response.status == 404 || response.status == 500) {
-          this.props.enqueueSnackbar("Response status was 404 or 500", { 
+        } else if (response.status == 404) {
+          this.props.enqueueSnackbar("Response status was 404", { 
+            variant: 'error',
+            autoHideDuration: 2000,
+          });
+        } else if(response.status == 500) {
+          this.props.enqueueSnackbar(response.json().error, {
             variant: 'error',
             autoHideDuration: 2000,
           });

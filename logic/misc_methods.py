@@ -1,4 +1,5 @@
 from PIL import Image, ImageOps, ImageDraw
+from flask import abort
 
 """
 Methods that don't exactly fit any other category.
@@ -28,7 +29,8 @@ def apply_mirror(input_img: Image, specifications: int) -> Image:
     if specifications == 1:
         return ImageOps.flip(input_img)
 
-    return None
+    error = "apply_mirror: specifications %s is not 1 or 0"
+    abort(500, description=error)
 
 
 def apply_frame(input_img: Image,
@@ -64,7 +66,7 @@ def draw_lines(image: Image, specifications: list) -> Image:
 
     Args:
         image:  Input image
-        specifications: A list of specs (in order)
+        specifications: A list of strokes. Strokes must be formatted as such:
             * points: A list of points to draw the line. Is a list of tuples
             ``[(x1, y1), (x2, y2)...]``. Must be at least 2 tuples.
 
@@ -76,10 +78,12 @@ def draw_lines(image: Image, specifications: list) -> Image:
     """
 
     if not __all_strokes_are_valid(specifications):
-        return None
+        error = "draw_lines: Invalid specifications"
+        abort(500, description=error)
 
     if not isinstance(image, Image.Image):
-        return None
+        error = "draw_lines: Input image must be of type PIL.Image"
+        abort(500, description=error)
 
     output = image.copy()
 
@@ -115,6 +119,9 @@ def __all_points_are_valid(points: list) -> bool:
         if len(point) != 2:
             return False
 
+        if not (type(point) == list or type(point) == tuple):
+            return False
+
         x_pos, y_pos = point
 
         if type(x_pos) != int or type(y_pos) != int:
@@ -126,14 +133,8 @@ def __all_points_are_valid(points: list) -> bool:
 def __strokes_are_valid(stroke: list) -> bool:
     """
     Args:
-<<<<<<< HEAD
         stroke:
             points: A list of points to draw the line. Is a list of tuples [(x1, y1), (x2, y2)...]
-=======
-        specifications:
-            points: A list of points to draw the line. Is a list of tuples
-                [(x1, y1), (x2, y2)...]
->>>>>>> 0fddb08 (Style fixes)
                     Must be at least 2 tuples
             stroke_size:    Size of line
             color:  Line color, formatted as [R, G, B]
@@ -149,7 +150,10 @@ def __strokes_are_valid(stroke: list) -> bool:
     stroke_size = stroke[1]
     color = stroke[2]
 
-    if type(points) != list or type(stroke_size) != int or type(color) != list:
+    if not (type(points) == list and type(stroke_size) == int):
+        return False
+
+    if not (type(color) == list or type(color) == tuple):
         return False
 
     if stroke_size < 0:
