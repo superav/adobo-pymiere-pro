@@ -2,6 +2,7 @@ import os.path as path
 
 from PIL import Image, ImageFont, ImageDraw
 from logic.canvas_editing_methods import scale_image
+from flask import abort
 
 """
 Methods that overlay text or image(s) over the input image.
@@ -37,13 +38,16 @@ def add_text_to_image(image: Image, specifications: list) -> Image:
     color = tuple(specifications[4])
 
     if not isinstance(image, Image.Image):
-        return None
+        error = "ERROR (add_text_to_image): Input image must be of type PIL.Image"
+        abort(500, description=error)
 
     if not __specifications_are_valid(specifications):
-        return None
+        error = "ERROR (add_text_to_image): Invalid specifications"
+        abort(500, description=error)
 
     if len(offset) != 2 or len(color) != 3:
-        return None
+        error = "ERROR (add_text_to_image): offset or color are wrong length"
+        abort(500, description=error)
 
     try:
         font = ImageFont.truetype(font, size)
@@ -77,13 +81,13 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
         PIL.Image: Watermarked image
     """
 
-    print(specifications)
-
     if not __watermark_specifications_are_valid(specifications):
-        return None
+        error = "ERROR (add_watermark_image): Invalid specifications"
+        abort(500, description=error)
 
     if not isinstance(input_img, Image.Image):
-        return None
+        error = "ERROR (add_watermark_image): Input image must be of type PIL.Image"
+        abort(500, description=error)
 
     watermark = specifications[0]
     position = specifications[1]
@@ -124,14 +128,12 @@ def add_emoji_overlay(input_image: Image, specifications: list,
     watermark_file = specifications[0]
 
     if type(watermark_file) != str:
-        print("ERROR (add_emoji_overlay): specifications[0]"
-              "should be a string!")
-        return None
+        error = "ERROR (add_emoji_overlay): specifications[0] should be a string"
+        abort(500, description=error)
 
     if watermark_file[-4:] != '.png':
-        print("ERROR (add_emoji_overlay): emoji file %s"
-              "should have \".png\" extension" % watermark_file)
-        return None
+        error = "ERROR (add_emoji_overlay): emoji file %s should have \".png\" extension" % watermark_file
+        abort(500, description=error)
 
     # TODO: Might have to fix this for Docker
     if is_test:
@@ -147,8 +149,8 @@ def add_emoji_overlay(input_image: Image, specifications: list,
         return add_watermark_image(input_image, specifications)
 
     except FileNotFoundError:
-        print("ERROR (add_emoji_overlay): %s not found" % watermark_path)
-        return None
+        error = "ERROR (add_emoji_overlay): %s not found" % watermark_path
+        abort(500, description=error)
 
 # HELPER METHOD
 

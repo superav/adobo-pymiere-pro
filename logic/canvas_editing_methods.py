@@ -1,4 +1,5 @@
 from PIL import Image
+from flask import abort
 
 """
 Methods that change the size, scale, or rotation of the image.
@@ -23,11 +24,13 @@ def scale_image(input_img: Image, specifications: float) -> Image:
     scale = specifications
 
     if not isinstance(input_img, Image.Image):
-        return None
+        error = "ERROR (scale_image): Input image is not of type PIL.Image"
+        abort(500, description=error)
 
     if not ((type(scale) == float or type(scale) == int)
             and 0.0 < scale <= 1.0):
-        return None
+        error = "ERROR (scale_image): scale %s is of wrong type or value" % scale
+        abort(500, description=error)
 
     output_img = input_img.copy()
 
@@ -50,13 +53,14 @@ def rotate_image(input_img: Image, specifications: int) -> Image.Image:
     angle = specifications
 
     if not (isinstance(input_img, Image.Image) and type(angle) == int):
-        return None
+        error = "ERROR (rotate_image): Wrong parameter type!"
+        abort(500, description=error)
 
     return input_img.rotate(angle, Image.NEAREST, expand=1)
 
 
 def crop_editor(input_img: Image,
-                specifications: list = [int, int, int, int]) -> Image.Image:
+                specifications: list) -> Image.Image:
     """
     Args:
         input_img:  The image to be changed
@@ -72,7 +76,8 @@ def crop_editor(input_img: Image,
     width, height = input_img.size
 
     if not __crop_in_given_dimensions(width, height, top, left, right, bottom):
-        return None
+        error = "ERROR (crop_editor): Crop parameters not of correct values"
+        abort(500, description=error)
 
     output_img = input_img.crop((left, top, right, bottom))
 
