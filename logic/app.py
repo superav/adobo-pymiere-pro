@@ -102,6 +102,12 @@ def create_app():
 
         return {"list": ass_man.list_bucket(ui_input["list_everything"])}
 
+    @flask_app.route("/logic/temp_list", methods=["GET"])
+    def get_temp_bucket():
+        # Receive input
+
+        return {"list": ass_man.list_nst_outputs()}
+
     # @flask_app.route("/logic/image_editor", methods=["GET"])
     # def get_import_image():
     #     # Receive input
