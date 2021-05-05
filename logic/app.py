@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from PIL.Image import Image
 from flask_cors import CORS
 
@@ -17,6 +17,12 @@ def create_app():
 
     CORS(flask_app)
     
+
+    @flask_app.errorhandler(500)
+    def return_error_messages(e):
+        return jsonify(error=str(e)), 500
+
+
     @flask_app.route("/logic/image_editor", methods=["POST"])
     def get_apply_effect():
         # Receive input

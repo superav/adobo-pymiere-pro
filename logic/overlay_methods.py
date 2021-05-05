@@ -38,15 +38,15 @@ def add_text_to_image(image: Image, specifications: list) -> Image:
     color = tuple(specifications[4])
 
     if not isinstance(image, Image.Image):
-        error = "ERROR (add_text_to_image): Input image must be of type PIL.Image"
+        error = "add_text_to_image: Input image must be of type PIL.Image"
         abort(500, description=error)
 
     if not __specifications_are_valid(specifications):
-        error = "ERROR (add_text_to_image): Invalid specifications"
+        error = "add_text_to_image: Invalid specifications"
         abort(500, description=error)
 
     if len(offset) != 2 or len(color) != 3:
-        error = "ERROR (add_text_to_image): offset or color are wrong length"
+        error = "add_text_to_image: offset or color are wrong length"
         abort(500, description=error)
 
     try:
@@ -82,11 +82,11 @@ def add_watermark_image(input_img: Image, specifications: list) -> Image.Image:
     """
 
     if not __watermark_specifications_are_valid(specifications):
-        error = "ERROR (add_watermark_image): Invalid specifications"
+        error = "add_watermark_image: Invalid specifications"
         abort(500, description=error)
 
     if not isinstance(input_img, Image.Image):
-        error = "ERROR (add_watermark_image): Input image must be of type PIL.Image"
+        error = "add_watermark_image: Input image must be of type PIL.Image"
         abort(500, description=error)
 
     watermark = specifications[0]
@@ -128,11 +128,11 @@ def add_emoji_overlay(input_image: Image, specifications: list,
     watermark_file = specifications[0]
 
     if type(watermark_file) != str:
-        error = "ERROR (add_emoji_overlay): specifications[0] should be a string"
+        error = "add_emoji_overlay: specifications[0] should be a string"
         abort(500, description=error)
 
     if watermark_file[-4:] != '.png':
-        error = "ERROR (add_emoji_overlay): emoji file %s should have \".png\" extension" % watermark_file
+        error = "add_emoji_overlay: emoji file %s should have \".png\" extension" % watermark_file
         abort(500, description=error)
 
     # TODO: Might have to fix this for Docker
@@ -149,7 +149,7 @@ def add_emoji_overlay(input_image: Image, specifications: list,
         return add_watermark_image(input_image, specifications)
 
     except FileNotFoundError:
-        error = "ERROR (add_emoji_overlay): %s not found" % watermark_path
+        error = "add_emoji_overlay: %s not found" % watermark_path
         abort(500, description=error)
 
 # HELPER METHOD

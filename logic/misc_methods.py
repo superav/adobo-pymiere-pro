@@ -29,7 +29,7 @@ def apply_mirror(input_img: Image, specifications: int) -> Image:
     if specifications == 1:
         return ImageOps.flip(input_img)
 
-    error = "ERROR (apply_mirror): specifications %s is not 1 or 0"
+    error = "apply_mirror: specifications %s is not 1 or 0"
     abort(500, description=error)
 
 
@@ -78,11 +78,11 @@ def draw_lines(image: Image, specifications: list) -> Image:
     """
 
     if not __all_strokes_are_valid(specifications):
-        error = "ERROR (draw_lines): Invalid specifications"
+        error = "draw_lines: Invalid specifications"
         abort(500, description=error)
 
     if not isinstance(image, Image.Image):
-        error = "ERROR (draw_lines): Input image must be of type PIL.Image"
+        error = "draw_lines: Input image must be of type PIL.Image"
         abort(500, description=error)
 
     output = image.copy()
