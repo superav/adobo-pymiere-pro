@@ -66,7 +66,7 @@ def draw_lines(image: Image, specifications: list) -> Image:
 
     Args:
         image:  Input image
-        specifications: A list of specs (in order)
+        specifications: A list of strokes. Strokes must be formatted as such:
             * points: A list of points to draw the line. Is a list of tuples
             ``[(x1, y1), (x2, y2)...]``. Must be at least 2 tuples.
 
@@ -119,6 +119,9 @@ def __all_points_are_valid(points: list) -> bool:
         if len(point) != 2:
             return False
 
+        if not (type(point) == list or type(point) == tuple):
+            return False
+
         x_pos, y_pos = point
 
         if type(x_pos) != int or type(y_pos) != int:
@@ -147,7 +150,10 @@ def __strokes_are_valid(stroke: list) -> bool:
     stroke_size = stroke[1]
     color = stroke[2]
 
-    if type(points) != list or type(stroke_size) != int or type(color) != list:
+    if not (type(points) == list and type(stroke_size) == int):
+        return False
+
+    if not (type(color) == list or type(color) == tuple):
         return False
 
     if stroke_size < 0:

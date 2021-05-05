@@ -119,8 +119,8 @@ class TestMiscImageProc(unittest.TestCase):
         expected_img = ASSET_MANAGER.import_image_from_s3('test_2_draw_1.png',
                                                           False)
 
-        specifications = [[(100, 1000), (900, 10), (300, 300),
-                           (500, 435)], 23, (10, 233, 245)]
+        specifications = [[[(100, 1000), (900, 10), (300, 300),
+                           (500, 435)], 23, (10, 233, 245)]]
         output = draw_lines(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
 
@@ -138,7 +138,7 @@ class TestMiscImageProc(unittest.TestCase):
 
             points.append((x_pos, y_pos))
 
-        specifications = [points, 5, (255, 0, 0)]
+        specifications = [[points, 5, (255, 0, 0)]]
 
         output = draw_lines(input_img, specifications)
         root_mean_square = compare_images(expected_img, output)
