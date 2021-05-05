@@ -31,7 +31,6 @@ class TestOverlayInputValidation(unittest.TestCase):
         with self.assertRaises(Exception):
             _ = add_watermark_image("bad", 10)
 
-
         specifications = [watermark, (10, 10), "nope", 1.0]
 
         with self.assertRaises(Exception):
