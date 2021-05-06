@@ -120,6 +120,10 @@ def create_app():
 
         return {"list": ass_man.list_bucket(ui_input["list_everything"])}
 
+    @flask_app.route("/logic/image_list_usr", methods=["GET"])
+    def get_list_bucket_usr():
+        return{"list": ass_man.list_bucket(False)}
+
     @flask_app.route("/logic/temp_list", methods=["GET"])
     def get_temp_bucket():
         # Receive input
