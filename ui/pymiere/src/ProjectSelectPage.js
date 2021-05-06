@@ -45,20 +45,29 @@ class ProjectSelectPage extends Component {
         })
     }
 
+    emptyCache() {
+    if ('caches' in window) {
+        caches.keys().then((names) => {
+            // Delete all the cache files
+            names.forEach(name => {
+                caches.delete(name);
+            })
+        });
+    }
+}
+
     componentDidMount() {
+        this.emptyCache()
+        this.loadImages()
+    }
+
+    loadImages() {
         this.getProjects().then(res => {
             var filteredList = this.filterProjects(res.list)
             filteredList.splice(0, 0, "/images/new.svg")
             this.setState({ projects: filteredList })
             console.log(this.state.projects)
-
-            var testList = [1, 2, 3, 4]
-
-            this.cardList = testList.map(project => {
-                <li>{project}</li>
-            })
         })
-
     }
 
     render() {
@@ -70,12 +79,6 @@ class ProjectSelectPage extends Component {
                         <ProjectList projects={this.state.projects} imageSelectHandler={this.props.imageSelectHandler}/>
                     </div>
                 </div>
-
-                {/* <div id="videoProjectsContainer">
-                    <div id="videoProjects">
-                            <ProjectCard className="card" image="/images/new.svg" header="New Video Project" disc="Create a new video project with Adobo Pymiere Pro"/>
-                    </div>
-                </div> */}
             </div>
         );
     }
@@ -88,7 +91,7 @@ function ProjectList(props) {
     console.log(projects)
     const projectCards = projects.map(project => {
         return (
-            <Link to="/image" onClick={(e) => { imageSelectHandler("https://adobo-pymiere.s3.amazonaws.com/" + project, e) }}><ProjectCard image={project === "/images/new.svg" ? project : "https://adobo-pymiere.s3.amazonaws.com/" + project} header={project === "/images/new.svg" ? "New Project" : project.substring(project.lastIndexOf('/') + 1)} disc={project === "/images/new.svg" ? "Create a new project with Adobo Pymiere Pro" : "Continue working on " + project.substring(project.lastIndexOf('/') + 1)} /></Link>
+            <Link to="/image" key={Date.now() + project} onClick={(e) => { imageSelectHandler("https://adobo-pymiere.s3.amazonaws.com/" + project + "?dummy=" + Math.random(), e) }}><ProjectCard image={project === "/images/new.svg" ? project : "https://adobo-pymiere.s3.amazonaws.com/" + project + "?dummy=" + Math.random()} header={project === "/images/new.svg" ? "New Project" : project.substring(project.lastIndexOf('/') + 1)} disc={project === "/images/new.svg" ? "Create a new project with Adobo Pymiere Pro" : "Continue working on " + project.substring(project.lastIndexOf('/') + 1)} /></Link>
         )
     });
 

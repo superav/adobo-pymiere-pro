@@ -20,7 +20,7 @@ const ProjectCard = (props) => (
 
   <Card>
     <Card.Content header={props.header} />
-    <Image src={props.image}/>
+    <Image key={Date.now() + props.image} src={props.image}/>
     <Card.Content>
       <Card.Description>
         {props.disc}

@@ -44,6 +44,21 @@
     }
 }
 
+.content {
+    overflow: hidden !important;
+    height: 15% !important;
+}
+
+.header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display:block;
+    width:100%;
+    min-width:1px;
+    
+}
+
 .image {
     height: 65%;
     width: 100%;
