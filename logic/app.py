@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from PIL.Image import Image
 from flask_cors import CORS
 
+from logic.john_3_logic import *
 from logic.filter_methods import *
 from logic.overlay_methods import *
 from logic.canvas_editing_methods import *
@@ -99,6 +100,9 @@ def create_app():
             ui_input["file_extension"] = "jpg"
         elif var == "jpg-to-png":
             ui_input["file_extension"] = "png"
+        elif var == "meme":
+            altered_image = generate_meme_text(
+                input_img, ui_input["specifications"])
         else:
             return None
 
