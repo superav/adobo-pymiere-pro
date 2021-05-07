@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import { withSnackbar } from 'notistack';
 
 class CropEffect extends Component {
   constructor(props) {
@@ -34,6 +35,10 @@ class CropEffect extends Component {
     let right = crop[0] + crop[2];
     let bottom = crop[1] + crop[3];
     this.props.applyFilter("crop", [parseInt(crop[0]), parseInt(crop[1]), parseInt(right), parseInt(bottom)]);
+    this.props.enqueueSnackbar("Cropping...", { 
+      variant: 'info',
+      autoHideDuration: 2000,
+    });
   }
 
   Crop = () => {
@@ -72,4 +77,4 @@ class CropEffect extends Component {
   }
 }
 
-export default CropEffect;
+export default withSnackbar(CropEffect);

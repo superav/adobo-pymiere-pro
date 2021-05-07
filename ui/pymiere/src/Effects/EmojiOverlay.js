@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
+import { withSnackbar } from 'notistack';
 
-export default class EmojiOverlay extends Component {
+class EmojiOverlay extends Component {
   constructor(props) {
     super(props);
     this.emojiPreview = React.createRef();
@@ -80,6 +81,10 @@ export default class EmojiOverlay extends Component {
     const emoji = this.props.getCanvas("functions").emoji;
     const name = "bugcat_" + this.emojiList[this.emojiIdx] + ".png"
     this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), parseFloat(emoji[4])]);
+    this.props.enqueueSnackbar("Applying emoji...", { 
+      variant: 'info',
+      autoHideDuration: 2000,
+    });
   }
 
   onApply = () => {
@@ -119,3 +124,5 @@ export default class EmojiOverlay extends Component {
     </div>
   }
 }
+
+export default withSnackbar(EmojiOverlay);
