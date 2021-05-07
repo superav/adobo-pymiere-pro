@@ -1,6 +1,7 @@
 import math
 import operator
 from functools import reduce
+from http.client import HTTPException
 
 import unittest
 
@@ -26,23 +27,23 @@ class TestFilterInputValidation(unittest.TestCase):
     def test_gaussian_blur_invalid_input_types(self):
         input_img = Image.open('./test_assets/images/test_1.png')
 
-        output = gaussian_blur("bad", 0)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = gaussian_blur("bad", 0)
 
-        output = gaussian_blur(input_img, "bad")
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = gaussian_blur(input_img, "bad")
 
-        output = gaussian_blur(input_img, -10.4)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = gaussian_blur(input_img, -10.4)
 
     def test_gaussian_blur_invalid_radius_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        output = gaussian_blur(input_img, -1)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = gaussian_blur(input_img, -1)
 
-        output = gaussian_blur(input_img, -45)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = gaussian_blur(input_img, -45)
 
     def test_gaussian_blur_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -50,19 +51,52 @@ class TestFilterInputValidation(unittest.TestCase):
 
         self.assertTrue(isinstance(output, Image.Image))
 
+    def test_solarize_invalid_value(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
+
+        with self.assertRaises(Exception):
+            _ = apply_solarize("bad", 23)
+
+        with self.assertRaises(Exception):
+            _ = apply_solarize(im1, "hi")
+
+        with self.assertRaises(Exception):
+            _ = apply_solarize(im1, -4)
+
     def test_solarize_valid_value(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im2 = apply_solarize(im1, 9999)
-        im3 = apply_solarize(im1, -1234)
+        im2 = apply_solarize(im1, 23)
+        im3 = apply_solarize(im1, 45)
 
-        self.assertNotEqual(im2, None)
-        self.assertNotEqual(im3, None)
+        self.assertTrue(isinstance(im2, Image.Image))
+        self.assertTrue(isinstance(im3, Image.Image))
+
+    def test_red_eye_invalid_value(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('redeye.png', False)
+
+        with self.assertRaises(Exception):
+            _ = apply_red_eye_filter("bad", [-23, 1000, 150, 150])
+
+        with self.assertRaises(Exception):
+            _ = apply_red_eye_filter(im1, "hi")
+
+        with self.assertRaises(Exception):
+            _ = apply_red_eye_filter(im1, ["hi", 1000, 150, 150])
+
+        with self.assertRaises(Exception):
+            _ = apply_red_eye_filter(im1, [-23, "hi", 150, 150])
+
+        with self.assertRaises(Exception):
+            _ = apply_red_eye_filter(im1, [-23, 1000, "hi", 150])
+
+        with self.assertRaises(Exception):
+            _ = apply_red_eye_filter(im1, [-23, 1000, 150, "hi"])
 
     def test_red_eye_valid_value(self):
         im1 = ASSET_MANAGER.import_image_from_s3('redeye.png', False)
         im2 = apply_red_eye_filter(im1, [-23, 1000, 150, 150])
 
-        self.assertNotEqual(im2, None)
+        self.assertTrue(isinstance(im2, Image.Image))
 
 
 class TestFilterImageProc(unittest.TestCase):

@@ -1,4 +1,5 @@
 from PIL import Image, ImageFilter, ImageOps
+from flask import abort
 
 """
 Methods that generally apply a filter over an entire image. These are
@@ -25,11 +26,17 @@ def gaussian_blur(input_img: Image, specifications: int) -> Image.Image:
 
     radius = specifications
 
-    if not (isinstance(input_img, Image.Image) and type(radius) == int):
-        return None
+    if not (isinstance(input_img, Image.Image)):
+        error = "gaussian_blur: Input image is not of type PIL Image"
+        abort(500, description=error)
+
+    if not type(radius) == int:
+        error = "gaussian_blur: radius is not of type int"
+        abort(500, description=error)
 
     if radius < 0:
-        return None
+        error = "gaussian_blur: radius is less than 0"
+        abort(500, description=error)
 
     output_img = input_img.filter(ImageFilter.GaussianBlur(radius))
 
@@ -47,6 +54,15 @@ def apply_solarize(input_img: Image, specifications: int) -> Image:
     Returns:
         PIL.Image: Image with color mask applied changed
     """
+    if not (isinstance(input_img, Image.Image)):
+        error = "apply_solarize: Input image is not of type PIL Image"
+        abort(500, description=error)
+    if not type(specifications) == int:
+        error = "apply_solarize: specifications is not of type int"
+        abort(500, description=error)
+    if specifications < 0 or specifications > 255:
+        error = "apply_solarize: specifications is not in range [0, 255]"
+        abort(500, description=error)
     if input_img.mode == 'RGBA':
         rgb_image = __convert_to_rgb(input_img.copy())
     else:
@@ -68,7 +84,9 @@ def apply_mosaic_filter(input_img: Image) -> Image:
     References:
         * https://stackoverflow.com/questions/47143332/how-to-pixelate-a-square-image-to-256-big-pixels-with-python
     """
-
+    if not (isinstance(input_img, Image.Image)):
+        error = "apply_mosaic_filter: Input image is not of type PIL Image"
+        abort(500, description=error)
     output_img = input_img.resize((32, 32), resample=Image.BILINEAR)
 
     return output_img.resize(input_img.size, Image.NEAREST)
@@ -91,6 +109,20 @@ def apply_red_eye_filter(input_img: Image, specifications: list) -> Image:
     References:
         * https://learnopencv.com/automatic-red-eye-remover-using-opencv-cpp-python/
     """
+    if not (isinstance(input_img, Image.Image)):
+        error = "apply_red_eye_filter: Input image is not of type PIL Image"
+        abort(500, description=error)
+    if not type(specifications) == list:
+        error = "apply_red_eye_filter: specifications is not of type list"
+        abort(500, description=error)
+    if len(specifications) != 4:
+        error = "apply_red_eye_filter: specifications is not a list of length 4"
+        abort(500, description=error)
+    for spec in range(4):
+        if not type(specifications[spec]) == int:
+            error = "apply_red_eye_filter: specifications contains non-integer value"
+            abort(500, description=error)
+
     input_img.load()
 
     output_img = Image.new("RGB", input_img.size, (255, 255, 255))
