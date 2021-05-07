@@ -7,6 +7,7 @@ from logic.overlay_methods import *
 from logic.canvas_editing_methods import *
 from logic.color_methods import *
 from logic.misc_methods import *
+from logic.as_sprint_3 import *
 from logic.asset_manager import AssetManager
 
 ass_man = AssetManager("test_user_integration")
@@ -16,12 +17,10 @@ def create_app():
     flask_app = Flask(__name__)
 
     CORS(flask_app)
-    
 
     @flask_app.errorhandler(500)
     def return_error_messages(e):
         return jsonify(error=str(e)), 500
-
 
     @flask_app.route("/logic/image_editor", methods=["POST"])
     def get_apply_effect():
@@ -85,6 +84,21 @@ def create_app():
         elif var == "frame":
             altered_image = apply_frame(
                 input_img, ui_input["specifications"])
+        elif var == "contrast":
+            altered_image = apply_contrast(
+                input_img, ui_input["specifications"])
+        elif var == "autocontrast":
+            altered_image = apply_autocontrast(input_img)
+        elif var == "vignette":
+            altered_image = apply_vignette(input_img)
+        elif var == "brightness":
+            altered_image = apply_brightness(
+                input_img, ui_input["specifications"])
+        elif var == "png-to-jpg":
+            altered_image = input_img.convert("RGB")
+            ui_input["file_extension"] = "jpg"
+        elif var == "jpg-to-png":
+            ui_input["file_extension"] = "png"
         else:
             return None
 

@@ -1,4 +1,5 @@
 from PIL import Image, ImageEnhance, ImageDraw
+from flask import abort
 import colorsys
 import numpy as np
 
@@ -30,10 +31,9 @@ def change_saturation(input_img: Image, specifications: float) -> Image:
 
     if not (isinstance(input_img, Image.Image)
             and (type(factor) == float or type(factor) == int)):
-        return None
-
+        abort(500, description="change_saturation: invalid input types")
     if factor < 0:
-        return None
+        abort(500, description="change_saturation: invalid factor value")
 
     converter = ImageEnhance.Color(input_img)
     output_img = converter.enhance(factor)
@@ -56,7 +56,8 @@ def hue_editor(input_img: Image, specifications: int) -> Image:
     factor = specifications
 
     if factor > 360 or factor < 0:
-        return None
+        abort(500,
+              description="hue_editor: Load factor was not between 0 and 360")
 
     img = input_img.convert('RGBA')
     arr = np.array(np.asarray(img).astype('float'))
@@ -89,10 +90,10 @@ def opacity_editor(input_img: Image, specifications: int) -> Image:
     value = specifications
 
     if type(value) != int:
-        return None
+        abort(500, description="opacity_editor: specification is not an int")
 
     if value > 100 or value < 0:
-        return None
+        abort(500, description="opacity_editor: invalid value input")
 
     input_img.putalpha(int(value * 2.55))
 
@@ -100,7 +101,8 @@ def opacity_editor(input_img: Image, specifications: int) -> Image:
 
 
 def apply_color_editor(input_img: Image,
-                       specifications: list = [255, 255, 255, 255]) -> Image.Image:
+                       specifications: list = [255, 255, 255, 255])\
+                        -> Image.Image:
     """ Applies a color filter over an image
 
        Args:
@@ -114,7 +116,7 @@ def apply_color_editor(input_img: Image,
 
     red, green, blue, alpha = specifications
     if __color_val_in_range(red, green, blue):
-        return None
+        abort(500, description="apply_color_editor: invalid rgb values")
 
     color = Image.new('RGB', input_img.size, (red, green, blue))
     mask = Image.new('RGBA', input_img.size, (0, 0, 0, alpha))
@@ -150,11 +152,12 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     red_secondary, green_secondary, blue_secondary = color_secondary
 
     if __color_val_in_range(red, green, blue):
-        return None
+        abort(500, description="apply_gradient_editor: invalid rgb values")
     if __color_val_in_range(red_secondary, green_secondary, blue_secondary):
-        return None
+        abort(500,
+              description="apply_gradient_editor: invalid secondary rgb values")
     if alpha < 0 or alpha > 255:
-        return None
+        abort(500, description="apply_gradient_editor: invalid alpha values")
 
     color = Image.new("RGB", input_img.size, "#FFFFFF")
     draw = ImageDraw.Draw(color)
@@ -171,6 +174,7 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     output_image = Image.composite(input_img, color, mask).convert('RGB')
 
     return output_image
+
 
 # HELPER METHODS
 
