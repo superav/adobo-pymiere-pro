@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
+import NSTTypeSwitch from "./NSTTypeSwitch";
 import { sizing } from "@material-ui/system";
 
 export default class ViewNSTFilters extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nstType: "Performance",
       generation: 1,
       baseURL: "https://adobo-pymiere.s3.amazonaws.com/",
       filterArray: [
@@ -38,7 +40,6 @@ export default class ViewNSTFilters extends Component {
       // Get filter array instead of hardcoding
   }
 
-
   render() {
     return (
       <div width="auto">
@@ -57,6 +58,9 @@ export default class ViewNSTFilters extends Component {
           valueLabelDisplay="auto"
         ></Slider>
         <p>{this.state.generation}</p>
+        <br />
+        <NSTTypeSwitch></NSTTypeSwitch>
+        <br />
         <Button
           variant="contained"
           color="primary"
