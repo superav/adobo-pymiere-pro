@@ -26,23 +26,27 @@ class TestColorInputValidation(unittest.TestCase):
     def test_saturation_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        output = change_saturation("bad", 4.0)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = change_saturation("bad", 4.0)
 
-        output = change_saturation(input_img, True)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = change_saturation(input_img, True)
 
-        output = change_saturation(True, "bad")
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = change_saturation(True, "bad")
+
+        input_img.close()
 
     def test_saturation_invalid_input_value(self):
         input_img = Image.open("./test_assets/images/test_1.png")
 
-        output = change_saturation(input_img, -33.0)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = change_saturation(input_img, -33.0)
 
-        output = change_saturation(input_img, -0.1)
-        self.assertEqual(None, output)
+        with self.assertRaises(Exception):
+            _ = change_saturation(input_img, -0.1)
+
+        input_img.close()
 
     def test_saturation_correct_input(self):
         input_img = Image.open("./test_assets/images/test_1.png")
@@ -50,53 +54,66 @@ class TestColorInputValidation(unittest.TestCase):
 
         self.assertTrue(isinstance(output, Image.Image))
 
+        input_img.close()
+
     def test_hue_invalid_value(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im2 = hue_editor(im1, 580)
-        im3 = hue_editor(im1, -1)
 
-        self.assertEqual(im2, None)
-        self.assertEqual(im3, None)
+        with self.assertRaises(Exception):
+            _ = hue_editor(im1, 580)
+        with self.assertRaises(Exception):
+            _ = hue_editor(im1, -1)
 
     def test_opacity_invalid_inputs(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im2 = opacity_editor(im1, 400)
-        im3 = opacity_editor(im1, -400)
 
-        self.assertEqual(im2, None)
-        self.assertEqual(im3, None)
+        with self.assertRaises(Exception):
+            _ = opacity_editor(im1, 400)
+
+        with self.assertRaises(Exception):
+            _ = opacity_editor(im1, -400)
 
     def test_recoloration_invalid_value(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im2 = apply_color_editor(im1, [256, 0, 0, 128])
-        im3 = apply_color_editor(im1, [256, 0, 300, 128])
-        im4 = apply_color_editor(im1, [256, -1, 0, 128])
-        im5 = apply_color_editor(im1, [256, 0, 0, 277])
-        im6 = apply_color_editor(im1, [256, 0, 0, -128])
 
-        self.assertEqual(im2, None)
-        self.assertEqual(im3, None)
-        self.assertEqual(im4, None)
-        self.assertEqual(im5, None)
-        self.assertEqual(im6, None)
+        with self.assertRaises(Exception):
+            _ = apply_color_editor(im1, [256, 0, 0, 128])
+
+        with self.assertRaises(Exception):
+            _ = apply_color_editor(im1, [256, 0, 300, 128])
+
+        with self.assertRaises(Exception):
+            _ = apply_color_editor(im1, [256, -1, 0, 128])
+
+        with self.assertRaises(Exception):
+            _ = apply_color_editor(im1, [256, 0, 0, 277])
+
+        with self.assertRaises(Exception):
+            _ = apply_color_editor(im1, [256, 0, 0, -128])
 
     def test_gradient_invalid_value(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        im2 = apply_gradient_editor(im1, [70, [255, 0, 0], [0, -10, 255]])
-        im3 = apply_gradient_editor(im1, [70, [0, 290, 0], [0, 0, 255]])
-        im4 = apply_gradient_editor(im1, [70, [255, 0, 0], [0, -7, 255]])
-        im5 = apply_gradient_editor(im1, [70, [255, 0, 0], [-9, 0, 255]])
-        im6 = apply_gradient_editor(im1, [70, [14, 190, 300], [0, 0, 255]])
-        im7 = apply_gradient_editor(im1, [700, [255, 0, 0], [0, 0, 255]])
-        im8 = apply_gradient_editor(im1, [-7, [255, 0, 0], [0, 0, 255]])
 
-        self.assertEqual(im2, None)
-        self.assertEqual(im3, None)
-        self.assertEqual(im4, None)
-        self.assertEqual(im5, None)
-        self.assertEqual(im6, None)
-        self.assertEqual(im7, None)
-        self.assertEqual(im8, None)
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [70, [255, 0, 0], [0, -10, 255]])
+
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [70, [0, 290, 0], [0, 0, 255]])
+
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [70, [255, 0, 0], [0, -7, 255]])
+
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [70, [255, 0, 0], [-9, 0, 255]])
+
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [70, [14, 190, 300], [0, 0, 255]])
+
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [700, [255, 0, 0], [0, 0, 255]])
+
+        with self.assertRaises(Exception):
+            _ = apply_gradient_editor(im1, [-7, [255, 0, 0], [0, 0, 255]])
 
 
 class TestColorImageProc(unittest.TestCase):
@@ -138,16 +155,16 @@ class TestColorImageProc(unittest.TestCase):
 
     def test_recoloration_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin =\
-            ASSET_MANAGER.import_image_from_s3('gradient_expected_255_0_0_128.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+            'gradient_expected_255_0_0_128.png', False)
         im2 = apply_color_editor(im1, [255, 0, 0, 128])
 
         self.assertTrue(compare_images(fin, im2) == 0)
 
     def test_gradient_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin =\
-            ASSET_MANAGER.import_image_from_s3('filter_expected_70_255_0_0_0_0_255.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3(
+                'filter_expected_70_255_0_0_0_0_255.png', False)
         im2 = apply_gradient_editor(im1, [70, [255, 0, 0], [0, 0, 255]])
 
         self.assertTrue(compare_images(fin, im2) == 0)

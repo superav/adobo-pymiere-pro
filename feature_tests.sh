@@ -10,6 +10,8 @@ answ2=$(curl --silent --location --request POST 'localhost:5000/logic/image_edit
 
 echo $answ2
 
-python3.8 -m tests.test_url_editted $answ1 $answ2
+answ3=$(curl --silent --location --request POST 'localhost:5000/logic/image_editor' --header 'Content-Type: application/json' --data-raw '{"effect": "vignette", "image_name": "image", "file_extension": "png", "is_working_copy": false'})
+
+python3.8 -m tests.test_url_editted $answ1 $answ2 $answ3
 
 kill $(pgrep -f python3.8)

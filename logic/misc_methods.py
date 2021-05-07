@@ -50,7 +50,7 @@ def apply_frame(input_img: Image,
 
     old_size = input_img.size
     red, green, blue = specifications
-    new_size = (int(input_img.height * 1.1), int(input_img.width * 1.1))
+    new_size = (int(input_img.width * 1.1), int(input_img.height * 1.1))
     output_img = Image.new("RGB", new_size)
 
     output_img.paste((red, green, blue), [0, 0, output_img.size[0],
