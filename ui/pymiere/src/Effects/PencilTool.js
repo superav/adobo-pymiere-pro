@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import { withSnackbar } from 'notistack';
 
 class PencilTool extends Component {
   constructor(props) {
@@ -109,8 +110,11 @@ class PencilTool extends Component {
     }, filter);
 
     this.props.applyFilter("draw-lines", filter);
-    // TODO clean up the strokes in Editing Canvas
     functions.pencil.strokes = [];
+    this.props.enqueueSnackbar("Saving your beautiful strokes...", { 
+      variant: 'info',
+      autoHideDuration: 2000,
+    });
   }
 
   render() {
@@ -181,4 +185,4 @@ class PencilTool extends Component {
   }
 }
 
-export default PencilTool;
+export default withSnackbar(PencilTool);
