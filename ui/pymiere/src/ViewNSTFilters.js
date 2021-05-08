@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import Switch from '@material-ui/core/Switch';
-
+import NSTTypeSwitch from "./NSTTypeSwitch";
 
 export default class ViewNSTFilters extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nstType: "fast",
+      nstType: "Performance",
       generation: 1,
       baseURL: "https://adobo-pymiere.s3.amazonaws.com/",
       filterArray: [
@@ -33,22 +32,19 @@ export default class ViewNSTFilters extends Component {
 
   confirmNSTFilter = () => {
     console.log("Filter number: " + this.state.generation);
-    // this.props.applyFilter("nst-filter", [this.state.newURL]);
+    console.log("Filter type: " + this.state.nstType);
+    this.props.applyFilter("nst-filter", [this.state.newURL]);
   };
+
+  changeNSTType = (cond) => {
+    this.setState({
+      nstType: cond ? "performance" : "speed"
+    });
+  }
 
   getFilterArray = () => {
       // Get filter array instead of hardcoding
   }
-
-  handleNSTTypeChange = () => {
-    if (this.state.nstType === "fast") {
-      this.setState({nstType: "slow"});
-    }
-    else {
-      this.setState({nstType: "fast"});
-    }
-  }
-
 
   render() {
     return (
@@ -68,20 +64,17 @@ export default class ViewNSTFilters extends Component {
           valueLabelDisplay="auto"
         ></Slider>
         <p>{this.state.generation}</p>
+        <br />
+        <NSTTypeSwitch changeNSTType={this.state.changeNSTType}></NSTTypeSwitch>
+        <br />
         <Button
           variant="contained"
           color="primary"
           onClick={this.confirmNSTFilter}
         >
-          Select NST Filter
+          Run NST
         </Button>
-        <Switch
-          checked={this.state.nstType}
-          onChange={this.handleNSTTypeChange}
-          color="primary"
-          name="checkedB"
-          inputProps={{ 'aria-label': 'primary checkbox' }}
-        />
+
         <br />
       </div>
     );
