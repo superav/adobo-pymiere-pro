@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import UploadNSTFilterForm from "./UploadNSTFilterForm";
 import ViewNSTOutputMenu from "./ViewNSTOutputMenu.js";
+import ViewNSTFilters from "./ViewNSTFilters";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,16 +73,19 @@ export default function NSTEffects(props) {
         className={classes.tabs}
       >
         <Tab label="NST Filters" {...a11yProps(0)} />
-        <Tab label="View NST outputs" {...a11yProps(1)} />
+        <Tab label="View NST Filters" {...a11yProps(1)} />
+        <Tab label="View NST Outputs" {...a11yProps(2)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
         <UploadNSTFilterForm />
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <ViewNSTFilters applyFilter={props.applyFilter}/>
+      </TabPanel>
+      <TabPanel value={value} index={2}>
         <ViewNSTOutputMenu applyFilter={props.applyFilter}/>
       </TabPanel>
-
     </div>
   );
 }
