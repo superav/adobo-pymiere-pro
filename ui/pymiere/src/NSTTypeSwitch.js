@@ -61,7 +61,7 @@ export default class NSTTypeSwitch extends Component {
             <Grid item>
               <AntSwitch
                 checked={this.state.checkedC}
-                onChange={this.state.handleChange}
+                onChange={this.handleChange}
                 name="checkedC"
               />
             </Grid>
