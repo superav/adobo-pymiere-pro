@@ -47,7 +47,8 @@ export default class NSTTypeSwitch extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({ ...this.state, [event.target.name]: event.target.checked });
+    this.setState({ ...this.state, [event.target.name]: event.target.checked }, () => {
+    });
     console.log("checked value: " + this.state.checkedC);
   };
 
@@ -60,7 +61,7 @@ export default class NSTTypeSwitch extends Component {
             <Grid item>
               <AntSwitch
                 checked={this.state.checkedC}
-                onChange={this.handleChange}
+                onChange={this.state.handleChange}
                 name="checkedC"
               />
             </Grid>

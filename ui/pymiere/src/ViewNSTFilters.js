@@ -33,8 +33,15 @@ export default class ViewNSTFilters extends Component {
 
   confirmNSTFilter = () => {
     console.log("Filter number: " + this.state.generation);
+    console.log("Filter type: " + this.state.nstType);
     // this.props.applyFilter("nst-filter", [this.state.newURL]);
   };
+
+  changeNSTType = (cond) => {
+    this.setState({
+      nstType: cond ? "performance" : "speed"
+    });
+  }
 
   getFilterArray = () => {
       // Get filter array instead of hardcoding
@@ -59,7 +66,7 @@ export default class ViewNSTFilters extends Component {
         ></Slider>
         <p>{this.state.generation}</p>
         <br />
-        <NSTTypeSwitch></NSTTypeSwitch>
+        <NSTTypeSwitch changeNSTType={this.state.changeNSTType}></NSTTypeSwitch>
         <br />
         <Button
           variant="contained"
