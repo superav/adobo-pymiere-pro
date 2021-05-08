@@ -127,20 +127,24 @@ def create_app():
         input_img_url = ui_input["image_url"]
         filter_image_url = ui_input["filter_url"]
 
-        if (not type(nst_type) == str or not nst_type == "Quality" or not nst_type == "Performance"):
+        if not type(nst_type) == str or not nst_type == "Quality" \
+                or not nst_type == "Performance":
             error = "nst: Invalid NST type"
             abort(500, description=error)
         
-        if (not type(input_img_url) == str or not type(filter_image_url) == str):
+        if not type(input_img_url) == str or not type(filter_image_url) == str:
             error = "nst: Invalid URLs"
             abort(500, description=error)
         
-        if (nst_type == "Performance"):
-            threading.Thread(target=fast_nst.run_nst(input_img_url, filter_image_url)).start()
-        elif (nst_type == "Quality"):
-            threading.Thread(target=slow_nst.run_nst(input_img_url, filter_image_url, ass_man)).start()
+        if nst_type == "Performance":
+            threading.Thread(target=fast_nst.run_nst(input_img_url,
+                                                     filter_image_url)).start()
+        elif nst_type == "Quality":
+            threading.Thread(target=slow_nst.run_nst(input_img_url,
+                                                     filter_image_url,
+                                                     ass_man)).start()
         
-        return {"image_name": ui_input["image_name"], "url": url,
+        return {"image_name": ui_input["image_name"], "url": input_img_url,
                 "file_extension": ui_input["file_extension"]}
         
 
