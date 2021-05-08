@@ -1,209 +1,89 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Slider from "@material-ui/core/Slider";
 
 class TransformationEditingMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      rValue: "",
-      gValue: "",
-      bValue: "",
-      aValue: "",
-      watermarkName: "",
-      watermarkPosition: "",
-      watermarkSize: "",
-      watermarkOpacity: "",
-      backgroundName: "",
-      opacityValue: 1,
-      blurValue: 1,
-    };
+    this.emojiPreview = React.createRef();
+    // This is a temporary solution while I find a way to read files from a directory from react or pass it here somehow
+    this.emojiList = [
+      "blush", "cry", "derp", "heart_punch", "heart", "hearts", "nom", "sweat",
+      "okay", "owo", "punch", "shake", "shock", "smile", "sparkle", "stare"
+    ];
+    this.emojiIdx = 0;
   }
 
-  handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value });
-  };
+  previewEmoji = () => {
+    this.img = new Image();
+    this.img.onload = () => {
+      const context = this.emojiPreview.current.getContext("2d");
+      context.clearRect(0, 0, 150, 150);
+      context.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, 150, 150);
+      
+      const functions = this.props.getCanvas("functions");
+      functions.emoji[0] = this.img;
+      this.props.setCanvas("functions", functions);
+    }
+    this.img.src = "./emojis/bugcat_owo.png";
+  }
 
-  applyRecolorationFilter = () => {
-    console.log("r value: " + this.state.rValue);
-    console.log("g value: " + this.state.gValue);
-    console.log("b value: " + this.state.bValue);
-    this.props.applyFilter("recoloration", [
-      parseInt(this.state.rValue),
-      parseInt(this.state.gValue),
-      parseInt(this.state.bValue),
-      parseInt(this.state.aValue),
-    ]);
-  };
+  componentDidMount() {
+    this.previewEmoji();
 
-  addWatermark = () => {
-    console.log("watermark name: " + this.state.watermarkName);
-    console.log("watermark position: " + this.state.watermarkPosition);
-    console.log("watermark opacity: " + this.state.watermarkOpacity);
-    console.log("watermark size: " + this.state.watermarkSize);
-    this.props.applyFilter("watermark", [
-      this.state.watermarkName,
-      this.state.watermarkPosition,
-      this.state.watermarkSize,
-      this.state.watermarkOpacity,
-    ]);
-  };
-
-  changeBackground = () => {
-    console.log("background name: " + this.state.backgroundName);
-  };
-
-  applyGaussianBlur = (e, val) => {
-    this.setState({
-      blurValue: val,
-    });
-
-  };
-
-  changeOpacity = (e, val) => {
-    this.setState({
-      opacityValue: val,
-    });
+    const emoji = this.props.getCanvas("functions").emoji;
+    this.savedEmoji = [null, emoji[1], emoji[2], emoji[3], emoji[4], true];
     
-  };
+    const img = this.props.getCanvas("image");
+    let minEdge = img[3] < img[4] ? img[3] : img[4];
 
-  confirmOpacityChange = () => {
-    console.log("Opacity: " + this.state.opacityValue);
-    this.props.applyFilter("opacity", parseInt(this.state.opacityValue));
+    emoji[1] = 0;
+    emoji[2] = 0;
+    emoji[3] = 0.999;
+    emoji[4] = 0.3;
+    emoji[5] = false;
+    this.props.setCanvas("activeFunction", "emoji");
   }
 
-  confirmBlurChange = () => {
-    console.log("Opacity: " + this.state.blurValue);
-    this.props.applyFilter("blur", parseInt(this.state.blurValue));
+  componentWillUnmount() {
+    this.props.setCanvas("activeFunction", null);
+    this.props.getCanvas("functions").emoji = this.savedEmoji;
+  }
+
+  onScaleChange = (e, v) => {
+    this.setState({ scale: v });
+    const functions = this.props.getCanvas("functions");
+    // Clamps scale to prevent errors
+    if (v < 0.002) v = 0.002;
+    if (v > 0.999) v = 0.999;
+    functions.emoji[3] = v;
+    this.props.setCanvas("functions", functions);
+  }
+
+  onOpacityChange = (e, v) => {
+    this.setState({opacity: v});
+    const functions = this.props.getCanvas("functions");
+    functions.emoji[4] = v;
+    this.props.setCanvas("functions", functions);
+  }
+
+  updateEmojiBackend = () => {
+    const emoji = this.props.getCanvas("functions").emoji;
+    const name = "bugcat_" + this.emojiList[this.emojiIdx] + ".png"
+    this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), 0.5]);
+  }
+
+  onApply = () => {
+    this.updateEmojiBackend();
   }
 
   render() {
-    return (
-      <div>
-        <h4>Change Opacity:</h4>
-        <Slider
-          value={this.state.opacityValue}
-          onChange={this.changeOpacity}
-          aria-labelledby="discrete-slider-small-steps"
-          min={0}
-          max={100}
-          step={1}
-          valueLabelDisplay="auto"
-        ></Slider>
-        <Button variant="contained" color="primary" onClick={this.confirmOpacityChange}>Change Opactiy</Button>
-
-        <h4>Gaussian Blur:</h4>
-        <Slider
-          value={this.state.blurValue}
-          onChange={this.applyGaussianBlur}
-          aria-labelledby="discrete-slider-small-steps"
-          min={0}
-          max={9}
-          step={1}
-          valueLabelDisplay="auto"
-        ></Slider>
-        <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>
-
-        <h4>Change Background:</h4>
-        <TextField
-          id="outlined-basic"
-          value={this.state.backgroundName}
-          onChange={this.handleChange("backgroundName")}
-          label="Background Name"
-          variant="outlined"
-        />
-        <br />
-        <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.changeBackground}
-          disabled="true"
-        >
-          Select Background
-        </Button>
-        <h4>Add Watermark:</h4>
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkName}
-          onChange={this.handleChange("watermarkName")}
-          label="Image Name"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkPosition}
-          onChange={this.handleChange("watermarkPosition")}
-          label="Position"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkSize}
-          onChange={this.handleChange("watermarkSize")}
-          label="Size"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkOpacity}
-          onChange={this.handleChange("watermarkOpacity")}
-          label="Opacity"
-          variant="outlined"
-        />
-        <br />
-        <br />
-        <Button variant="contained" color="primary" disabled="true" onClick={this.addWatermark}>
-          Add Watermark
-        </Button>
-        <br />
-        <h4>Apply Recoloration Filter:</h4>
-        <TextField
-          id="outlined-basic"
-          value={this.state.rValue}
-          onChange={this.handleChange("rValue")}
-          label="R Value (0 - 255)"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.gValue}
-          onChange={this.handleChange("gValue")}
-          label="G Value (0 - 255)"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.bValue}
-          onChange={this.handleChange("bValue")}
-          label="B Value (0 - 255)"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.aValue}
-          onChange={this.handleChange("aValue")}
-          label="A Value (0 - 255)"
-          variant="outlined"
-        />
-        <br />
-        <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.applyRecolorationFilter}
-        >
-          Apply Recoloration
-        </Button>
-      </div>
-    );
+    return <div>
+      <h3>Watermark</h3>
+      <canvas ref={this.emojiPreview} width={150} height={150}/><br/>
+      <br/><br/>
+      <Button variant="contained" color="primary" onClick={this.onApply}>Apply Watermark</Button>
+    </div>
   }
 }
 

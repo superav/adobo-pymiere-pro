@@ -101,6 +101,8 @@ export default function ColorAndLightingEffects(props) {
       <TabPanel value={value} index={4}>
         <TransformationEditingMenu
             applyFilter={props.applyFilter}
+            getCanvas={props.getCanvas}
+            setCanvas={props.setCanvas}
           ></TransformationEditingMenu>
       </TabPanel>
       <TabPanel value={value} index={5}>
