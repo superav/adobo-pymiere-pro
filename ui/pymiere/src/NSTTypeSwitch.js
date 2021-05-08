@@ -41,16 +41,7 @@ const AntSwitch = withStyles((theme) => ({
 export default class NSTTypeSwitch extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-        checkedC: true
-    };
   }
-
-  handleChange = (event) => {
-    this.setState({ ...this.state, [event.target.name]: event.target.checked }, () => {
-    });
-    console.log("checked value: " + this.state.checkedC);
-  };
 
   render() {
     return (
@@ -60,9 +51,8 @@ export default class NSTTypeSwitch extends Component {
             <Grid item>Speed</Grid>
             <Grid item>
               <AntSwitch
-                checked={this.state.checkedC}
-                onChange={this.handleChange}
-                name="checkedC"
+                checked={this.props.value}
+                onChange={this.props.changeNSTType}
               />
             </Grid>
             <Grid item>Performance</Grid>

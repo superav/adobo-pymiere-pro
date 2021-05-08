@@ -8,7 +8,7 @@ export default class ViewNSTFilters extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nstType: "Performance",
+      nstType: true,
       generation: 1,
       baseURL: "https://adobo-pymiere.s3.amazonaws.com/",
       filterArray: [
@@ -36,9 +36,9 @@ export default class ViewNSTFilters extends Component {
     this.props.applyFilter("nst-filter", [this.state.newURL]);
   };
 
-  changeNSTType = (cond) => {
+  changeNSTType = (event) => {
     this.setState({
-      nstType: cond ? "performance" : "speed"
+      nstType: event.target.checked
     });
   }
 
@@ -65,7 +65,7 @@ export default class ViewNSTFilters extends Component {
         ></Slider>
         <p>{this.state.generation}</p>
         <br />
-        <NSTTypeSwitch changeNSTType={this.state.changeNSTType}></NSTTypeSwitch>
+        <NSTTypeSwitch value={this.state.nstType} changeNSTType={this.changeNSTType}></NSTTypeSwitch>
         <br />
         <Button
           variant="contained"
