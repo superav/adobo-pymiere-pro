@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import { uploadFile } from 'react-s3';
+import { withSnackbar } from 'notistack';
 
 const S3_BUCKET ='adobo-pymiere';
 const REGION ='us-east-1';
@@ -14,7 +15,7 @@ const config = {
     dirName: "styles",
 }
 
-const UploadNSTFilterForm = () => {
+const UploadNSTFilterForm = (props) => {
 
     const [selectedFile, setSelectedFile] = useState(null);
 
@@ -24,8 +25,20 @@ const UploadNSTFilterForm = () => {
 
     const handleUpload = async (file) => {
         uploadFile(file, config)
-            .then(data => console.log(data))
-            .catch(err => console.error(err))
+            .then(data => {
+                console.log(data);
+                props.enqueueSnackbar("NST Filter has been successfully uploaded", {
+                    variant: 'success',
+                    autoHideDuration: 2000,
+                });
+
+            }).catch(err => {
+                console.error(err)
+                props.enqueueSnackbar("Error occured uploading NST Filter", {
+                    variant: 'error',
+                    autoHideDuration: 2000,
+                });
+            })
     }
 
     return <div>
@@ -35,4 +48,4 @@ const UploadNSTFilterForm = () => {
     </div>
 }
 
-export default UploadNSTFilterForm;
+export default withSnackbar(UploadNSTFilterForm);
