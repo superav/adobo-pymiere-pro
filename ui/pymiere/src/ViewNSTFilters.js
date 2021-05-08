@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import { sizing } from "@material-ui/system";
+import Switch from '@material-ui/core/Switch';
+
 
 export default class ViewNSTFilters extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nstType: "fast",
       generation: 1,
       baseURL: "https://adobo-pymiere.s3.amazonaws.com/",
       filterArray: [
@@ -38,6 +40,15 @@ export default class ViewNSTFilters extends Component {
       // Get filter array instead of hardcoding
   }
 
+  handleNSTTypeChange = () => {
+    if (this.state.nstType === "fast") {
+      this.setState({nstType: "slow"});
+    }
+    else {
+      this.setState({nstType: "fast"});
+    }
+  }
+
 
   render() {
     return (
@@ -64,15 +75,14 @@ export default class ViewNSTFilters extends Component {
         >
           Select NST Filter
         </Button>
-        <br />
-        <Button
-          variant="contained"
+        <Switch
+          checked={this.state.nstType}
+          onChange={this.handleNSTTypeChange}
           color="primary"
-          onClick={this.getFilterArray}
-          disabled="true"
-        >
-          Get Filter Array
-        </Button>
+          name="checkedB"
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+        />
+        <br />
       </div>
     );
   }
