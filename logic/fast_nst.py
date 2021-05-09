@@ -45,6 +45,8 @@ def load_image(image_url, image_size=(256, 256), preserve_aspect_ratio=True):
     Returns:
         img: Image Tensor containing the loaded and preprocessed image
     """
+
+    image_url = image_url.replace(" ", "+")
     # Cache image file locally.
     image_path = tf.keras.utils.get_file(os.path.basename(image_url)[-128:],
                                          image_url)
@@ -89,11 +91,13 @@ def run_nst(content_image_url, style_image_url, output_image_size=1024):
     arr_ = np.squeeze(stylized_image)  # you can give axis attribute if you wanna squeeze in specific dimension
     plt.imshow(arr_)
     plt.axis('off')
-    stylized_image_name = search(r"\w+\.png", content_image_url).group()
+    stylized_image_name = search(r"[\w+\s+\(\)-]+.png", content_image_url).group()
     plt.savefig(stylized_image_name, bbox_inches='tight', pad_inches=0)
 
     output_image = Image.open(stylized_image_name)
 
     url = asset_manager.upload_image_to_s3(output_image, stylized_image_name)
 
+    print(content_image_url)
+    print(url)
     return url

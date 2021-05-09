@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
+import CheckNSTFilters from "./CheckNSTFilters";
 
 export default class ViewNSTFilters extends Component {
   constructor(props) {
@@ -19,6 +20,8 @@ export default class ViewNSTFilters extends Component {
       ],
       newURL: "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_1.jpg"
     };
+
+    this.setState({newURL: this.state.baseURL + this.state.filterArray[0]})
   }
 
   handleChange = (e, v) => {
@@ -32,6 +35,7 @@ export default class ViewNSTFilters extends Component {
   confirmNSTFilter = () => {
     console.log("Filter number: " + this.state.generation);
     console.log("Filter type: " + this.state.nstType);
+    //let params = {"filter_url": this.state.newURL}
     this.props.applyFilter("nst-filter", [this.state.newURL]);
   };
 
@@ -42,7 +46,15 @@ export default class ViewNSTFilters extends Component {
   }
 
   getFilterArray = () => {
-      // Get filter array instead of hardcoding
+    CheckNSTFilters().then((response) => {
+      this.setState({
+          filterArray: response.list
+        })
+      })
+  }
+
+  componentDidMount() {
+    this.getFilterArray()
   }
 
   render() {
@@ -58,7 +70,7 @@ export default class ViewNSTFilters extends Component {
           onChange={this.handleChange}
           aria-labelledby="discrete-slider-small-steps"
           min={1}
-          max={this.state.filterArray.length}
+          max={this.state.filterArray.length - 1}
           step={1}
           valueLabelDisplay="auto"
         ></Slider>
