@@ -14,13 +14,17 @@ stages:
 
 pytest-ass-man:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests in the logic folder for Aidan"
     - cd tests
-    - python -m pytest test_asset_manager.py -v --cov    
+    - python -m pytest test_asset_manager.py -v --cov
 
 pytest-canvas-editing:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests for crop, rotate, and scale"
     - cd tests
@@ -28,6 +32,8 @@ pytest-canvas-editing:
 
 pytest-color-methods:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests for saturation, hue, opacity, recoloration, and gradient"
     - cd tests
@@ -35,6 +41,8 @@ pytest-color-methods:
 
 pytest-filter-methods:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests for gaussian blur, solarize, red eye, and mosaic"
     - cd tests
@@ -42,6 +50,8 @@ pytest-filter-methods:
 
 pytest-misc-methods:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests for frame, mirror, and draw on image"
     - cd tests
@@ -49,6 +59,8 @@ pytest-misc-methods:
 
 pytest-overlay-methods:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests for watermark, and add text"
     - cd tests
@@ -56,6 +68,8 @@ pytest-overlay-methods:
 
 pytest-feature:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the flask server, testing the post and get endpoints"
     - chmod +x ./feature_tests.sh
