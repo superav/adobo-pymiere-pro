@@ -86,6 +86,22 @@ def compare_vignette_feature_test_images():
     return rms
 
 
+def compare_nst_feature_test_images():
+    # Reference: https://stackoverflow.com/questions/
+    #               1927660/compare-two-images-the-python-linux-way
+    ret = json.loads(sys.argv[4])
+    file_name = ret["image_name"] + "." + ret["file_extension"]
+
+    image_1 = ASSET_MANAGER.import_image_from_s3(file_name, False)
+
+    if not (isinstance(image_1, Image.Image)):
+        sys.exit([1])
+
+    return 0
+
+
 if __name__ == "__main__":
     compare_hue_feature_test_images()
     compare_red_eye_feature_test_images()
+    compare_vignette_feature_test_images()
+    compare_nst_feature_test_images()

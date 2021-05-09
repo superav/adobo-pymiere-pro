@@ -11,6 +11,10 @@ from logic.misc_methods import *
 from logic.as_sprint_3 import *
 from logic.asset_manager import AssetManager
 
+import logic.fast_nst as fast_nst
+
+import time
+
 ass_man = AssetManager("test_user_integration")
 
 
@@ -112,6 +116,23 @@ def create_app():
         # Return url and image information to UI
         return {"image_name": ui_input["image_name"], "url": url,
                 "file_extension": ui_input["file_extension"]}
+    
+    @flask_app.route("/logic/nst", methods=["POST"])
+    def run_nst():
+        
+        ui_input = request.get_json()
+        input_img_url = ui_input["input_image_url"]
+        filter_image_url = ui_input["filter_image_url"]
+        
+        if not type(input_img_url) == str or not type(filter_image_url) == str:
+            error = "nst: Invalid URLs"
+            abort(500, description=error)
+        
+        fast_nst.run_nst(input_img_url, filter_image_url)
+        
+        return {"image_name": ui_input["image_name"], "url": input_img_url,
+                "file_extension": ui_input["file_extension"]}
+        
 
     @flask_app.route("/logic/image_list", methods=["GET"])
     def get_list_bucket():

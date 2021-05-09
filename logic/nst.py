@@ -6,7 +6,7 @@ Original file is located at
     https://colab.research.google.com/drive/1oFG-jaMKA-2u2n_-nf2xhZS4RF2-pMH-
 """
 
-from asset_manager import AssetManager
+from logic.asset_manager import AssetManager
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -41,6 +41,9 @@ def load_img(path_to_im):
     """
     max_dim = 512
     img = Image.open(path_to_im)
+
+    if img.mode == 'RGBA':
+        img = __convert_to_rgb(img)
 
     long = max(img.size)
     scale = max_dim / long
@@ -81,6 +84,7 @@ def load_and_process_img(path_to_img):
     # img = load_img_from_s3(path_to_img)
     img = load_img(path_to_img)
     img = tf.keras.applications.vgg19.preprocess_input(img)
+
     return img
 
 
@@ -368,21 +372,21 @@ def run_style_transfer(content_path,
 
     print('Total time: {:.4f}s'.format(time.time() - global_start))
     IPython.display.clear_output(wait=True)
-    plt.figure(figsize=(14, 4))
+    plt.figure()
 
     for idx, img in enumerate(imgs):
         if ASSET_MANAGER:
-            plt.axis('off')
             image_name = "__temp__.png"
+
+            plt.axis('off')
+            plt.imshow(img)
+
             plt.savefig(image_name, bbox_inches='tight', pad_inches=0)
             image_url =\
                 ASSET_MANAGER.upload_temp_image_to_s3("__temp__.png",
                                                       "nst_temp_%s.png" % idx)
             IMAGE_URLS.append(image_url)
-        # plt.subplot(num_rows, num_cols, i + 1)
-        # plt.imshow(img)
-        # plt.xticks([])
-        # plt.yticks([])
+        plt.imshow(img)
 
     return best_img, best_loss
 
@@ -413,6 +417,21 @@ def show_results(best_img, content_path, style_path, show_large_final=True):
         plt.imshow(best_img)
         plt.title('Output Image')
         plt.show()
+
+
+def __convert_to_rgb(image: Image):
+    """Converts an RGBA image to RGB
+
+    Args:
+        image: RGBA image
+
+    Returns:
+        PIL.Image: converted RGB image
+    """
+    image.load()
+    background = Image.new('RGB', image.size, (255, 255, 255))
+    background.paste(image, mask=image.split()[3])
+    return background
 
 
 def run_nst(content_url: str, style_url: str,
