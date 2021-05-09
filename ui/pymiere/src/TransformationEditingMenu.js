@@ -17,6 +17,7 @@ class TransformationEditingMenu extends Component {
       opacityValue: 1,
       blurValue: 1,
     };
+    this.watermark = "Watermark.png";
   }
 
   componentDidMount () {
@@ -44,12 +45,13 @@ class TransformationEditingMenu extends Component {
         emoji[1] = (img[3] - this.img.width * emoji[3]) / 2;
         emoji[2] = (img[4] - this.img.height * emoji[3]) / 2;
       }
-      // Scale
+
+      emoji[3] = emoji[3] >= 1 ? 0.999 : emoji[3];
       emoji[4] = 0.3;
       emoji[5] = false;
       this.props.setCanvas("activeFunction", "emoji");
     }
-    this.img.src = "./emojis/bugcat_owo.png";
+    this.img.src = "./emojis/" + this.watermark;
   }
 
   componentWillUnmount() {
@@ -59,8 +61,9 @@ class TransformationEditingMenu extends Component {
 
   updateEmojiBackend = () => {
     const emoji = this.props.getCanvas("functions").emoji;
-    const name = "bugcat_owo.png";
-    this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), 0.5]);
+    const name = this.watermark;
+    console.log(emoji);
+    this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), parseFloat(emoji[4])]);
   }
 
   onApply = () => {
