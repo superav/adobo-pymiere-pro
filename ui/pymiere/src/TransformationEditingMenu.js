@@ -7,7 +7,6 @@ import { withSnackbar } from 'notistack';
 class TransformationEditingMenu extends Component {
   constructor(props) {
     super(props);
-    this.emojiPreview = React.createRef();
     this.state = {
       rValue: "",
       gValue: "",
@@ -18,15 +17,12 @@ class TransformationEditingMenu extends Component {
       blurValue: 1,
     };
     this.watermark = "Watermark.png";
+    this.emojiScale = 0.999;
   }
 
   componentDidMount () {
     this.img = new Image();
     this.img.onload = () => {
-      const context = this.emojiPreview.current.getContext("2d");
-      context.clearRect(0, 0, 150, 150);
-      context.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, 150, 150);
-      
       const emoji = this.props.getCanvas("functions").emoji;
       this.savedEmoji = [...emoji];
       
@@ -46,7 +42,8 @@ class TransformationEditingMenu extends Component {
         emoji[2] = (img[4] - this.img.height * emoji[3]) / 2;
       }
 
-      emoji[3] = emoji[3] >= 1 ? 0.999 : emoji[3];
+      this.emojiScale = emoji[3] >= 1 ? 0.999 : emoji[3];
+      emoji[3] = 0;
       emoji[4] = 0.3;
       emoji[5] = false;
       this.props.setCanvas("activeFunction", "emoji");
@@ -62,8 +59,9 @@ class TransformationEditingMenu extends Component {
   updateEmojiBackend = () => {
     const emoji = this.props.getCanvas("functions").emoji;
     const name = this.watermark;
-    console.log(emoji);
+    emoji[3] = this.emojiScale;
     this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), parseFloat(emoji[4])]);
+    emoji[3] = 0;
   }
 
   onApply = () => {
@@ -87,19 +85,6 @@ class TransformationEditingMenu extends Component {
       parseInt(this.state.gValue),
       parseInt(this.state.bValue),
       parseInt(this.state.aValue),
-    ]);
-  };
-
-  addWatermark = () => {
-    console.log("watermark name: " + this.state.watermarkName);
-    console.log("watermark position: " + this.state.watermarkPosition);
-    console.log("watermark opacity: " + this.state.watermarkOpacity);
-    console.log("watermark size: " + this.state.watermarkSize);
-    this.props.applyFilter("watermark", [
-      this.state.watermarkName,
-      this.state.watermarkPosition,
-      this.state.watermarkSize,
-      this.state.watermarkOpacity,
     ]);
   };
 
@@ -157,47 +142,8 @@ class TransformationEditingMenu extends Component {
           valueLabelDisplay="auto"
         ></Slider>
         <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>
-
-        <h4>Add Watermark:</h4>
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkName}
-          onChange={this.handleChange("watermarkName")}
-          label="Image Name"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkPosition}
-          onChange={this.handleChange("watermarkPosition")}
-          label="Position"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkSize}
-          onChange={this.handleChange("watermarkSize")}
-          label="Size"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkOpacity}
-          onChange={this.handleChange("watermarkOpacity")}
-          label="Opacity"
-          variant="outlined"
-        />
-        <br />
-        <br />
-        <Button variant="contained" color="primary" disabled="true" onClick={this.addWatermark}>
-          Add Watermark
-        </Button>
         <br />
         <h4>Watermark</h4>
-        <canvas ref={this.emojiPreview} width={150} height={150}/><br/>
         <Button variant="contained" color="primary" onClick={this.onApply}>Apply Watermark</Button>
         <h4>Apply Recoloration Filter:</h4>
         <TextField
