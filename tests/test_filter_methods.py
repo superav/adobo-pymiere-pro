@@ -98,6 +98,10 @@ class TestFilterInputValidation(unittest.TestCase):
 
         self.assertTrue(isinstance(im2, Image.Image))
 
+    def test_vignette_invalid_value(self):
+        with self.assertRaises(Exception):
+            _ = apply_vignette("test")
+
 
 class TestFilterImageProc(unittest.TestCase):
     def test_gaussian_blur_correct_output(self):
@@ -141,5 +145,13 @@ class TestFilterImageProc(unittest.TestCase):
         fin =\
             ASSET_MANAGER.import_image_from_s3('red_eye_expected_35_110_150_150.png', False)
         im2 = apply_red_eye_filter(im1, [35, 110, 150, 150])
+
+        self.assertTrue(compare_images(fin, im2) == 0)
+
+    def test_vignette_correct_output(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3('vignette_expected.png', False)
+
+        im2 = apply_vignette(im1)
 
         self.assertTrue(compare_images(fin, im2) == 0)

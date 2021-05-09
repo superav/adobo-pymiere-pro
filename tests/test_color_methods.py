@@ -115,6 +115,28 @@ class TestColorInputValidation(unittest.TestCase):
         with self.assertRaises(Exception):
             _ = apply_gradient_editor(im1, [-7, [255, 0, 0], [0, 0, 255]])
 
+    def test_contrast_invalid_value(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('tree.png', False)
+
+        with self.assertRaises(Exception):
+            _ = apply_contrast(im1, 5.80)
+
+        with self.assertRaises(Exception):
+            _ = apply_contrast("test", -1)
+
+    def test_autocontrast_invalid_value(self):
+        with self.assertRaises(Exception):
+            _ = apply_autocontrast(580)
+
+    def test_brightness_invalid_value(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('tree.png', False)
+
+        with self.assertRaises(Exception):
+            _ = apply_brightness(None, -1)
+
+        with self.assertRaises(Exception):
+            _ = apply_brightness(im1, "test")
+
 
 class TestColorImageProc(unittest.TestCase):
     def test_saturation_correct_output(self):
@@ -151,7 +173,7 @@ class TestColorImageProc(unittest.TestCase):
             ASSET_MANAGER.import_image_from_s3('opacity_expected_50.png', False)
         im2 = opacity_editor(im1, 50)
 
-        self.assertTrue(compare_images(fin, im2) == 0)
+        self.assertEqual(compare_images(fin, im2), 0)
 
     def test_recoloration_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
@@ -168,3 +190,27 @@ class TestColorImageProc(unittest.TestCase):
         im2 = apply_gradient_editor(im1, [70, [255, 0, 0], [0, 0, 255]])
 
         self.assertTrue(compare_images(fin, im2) == 0)
+
+    def test_autocontrast_correct_output(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('tree.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3('autocontrast_expected.png', False)
+
+        im2 = apply_autocontrast(im1)
+
+        self.assertEqual(compare_images(fin, im2), 0)
+
+    def test_contrast_correct_output(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('tree.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3('contrast_expected_50.png', False)
+
+        im2 = apply_contrast(im1, 50)
+
+        self.assertEqual(compare_images(fin, im2), 0)
+
+    def test_brightness_correct_output(self):
+        im1 = ASSET_MANAGER.import_image_from_s3('tree.png', False)
+        fin = ASSET_MANAGER.import_image_from_s3('brightness_expected_5.png', False)
+
+        im2 = apply_brightness(im1, 0.5)
+
+        self.assertEqual(compare_images(fin, im2), 0)

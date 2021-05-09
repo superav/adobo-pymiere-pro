@@ -1,4 +1,4 @@
-from PIL import Image, ImageEnhance, ImageDraw
+from PIL import Image, ImageEnhance, ImageDraw, ImageOps
 from flask import abort
 import colorsys
 import numpy as np
@@ -12,6 +12,9 @@ Included Methods:
     * Change Opacity
     * Recoloration Filter
     * Apply Color Gradient
+    * Change Contrast
+    * Apply Auto-Contrast
+    * Change Brightness
 """
 
 
@@ -174,6 +177,75 @@ def apply_gradient_editor(input_img: Image, specifications: list) -> Image:
     output_image = Image.composite(input_img, color, mask).convert('RGB')
 
     return output_image
+
+
+def apply_contrast(input_img: Image, specifications: int) -> Image:
+    """
+        Args:
+            input_img:  The image to be changed
+            specifications: int to determine the percent of the lightest and
+                            darkest pixels from the pixel histogram and remaps
+                            them
+
+        Returns:
+            PIL.Image: Image with contrast changed
+    """
+    cutoff = int(abs((specifications/2)))
+
+    if not isinstance(input_img, Image.Image):
+        abort(500, description="apply_contrast: invalid input image")
+    if type(specifications) != int:
+        abort(500, description="apply_contrast: invalid int input")
+
+    if cutoff >= 50:
+        cutoff = 49
+    if cutoff < 0:
+        cutoff = 0
+
+    input_img = input_img.convert("RGB")
+    output_img = ImageOps.autocontrast(input_img, cutoff, None)
+
+    return output_img
+
+
+def apply_autocontrast(input_img: Image) -> Image:
+    """
+        Args:
+            input_img:  The image to be changed
+
+        Returns:
+            PIL.Image: Image with contrast changed
+    """
+    if not isinstance(input_img, Image.Image):
+        abort(500, description="apply_contrast: invalid input types")
+
+    input_img = input_img.convert("RGB")
+    output_img = ImageOps.autocontrast(input_img, None)
+
+    return output_img
+
+
+def apply_brightness(input_img: Image, specifications: int) -> Image:
+    """
+        Args:
+            input_img:  The image to be changed
+            specifications: int from 0 to 1, to determine how dark or
+                            light to make the image
+
+        Returns:
+            PIL.Image: Image with brightness changed
+    """
+    if not isinstance(input_img, Image.Image):
+        abort(500, description="apply_contrast: invalid input image")
+
+    if type(specifications) != int and type(specifications) != float:
+        abort(500, description="apply_contrast: invalid int/float input")
+
+    value = specifications * 2
+    enhancer = ImageEnhance.Brightness(input_img)
+    output_img = enhancer.enhance(value)
+
+    return output_img
 
 
 # HELPER METHODS

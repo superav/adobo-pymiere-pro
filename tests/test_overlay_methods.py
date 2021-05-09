@@ -109,6 +109,21 @@ class TestOverlayInputValidation(unittest.TestCase):
         with self.assertRaises(Exception):
             _ = add_text_to_image(im, specifications)
 
+    def test_generate_meme_text_invalid_input(self):
+        im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
+
+        with self.assertRaises(Exception):
+            _ = generate_meme_text(5, ["top text", "bottom text"])
+
+        with self.assertRaises(Exception):
+            _ = generate_meme_text(im, [1, "bottom text"])
+
+        with self.assertRaises(Exception):
+            _ = generate_meme_text(im, ["top text", 1])
+
+        with self.assertRaises(Exception):
+            _ = generate_meme_text(im, ["top text", "bottom text", "extra text"])
+
     def test_add_emoji_invalid_input_type(self):
         input_img = Image.open("./test_assets/images/test_1.png")
         watermark = "bugcat_owo.png"
@@ -198,6 +213,20 @@ class TestOverlayImageProc(unittest.TestCase):
 
         fin = ASSET_MANAGER.import_image_from_s3('test_2_hello.png', False)
         rms = compare_images(im, fin)
+
+        self.assertEqual(0, rms)
+
+    def test_generate_meme_text_correct_output(self):
+        im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
+
+        output = generate_meme_text(im, ["top text", "bottom text"])
+        output.show()
+
+        self.assertTrue(isinstance(output, Image.Image))
+
+        fin = ASSET_MANAGER.import_image_from_s3('test_2_memed.png', False)
+        fin.show()
+        rms = compare_images(output, fin)
 
         self.assertEqual(0, rms)
 
