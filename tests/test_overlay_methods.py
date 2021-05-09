@@ -218,14 +218,11 @@ class TestOverlayImageProc(unittest.TestCase):
 
     def test_generate_meme_text_correct_output(self):
         im = ASSET_MANAGER.import_image_from_s3('test_2.png', False)
-
         output = generate_meme_text(im, ["top text", "bottom text"])
-        output.show()
 
         self.assertTrue(isinstance(output, Image.Image))
 
         fin = ASSET_MANAGER.import_image_from_s3('test_2_memed.png', False)
-        fin.show()
         rms = compare_images(output, fin)
 
         self.assertEqual(0, rms)
