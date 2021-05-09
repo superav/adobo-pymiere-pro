@@ -16,7 +16,7 @@ class TransformationEditingMenu extends Component {
       watermarkSize: "",
       watermarkOpacity: "",
       backgroundName: "",
-      opacityValue: 1,
+      opacityValue: 100,
       blurValue: 1,
     };
   }
@@ -48,10 +48,6 @@ class TransformationEditingMenu extends Component {
       this.state.watermarkSize,
       this.state.watermarkOpacity,
     ]);
-  };
-
-  changeBackground = () => {
-    console.log("background name: " + this.state.backgroundName);
   };
 
   applyGaussianBlur = (e, val) => {
@@ -105,24 +101,6 @@ class TransformationEditingMenu extends Component {
         ></Slider>
         <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>
 
-        <h4>Change Background:</h4>
-        <TextField
-          id="outlined-basic"
-          value={this.state.backgroundName}
-          onChange={this.handleChange("backgroundName")}
-          label="Background Name"
-          variant="outlined"
-        />
-        <br />
-        <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.changeBackground}
-          disabled="true"
-        >
-          Select Background
-        </Button>
         <h4>Add Watermark:</h4>
         <TextField
           id="outlined-basic"

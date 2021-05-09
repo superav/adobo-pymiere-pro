@@ -38,6 +38,7 @@ class StoreLocalFilesystem extends Component {
           onChange={this.handleChange("fileName")}
         />
         <br></br>
+        <br></br>
         <TextField
           value={this.state.extension}
           id="outlined-basic"

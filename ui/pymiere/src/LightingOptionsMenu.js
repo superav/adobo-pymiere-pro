@@ -22,7 +22,7 @@ export default function LightingOptionsMenu(props) {
 
   function confirmLightingEffects() {
     console.log(brightness);
-    props.applyFilter("brightness", [parseFloat(brightness)])
+    props.applyFilter("brightness", parseFloat(brightness))
   }
 
   return (
@@ -40,13 +40,12 @@ export default function LightingOptionsMenu(props) {
           max={1}
           step={0.1}
           valueLabelDisplay="auto"
-          disabled="true"
         ></Slider>
 
         </Grid>
       </Grid>
       <br></br>
-      <Button variant="contained" color="primary" disabled="true" onClick={confirmLightingEffects}>Add Lighting Effects</Button>
+      <Button variant="contained" color="primary" onClick={confirmLightingEffects}>Add Lighting Effects</Button>
     </div>
   );
 }

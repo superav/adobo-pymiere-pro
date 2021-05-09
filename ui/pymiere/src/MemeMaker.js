@@ -21,6 +21,7 @@ class MemeMaker extends Component {
     submitText = () => {
         console.log("top text: " + this.state.topText);
         console.log("bottom text: " + this.state.bottomText);
+        this.props.applyFilter("meme", [this.state.topText, this.state.bottomText])
     }
 
     render() {
@@ -53,7 +54,6 @@ class MemeMaker extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    disabled="true"
                     onClick={this.submitText} >
                     Submit
                 </Button>

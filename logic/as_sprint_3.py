@@ -47,11 +47,11 @@ def apply_autocontrast(input_img: Image) -> Image:
     return output_img
 
 
-def apply_brightness(input_img: Image, specifications: int) -> Image:
+def apply_brightness(input_img: Image, specifications: float) -> Image:
     """
         Args:
             input_img:  The image to be changed
-            specifications: int from 0 to 1, to determine how dark or
+            specifications: float from 0 to 1, to determine how dark or
                             light to make the image
 
         Returns:

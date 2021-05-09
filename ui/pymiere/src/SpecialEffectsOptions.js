@@ -55,7 +55,10 @@ export function SpecialEffectsOptions (props) {
       props.applyFilter("red-eye-remover", [parseInt(topLeftX), parseInt(topLeftY), parseInt(bottomRightX), parseInt(bottomRightY)]);
     }
     else if (effectChoice == "autocontrast") {
-      props.applyFilter("autocontrast", [0.5]);
+      props.applyFilter("autocontrast");
+    }
+    else if (effectChoice == "vignette") {
+      props.applyFilter("vignette");
     }
   }
 
@@ -76,7 +79,8 @@ export function SpecialEffectsOptions (props) {
           <br></br>
           <TextField id="outlined-basic" label="Bottom Right Y Coordinate" variant="outlined" size="small" value={bottomRightY} onChange={handleBottomRightY}/>
           <br></br>
-          <FormControlLabel value="autocontrast" disabled="true" control={<Radio /> } label="Autocontrast" />
+          <FormControlLabel value="autocontrast" control={<Radio /> } label="Autocontrast" />
+          <FormControlLabel value="vignette" control={<Radio /> } label="Vignette" />
         </RadioGroup>
       </FormControl>
       <br></br>
