@@ -372,7 +372,7 @@ def run_style_transfer(content_path,
 
     print('Total time: {:.4f}s'.format(time.time() - global_start))
     IPython.display.clear_output(wait=True)
-    plt.figure(figsize=(14, 4))
+    plt.figure()
 
     for idx, img in enumerate(imgs):
         if ASSET_MANAGER:
