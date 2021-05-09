@@ -1,48 +1,44 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
-import Slider from "@material-ui/core/Slider";
+import { withSnackbar } from 'notistack';
 
 class TransformationEditingMenu extends Component {
   constructor(props) {
     super(props);
     this.emojiPreview = React.createRef();
-    // This is a temporary solution while I find a way to read files from a directory from react or pass it here somehow
-    this.emojiList = [
-      "blush", "cry", "derp", "heart_punch", "heart", "hearts", "nom", "sweat",
-      "okay", "owo", "punch", "shake", "shock", "smile", "sparkle", "stare"
-    ];
-    this.emojiIdx = 0;
   }
 
-  previewEmoji = () => {
+  componentDidMount () {
     this.img = new Image();
     this.img.onload = () => {
       const context = this.emojiPreview.current.getContext("2d");
       context.clearRect(0, 0, 150, 150);
       context.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, 150, 150);
       
-      const functions = this.props.getCanvas("functions");
-      functions.emoji[0] = this.img;
-      this.props.setCanvas("functions", functions);
+      const emoji = this.props.getCanvas("functions").emoji;
+      this.savedEmoji = [...emoji];
+      
+      emoji[0] = this.img;
+      const img = this.props.getCanvas("image");
+      if (this.img.width <= img[3] && this.img.height <= img[4]) {
+        console.log(img);
+        // Center the watermark and set scale to 1
+        emoji[1] = (img[3] - this.img.width) / 2;
+        emoji[2] = (img[4] - this.img.height) / 2;
+        emoji[3] = 0.999;
+      } else {
+        let scaleX = this.img.width  / img[3];
+        let scaleY = this.img.height / img[4];
+        emoji[3] = 1 / (scaleX > scaleY ? scaleX : scaleY);
+        emoji[1] = (img[3] - this.img.width * emoji[3]) / 2;
+        emoji[2] = (img[4] - this.img.height * emoji[3]) / 2;
+      }
+      // Scale
+      emoji[4] = 0.3;
+      emoji[5] = false;
+      this.props.setCanvas("activeFunction", "emoji");
     }
     this.img.src = "./emojis/bugcat_owo.png";
-  }
-
-  componentDidMount() {
-    this.previewEmoji();
-
-    const emoji = this.props.getCanvas("functions").emoji;
-    this.savedEmoji = [null, emoji[1], emoji[2], emoji[3], emoji[4], true];
-    
-    const img = this.props.getCanvas("image");
-    let minEdge = img[3] < img[4] ? img[3] : img[4];
-
-    emoji[1] = 0;
-    emoji[2] = 0;
-    emoji[3] = 0.999;
-    emoji[4] = 0.3;
-    emoji[5] = false;
-    this.props.setCanvas("activeFunction", "emoji");
   }
 
   componentWillUnmount() {
@@ -50,30 +46,17 @@ class TransformationEditingMenu extends Component {
     this.props.getCanvas("functions").emoji = this.savedEmoji;
   }
 
-  onScaleChange = (e, v) => {
-    this.setState({ scale: v });
-    const functions = this.props.getCanvas("functions");
-    // Clamps scale to prevent errors
-    if (v < 0.002) v = 0.002;
-    if (v > 0.999) v = 0.999;
-    functions.emoji[3] = v;
-    this.props.setCanvas("functions", functions);
-  }
-
-  onOpacityChange = (e, v) => {
-    this.setState({opacity: v});
-    const functions = this.props.getCanvas("functions");
-    functions.emoji[4] = v;
-    this.props.setCanvas("functions", functions);
-  }
-
   updateEmojiBackend = () => {
     const emoji = this.props.getCanvas("functions").emoji;
-    const name = "bugcat_" + this.emojiList[this.emojiIdx] + ".png"
+    const name = "bugcat_owo.png";
     this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), 0.5]);
   }
 
   onApply = () => {
+    this.props.enqueueSnackbar("Applying watermark...", {
+      variant: 'info',
+      autoHideDuration: 2000,
+    });
     this.updateEmojiBackend();
   }
 
@@ -87,4 +70,4 @@ class TransformationEditingMenu extends Component {
   }
 }
 
-export default TransformationEditingMenu;
+export default withSnackbar(TransformationEditingMenu);
