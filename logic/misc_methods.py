@@ -29,7 +29,7 @@ def apply_mirror(input_img: Image, specifications: int) -> Image:
     if specifications == 1:
         return ImageOps.flip(input_img)
 
-    error = "apply_mirror: specifications %s is not 1 or 0"
+    error = "apply_mirror: specifications %s is not 1 or 0" % specifications
     abort(500, description=error)
 
 

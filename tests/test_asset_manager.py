@@ -95,27 +95,28 @@ class TestImportImages(unittest.TestCase):
         location_two = 'test_1.png'
         location_three = 'working_copy.png'
 
-        image_one = self.asset_manager.import_image_from_s3(location_one, False)
-        image_two = self.asset_manager.import_image_from_s3(location_two)
-        image_three = self.asset_manager.import_image_from_s3(location_three,
-                                                              False)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_one, False)
 
-        self.assertEqual(None, image_one)
-        self.assertEqual(None, image_two)
-        self.assertEqual(None, image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_two)
+
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_three, False)
 
     def test_import_invalid_image_extension(self):
         location_one = 'test_asset_manager/image_projects/assets/bad'
         location_two = 'test_asset_manager/image_projects/assets/bad.txt'
         location_three = 'test_asset_manager/image_projects/assets/bad.'
 
-        image_one = self.asset_manager.import_image_from_s3(location_one)
-        image_two = self.asset_manager.import_image_from_s3(location_two)
-        image_three = self.asset_manager.import_image_from_s3(location_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_one)
 
-        self.assertEqual(None, image_one)
-        self.assertEqual(None, image_two)
-        self.assertEqual(None, image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_two)
+
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_three)
 
 
 class TestUploadImages(unittest.TestCase):
@@ -128,15 +129,14 @@ class TestUploadImages(unittest.TestCase):
         location_two = 'test_asset_manager/image_projects/assets/bad.txt'
         location_three = 'test_asset_manager/image_projects/assets/bad.'
 
-        image_one = self.asset_manager.upload_image_to_s3(image, location_one)
-        image_two = self.asset_manager.upload_image_to_s3(image, location_two,
-                                                          False)
-        image_three = self.asset_manager.upload_image_to_s3(image,
-                                                            location_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_image_to_s3(image, location_one)
 
-        self.assertEqual("Missing \".png\" extension!", image_one)
-        self.assertEqual("Missing \".png\" extension!", image_two)
-        self.assertEqual("Missing \".png\" extension!", image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_image_to_s3(image, location_two,
+                                                          False)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_image_to_s3(image, location_three)
 
     def test_upload_valid_image_asset(self):
         image_one = Image.open('test_assets/images/test_2.png').convert('RGBA')
@@ -192,16 +192,14 @@ class TestUploadTempImages(unittest.TestCase):
         location_two = 'test_asset_manager/image_projects/assets/bad.txt'
         location_three = 'test_asset_manager/image_projects/assets/bad.'
 
-        image_one = self.asset_manager.upload_temp_image_to_s3(image,
-                                                               location_one)
-        image_two = self.asset_manager.upload_temp_image_to_s3(image,
-                                                               location_two)
-        image_three = self.asset_manager.upload_temp_image_to_s3(image,
-                                                                 location_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_temp_image_to_s3(image, location_one)
 
-        self.assertEqual("Missing \".png\" extension!", image_one)
-        self.assertEqual("Missing \".png\" extension!", image_two)
-        self.assertEqual("Missing \".png\" extension!", image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_temp_image_to_s3(image, location_two)
+
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_temp_image_to_s3(image, location_three)
 
     def test_upload_valid_temp_image_asset(self):
         image_one = 'test_assets/images/test_2.png'

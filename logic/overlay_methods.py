@@ -28,8 +28,7 @@ def add_text_to_image(image: Image, specifications: list) -> Image:
             * color: an (R,G,B) tuple containing the color values for the text
 
     Return:
-        PIL.Image: Image with text added on top. Returns ``None``
-        if unsuccessful.
+        PIL.Image: Image with text added on top
     """
     text = specifications[0]
     font = specifications[1]
@@ -122,7 +121,7 @@ def add_emoji_overlay(input_image: Image, specifications: list,
         is_test: Boolean for unit testing. Default is False
 
     Returns:
-
+        PIL.Image:  Emojified image
     """
 
     watermark_file = specifications[0]
