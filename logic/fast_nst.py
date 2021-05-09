@@ -2,6 +2,7 @@
 import functools
 import os
 
+from logic.asset_manager import AssetManager
 from re import search
 from PIL import Image
 
@@ -10,11 +11,24 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
 
+asset_manager = AssetManager("test_user_integration")
 
 # content_image_url =
 # 'https://upload.wikimedia.org/wikipedia/commons/d/d7/Green_Sea_Turtle_grazing_seagrass.jpg'
 # style_image_url =
 # 'https://upload.wikimedia.org/wikipedia/commons/0/0a/The_Great_Wave_off_Kanagawa.jpg'
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        # Currently, memory growth needs to be the same across GPUs
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+    except RuntimeError as e:
+        # Memory growth must be set before GPUs have been initialized
+        print(e)
 
 def crop_center(image):
     """ Returns a cropped square image.
@@ -30,6 +44,7 @@ def crop_center(image):
     image = tf.image.crop_to_bounding_box(image, offset_y, offset_x,
                                           new_shape, new_shape)
     return image
+
 
 
 def load_image(image_url, image_size=(256, 256), preserve_aspect_ratio=True):
@@ -58,14 +73,13 @@ def load_image(image_url, image_size=(256, 256), preserve_aspect_ratio=True):
     return img
 
 
-def run_nst(content_image_url, style_image_url, asset_manager, output_image_size=1024):
+def run_nst(content_image_url, style_image_url, output_image_size=1024):
     """ Runs Fast Arbitrary NST on a content image based on a provided style
     image
 
     Args:
         content_image_url: String containing the URL of the content image
         style_image_url: String containing the URL of the style image
-        asset_manager:   Asset manager
         output_image_size: Integer describing the integers of the output image
             size
 
@@ -91,8 +105,6 @@ def run_nst(content_image_url, style_image_url, asset_manager, output_image_size
     plt.savefig(stylized_image_name, bbox_inches='tight', pad_inches=0)
 
     output_image = Image.open(stylized_image_name)
-
-    output_image.show()
 
     url = asset_manager.upload_image_to_s3(output_image, stylized_image_name)
 
