@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function VignetteEffectPage() {
+export default function VignetteEffectPage(props) {
     const classes = useStyles();
     const [size, setSize] = React.useState(30);
     const [falloff, setFalloff] = React.useState(30);
@@ -41,6 +41,10 @@ export default function VignetteEffectPage() {
             setValue(100);
         }
     };
+
+    function confirmVignetteEffects() {
+        props.applyFilter("vignette")
+    }
 
     return (
         <div className={classes.root}>
@@ -171,7 +175,7 @@ export default function VignetteEffectPage() {
                     />
                 </Grid>
             </Grid>
-            <Button variant="contained" color="primary" disabled="true">Add Vignette Effects</Button>
+            <Button variant="contained" color="primary" onClick={confirmVignetteEffects}>Add Vignette Effects</Button>
 
         </div>
     );

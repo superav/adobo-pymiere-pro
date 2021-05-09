@@ -14,7 +14,7 @@ class TransformationEditingMenu extends Component {
       bValue: "",
       aValue: "",
       backgroundName: "",
-      opacityValue: 1,
+      opacityValue: 100,
       blurValue: 1,
     };
     this.watermark = "Watermark.png";
@@ -90,8 +90,24 @@ class TransformationEditingMenu extends Component {
     ]);
   };
 
-  changeBackground = () => {
-    console.log("background name: " + this.state.backgroundName);
+  addWatermark = () => {
+    console.log("watermark name: " + this.state.watermarkName);
+    console.log("watermark position: " + this.state.watermarkPosition);
+    console.log("watermark opacity: " + this.state.watermarkOpacity);
+    console.log("watermark size: " + this.state.watermarkSize);
+    this.props.applyFilter("watermark", [
+      this.state.watermarkName,
+      this.state.watermarkPosition,
+      this.state.watermarkSize,
+      this.state.watermarkOpacity,
+    ]);
+  };
+
+  applyGaussianBlur = (e, val) => {
+    this.setState({
+      blurValue: val,
+    });
+
   };
 
   changeOpacity = (e, val) => {
@@ -142,23 +158,42 @@ class TransformationEditingMenu extends Component {
         ></Slider>
         <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>
 
-        <h4>Change Background:</h4>
+        <h4>Add Watermark:</h4>
         <TextField
           id="outlined-basic"
-          value={this.state.backgroundName}
-          onChange={this.handleChange("backgroundName")}
-          label="Background Name"
+          value={this.state.watermarkName}
+          onChange={this.handleChange("watermarkName")}
+          label="Image Name"
+          variant="outlined"
+        />
+        <br />
+        <TextField
+          id="outlined-basic"
+          value={this.state.watermarkPosition}
+          onChange={this.handleChange("watermarkPosition")}
+          label="Position"
+          variant="outlined"
+        />
+        <br />
+        <TextField
+          id="outlined-basic"
+          value={this.state.watermarkSize}
+          onChange={this.handleChange("watermarkSize")}
+          label="Size"
+          variant="outlined"
+        />
+        <br />
+        <TextField
+          id="outlined-basic"
+          value={this.state.watermarkOpacity}
+          onChange={this.handleChange("watermarkOpacity")}
+          label="Opacity"
           variant="outlined"
         />
         <br />
         <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.changeBackground}
-          disabled="true"
-        >
-          Select Background
+        <Button variant="contained" color="primary" disabled="true" onClick={this.addWatermark}>
+          Add Watermark
         </Button>
         <br />
         <h4>Watermark</h4>

@@ -78,9 +78,8 @@ export default function ColorAndLightingEffects(props) {
         <Tab label="Color" {...a11yProps(0)} />
         <Tab label="Lighting" {...a11yProps(1)} />
         <Tab label="Special Effects" {...a11yProps(2)} />
-        <Tab label="Vignette" {...a11yProps(3)} />
-        <Tab label="Transformation" {...a11yProps(4)} />
-        <Tab label="Change Contrast" {...a11yProps(5)} />
+        <Tab label="Transformation" {...a11yProps(3)} />
+        <Tab label="Change Contrast" {...a11yProps(4)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
@@ -93,22 +92,16 @@ export default function ColorAndLightingEffects(props) {
         <SpecialEffectsOptions applyFilter={props.applyFilter}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <VignetteEffectPage
-          getCanvas={props.getCanvas}
-          setCanvas={props.setCanvas}
-        />
-      </TabPanel>
-      <TabPanel value={value} index={4}>
         <TransformationEditingMenu
             applyFilter={props.applyFilter}
             getCanvas={props.getCanvas}
             setCanvas={props.setCanvas}
           ></TransformationEditingMenu>
       </TabPanel>
-      <TabPanel value={value} index={5}>
-        <ChangeContrast>
+      <TabPanel value={value} index={4}>
+        <ChangeContrast
           applyFilter={props.applyFilter}
-        </ChangeContrast>
+        />
       </TabPanel>
     </div>
   );

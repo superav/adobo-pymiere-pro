@@ -24,14 +24,14 @@ class RotateImage extends Component {
   render() {
     return (
       <div>
-        <h4>Rotate:</h4>
+        <h4>Rotate</h4>
         <Slider
           value={this.state.rotateValue}
           onChange={this.handleRotateValueChange}
           aria-labelledby="discrete-slider-small-steps"
           min={0}
           max={360}
-          step={10}
+          step={1}
           valueLabelDisplay="auto"
         ></Slider>
         <br />
