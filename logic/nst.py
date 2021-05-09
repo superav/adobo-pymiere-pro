@@ -376,17 +376,17 @@ def run_style_transfer(content_path,
 
     for idx, img in enumerate(imgs):
         if ASSET_MANAGER:
-            plt.axis('off')
             image_name = "__temp__.png"
+
+            plt.axis('off')
+            plt.imshow(img)
+
             plt.savefig(image_name, bbox_inches='tight', pad_inches=0)
             image_url =\
                 ASSET_MANAGER.upload_temp_image_to_s3("__temp__.png",
                                                       "nst_temp_%s.png" % idx)
             IMAGE_URLS.append(image_url)
-        # plt.subplot(num_rows, num_cols, i + 1)
-        # plt.imshow(img)
-        # plt.xticks([])
-        # plt.yticks([])
+        plt.imshow(img)
 
     return best_img, best_loss
 
