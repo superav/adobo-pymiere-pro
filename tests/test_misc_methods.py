@@ -102,8 +102,8 @@ class TestMiscImageProc(unittest.TestCase):
         im3 = apply_mirror(im1, 1)
         fin3 = ASSET_MANAGER.import_image_from_s3('flip_expected.png', False)
 
-        self.assertTrue(compare_images(fin2, im2) == 0)
-        self.assertTrue(compare_images(fin3, im3) == 0)
+        self.assertEqual(compare_images(fin2, im2), 0)
+        self.assertEqual(compare_images(fin3, im3), 0)
 
     def test_frame_image_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
@@ -112,7 +112,7 @@ class TestMiscImageProc(unittest.TestCase):
 
         im2 = apply_frame(im1, [255, 0, 0])
 
-        self.assertTrue(compare_images(fin, im2) == 0)
+        self.assertEqual(compare_images(fin, im2), 0)
 
     def test_draw_on_image_correct_output(self):
         input_img = ASSET_MANAGER.import_image_from_s3('test_2.png', False)

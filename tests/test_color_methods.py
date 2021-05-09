@@ -181,7 +181,7 @@ class TestColorImageProc(unittest.TestCase):
             'gradient_expected_255_0_0_128.png', False)
         im2 = apply_color_editor(im1, [255, 0, 0, 128])
 
-        self.assertTrue(compare_images(fin, im2) == 0)
+        self.assertTrue(compare_images(fin, im2), 0)
 
     def test_gradient_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
@@ -189,7 +189,7 @@ class TestColorImageProc(unittest.TestCase):
                 'filter_expected_70_255_0_0_0_0_255.png', False)
         im2 = apply_gradient_editor(im1, [70, [255, 0, 0], [0, 0, 255]])
 
-        self.assertTrue(compare_images(fin, im2) == 0)
+        self.assertEqual(compare_images(fin, im2), 0)
 
     def test_autocontrast_correct_output(self):
         im1 = ASSET_MANAGER.import_image_from_s3('tree.png', False)
