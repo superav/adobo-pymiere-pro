@@ -1,6 +1,7 @@
 import boto3
 from PIL import Image
 from io import BytesIO
+from flask import abort
 
 BUCKET_NAME = 'adobo-pymiere'
 
@@ -36,7 +37,8 @@ class AssetManager:
         """
 
         if ' ' in username:
-            raise Exception("AssetManager: username must not have spaces in it!")
+            error = "AssetManager: username must not have spaces in it!"
+            abort(500, description=error)
 
         self.s3_client = boto3.client('s3',
                                       aws_access_key_id='AKIAYA22OMIBDDNHCQWM',
@@ -107,13 +109,13 @@ class AssetManager:
                         of the project
 
         Returns:
-            PIL.Image:  A PIL.Image if image exists in bucket. Otherwise, None
+            PIL.Image:  A PIL.Image if image exists in bucket
         """
 
         if image_name[-4:] != '.png':
-            print("ERROR (import_image_from_s3): %s must have '.png' extension"
-                  % image_name)
-            return None
+            error = "import_image_from_s3: %s must have '.png' extension"\
+                    % image_name
+            abort(500, description=error)
 
         try:
             if is_working_copy:
@@ -129,8 +131,8 @@ class AssetManager:
             return Image.open(BytesIO(file_byte_string)).convert('RGBA')
 
         except self.s3_client.exceptions.NoSuchKey as e:
-            print("ERROR (import_image_from_s3): " + str(e))
-            return None
+            error = "import_image_from_s3: " + str(e)
+            abort(500, description=error)
 
     def upload_image_to_s3(self, input_image: Image,
                            image_name: str = "working_copy.png",
@@ -150,7 +152,8 @@ class AssetManager:
         """
 
         if image_name[-4:] != '.png':
-            return "Missing \".png\" extension!"
+            error = "upload_image_to_s3: Missing \".png\" extension!"
+            abort(500, description=error)
 
         input_image.convert('RGBA').save("__temp__.png")
 
@@ -180,7 +183,8 @@ class AssetManager:
         """
 
         if s3_image_name[-4:] != '.png':
-            return "Missing \".png\" extension!"
+            error = "upload_temp_image_to_s3: Missing \".png\" extension!"
+            abort(500, description=error)
 
         location = "%s/image_projects/assets/temp/%s"\
                    % (self.username, s3_image_name)

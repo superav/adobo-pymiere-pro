@@ -2,13 +2,11 @@ from flask import Flask, request, jsonify
 from PIL.Image import Image
 from flask_cors import CORS
 
-from logic.john_3_logic import *
 from logic.filter_methods import *
 from logic.overlay_methods import *
 from logic.canvas_editing_methods import *
 from logic.color_methods import *
 from logic.misc_methods import *
-from logic.as_sprint_3 import *
 from logic.asset_manager import AssetManager
 
 import logic.fast_nst as fast_nst
