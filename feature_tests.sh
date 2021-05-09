@@ -1,5 +1,6 @@
 pip3 install -r requirements.txt
 python3.8 -m logic.flask_create > log.txt 2>&1 &
+sleep 5
 until answ1=$(curl --silent --location --request POST 'localhost:5000/logic/image_editor' --header 'Content-Type: application/json' --data-raw '{"effect": "hue", "image_name": "image", "file_extension": "png", "is_working_copy": false, "specifications": 180}'); do
 	printf '.'
 	sleep 1
@@ -14,7 +15,7 @@ answ3=$(curl --silent --location --request POST 'localhost:5000/logic/image_edit
 
 echo $answ3
 
-answ4=$(curl --silent --location --request POST 'localhost:5000/logic/nst' --header 'Content-Type: application/json' --data-raw '{"effect": "nst", "image_name": "image", "file_extension": "png", "is_working_copy": false, "nst_type": "performance", "input_image_url": "https://adobo-pymiere.s3.amazonaws.com/blurry_turtle.png", "filter_image_url": "https://adobo-pymiere.s3.amazonaws.com/styles/wave.png"'})
+answ4=$(curl --silent --location --request POST 'localhost:5000/logic/nst' --header 'Content-Type: application/json' --data-raw '{"effect": "nst", "image_name": "image", "file_extension": "png", "is_working_copy": false, "nst_type": "Quality", "input_image_url": "https://adobo-pymiere.s3.amazonaws.com/blurry_turtle.png", "filter_image_url": "https://adobo-pymiere.s3.amazonaws.com/styles/wave.png"'})
 
 echo $answ4
 

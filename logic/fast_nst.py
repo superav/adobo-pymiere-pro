@@ -86,6 +86,3 @@ def run_nst(content_image_url, style_image_url, output_image_size=384):
     plt.savefig(stylized_image_url, bbox_inches='tight', pad_inches=0)
     plt.show()
     return stylized_image_url
-
-
-run_nst()

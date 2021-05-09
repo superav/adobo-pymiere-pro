@@ -124,11 +124,11 @@ def create_app():
         
         ui_input = request.get_json()
         nst_type = ui_input["nst_type"]
-        input_img_url = ui_input["image_url"]
-        filter_image_url = ui_input["filter_url"]
+        input_img_url = ui_input["input_image_url"]
+        filter_image_url = ui_input["filter_image_url"]
 
-        if not type(nst_type) == str or not nst_type == "Quality" \
-                or not nst_type == "Performance":
+        if not (type(nst_type) == str or nst_type == "Quality" \
+                or nst_type == "Performance"):
             error = "nst: Invalid NST type"
             abort(500, description=error)
         

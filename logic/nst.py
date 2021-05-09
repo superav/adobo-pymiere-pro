@@ -6,7 +6,7 @@ Original file is located at
     https://colab.research.google.com/drive/1oFG-jaMKA-2u2n_-nf2xhZS4RF2-pMH-
 """
 
-from asset_manager import AssetManager
+from logic.asset_manager import AssetManager
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -41,6 +41,9 @@ def load_img(path_to_im):
     """
     max_dim = 512
     img = Image.open(path_to_im)
+
+    if img.mode == 'RGBA':
+        img = __convert_to_rgb(img)
 
     long = max(img.size)
     scale = max_dim / long
@@ -81,6 +84,7 @@ def load_and_process_img(path_to_img):
     # img = load_img_from_s3(path_to_img)
     img = load_img(path_to_img)
     img = tf.keras.applications.vgg19.preprocess_input(img)
+
     return img
 
 
@@ -413,6 +417,21 @@ def show_results(best_img, content_path, style_path, show_large_final=True):
         plt.imshow(best_img)
         plt.title('Output Image')
         plt.show()
+
+
+def __convert_to_rgb(image: Image):
+    """Converts an RGBA image to RGB
+
+    Args:
+        image: RGBA image
+
+    Returns:
+        PIL.Image: converted RGB image
+    """
+    image.load()
+    background = Image.new('RGB', image.size, (255, 255, 255))
+    background.paste(image, mask=image.split()[3])
+    return background
 
 
 def run_nst(content_url: str, style_url: str,
