@@ -4,44 +4,44 @@ import ProjectSelectPage from './ProjectSelectPage'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
-import CenterImagePage from './CenterImagePage';
 
-function App() {
-  /*return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  ); */
+import React, { Component } from 'react';
 
-  return (
-    <Router>
-      <Switch>
-      <Route path="/image">
-        <ImageUIPage />
-      </Route>
-      <Route path="/">
-        <ProjectSelectPage />
-      </Route>
-    </Switch>
-    </Router>
+class App extends Component {
 
-  )
+  constructor(props) {
+    super(props)
+    this.handleImageSelect = this.handleImageSelect.bind(this)
+    this.state = { selectedImage: "https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg"}
+  }
+
+  handleImageSelect(image, event) {
+    if (!image.includes("/images/new.svg")) {
+      this.setState({ selectedImage: image })
+    } else {
+      this.setState({ selectedImage: "https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg"})
+    }
+  }
+
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route path="/image">
+            <ImageUIPage selectedImage={this.state.selectedImage}/>
+          </Route>
+          <Route path="/">
+            <ProjectSelectPage imageSelectHandler={this.handleImageSelect}/>
+          </Route>
+        </Switch>
+      </Router>
+
+    );
+  }
+
+  
 }
 
 export default App;

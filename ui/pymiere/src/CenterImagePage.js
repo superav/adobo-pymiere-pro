@@ -60,7 +60,7 @@ class CenterImagePage extends Component {
           downloadImage={this.downloadImage}
         />
         <div id="imageDisplay">
-          <EditingCanvas ref={ref => (this.canvas = ref)}/>
+          <EditingCanvas ref={ref => (this.canvas = ref)} selectedImage={this.props.selectedImage}/>
         </div>
       </div>
     );

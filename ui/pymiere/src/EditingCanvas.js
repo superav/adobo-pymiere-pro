@@ -37,6 +37,8 @@ class EditingCanvas extends Component {
       },
     };
     this.mousePos = [0, 0];
+
+    this.state = {selectedImage: this.props.selectedImage}
   }
 
   getCanvasState = (property) => {
@@ -145,7 +147,7 @@ class EditingCanvas extends Component {
     this.resizeCanvas();
 
     this.insertImage(
-      "https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg"
+      this.state.selectedImage
     );
   }
 
