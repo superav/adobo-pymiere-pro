@@ -88,19 +88,6 @@ class TransformationEditingMenu extends Component {
     ]);
   };
 
-  addWatermark = () => {
-    console.log("watermark name: " + this.state.watermarkName);
-    console.log("watermark position: " + this.state.watermarkPosition);
-    console.log("watermark opacity: " + this.state.watermarkOpacity);
-    console.log("watermark size: " + this.state.watermarkSize);
-    this.props.applyFilter("watermark", [
-      this.state.watermarkName,
-      this.state.watermarkPosition,
-      this.state.watermarkSize,
-      this.state.watermarkOpacity,
-    ]);
-  };
-
   applyGaussianBlur = (e, val) => {
     this.setState({
       blurValue: val,
@@ -155,44 +142,6 @@ class TransformationEditingMenu extends Component {
           valueLabelDisplay="auto"
         ></Slider>
         <Button variant="contained" color="primary" onClick={this.confirmBlurChange}>Change Blur</Button>
-
-        <h4>Add Watermark:</h4>
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkName}
-          onChange={this.handleChange("watermarkName")}
-          label="Image Name"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkPosition}
-          onChange={this.handleChange("watermarkPosition")}
-          label="Position"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkSize}
-          onChange={this.handleChange("watermarkSize")}
-          label="Size"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          value={this.state.watermarkOpacity}
-          onChange={this.handleChange("watermarkOpacity")}
-          label="Opacity"
-          variant="outlined"
-        />
-        <br />
-        <br />
-        <Button variant="contained" color="primary" disabled="true" onClick={this.addWatermark}>
-          Add Watermark
-        </Button>
         <br />
         <h4>Watermark</h4>
         <Button variant="contained" color="primary" onClick={this.onApply}>Apply Watermark</Button>

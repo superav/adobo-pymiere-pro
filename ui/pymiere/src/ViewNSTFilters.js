@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import NSTTypeSwitch from "./NSTTypeSwitch";
 
 export default class ViewNSTFilters extends Component {
   constructor(props) {
@@ -64,8 +63,6 @@ export default class ViewNSTFilters extends Component {
           valueLabelDisplay="auto"
         ></Slider>
         <p>{this.state.generation}</p>
-        <br />
-        <NSTTypeSwitch value={this.state.nstType} changeNSTType={this.changeNSTType}></NSTTypeSwitch>
         <br />
         <Button
           variant="contained"
