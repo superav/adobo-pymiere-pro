@@ -33,6 +33,8 @@ def create_app():
         input_img = pull_pillow_image(ui_input)
         # Call alteration method specified by request
         var = ui_input["effect"]
+
+        print(ui_input)
         if var == "saturation":
             altered_image = change_saturation(
                 input_img, ui_input["specifications"])
@@ -105,6 +107,18 @@ def create_app():
         elif var == "meme":
             altered_image = generate_meme_text(
                 input_img, ui_input["specifications"])
+        elif var == "nst-filter":
+            input_img_url = "https://adobo-pymiere.s3.amazonaws.com/test_user_integration/image_projects/%s.%s" % (ui_input["image_name"], ui_input["file_extension"]) 
+            filter_image_url = ui_input["specifications"][0]
+            print(ui_input)
+        
+            if not type(input_img_url) == str or not type(filter_image_url) == str:
+                error = "nst: Invalid URLs"
+                abort(500, description=error)
+        
+            fast_nst.run_nst(input_img_url, filter_image_url)
+        
+            return {"image_name": ui_input["image_name"], "url": input_img_url, "file_extension": ui_input["file_extension"]}
         else:
             return None
 
@@ -119,8 +133,8 @@ def create_app():
     def run_nst():
         
         ui_input = request.get_json()
-        input_img_url = ui_input["input_image_url"]
-        filter_image_url = ui_input["filter_image_url"]
+        input_img_url = ui_input["image_name"]
+        filter_image_url = ui_input["specifications"]
         
         if not type(input_img_url) == str or not type(filter_image_url) == str:
             error = "nst: Invalid URLs"
@@ -148,6 +162,11 @@ def create_app():
         # Receive input
 
         return {"list": ass_man.list_nst_outputs()}
+
+    @flask_app.route("/logic/styles_list", methods=["GET"])
+    def get_filters_bucket():
+
+        return {"list": ass_man.list_styles()}
 
     # @flask_app.route("/logic/image_editor", methods=["GET"])
     # def get_import_image():
