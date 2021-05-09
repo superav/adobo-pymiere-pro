@@ -33,7 +33,7 @@ class EditingCanvas extends Component {
           fill: [0, 0, 0],
           width: 4,
         },
-        emoji: [null, 0, 0, 0.999, 1]
+        emoji: [null, 0, 0, 0.999, 1, true]
       },
     };
     this.mousePos = [0, 0];
@@ -346,8 +346,10 @@ class EditingCanvas extends Component {
           break;
         case "emoji":
           const emoji = this.canvasState.functions.emoji;
-          emoji[1] += dX;
-          emoji[2] += dY;
+          if (emoji[5]) {
+            emoji[1] += dX;
+            emoji[2] += dY;
+          }
           break;
         default:
           this.canvasState.transform[4] += e.movementX;
