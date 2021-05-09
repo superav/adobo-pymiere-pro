@@ -137,10 +137,10 @@ def create_app():
             abort(500, description=error)
         
         if nst_type == "Performance":
-            threading.Thread(target=fast_nst.run_nst(input_img_url,
+            threading.Thread(target=fast_nst.run_nst, args=(input_img_url,
                                                      filter_image_url)).start()
         elif nst_type == "Quality":
-            threading.Thread(target=slow_nst.run_nst(input_img_url,
+            threading.Thread(target=slow_nst.run_nst, args=(input_img_url,
                                                      filter_image_url,
                                                      ass_man)).start()
         
