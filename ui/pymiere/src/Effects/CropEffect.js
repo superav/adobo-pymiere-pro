@@ -37,7 +37,7 @@ class CropEffect extends Component {
     this.props.applyFilter("crop", [parseInt(crop[0]), parseInt(crop[1]), parseInt(right), parseInt(bottom)]);
     this.props.enqueueSnackbar("Cropping...", { 
       variant: 'info',
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   }
 

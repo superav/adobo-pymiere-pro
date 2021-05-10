@@ -83,7 +83,7 @@ class EmojiOverlay extends Component {
     this.props.applyFilter("emoji", [name, [parseInt(emoji[1]), parseInt(emoji[2])], parseFloat(emoji[3]), parseFloat(emoji[4])]);
     this.props.enqueueSnackbar("Applying emoji...", { 
       variant: 'info',
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   }
 

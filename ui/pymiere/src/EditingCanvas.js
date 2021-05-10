@@ -75,41 +75,46 @@ class EditingCanvas extends Component {
     };
 
     this.props.enqueueSnackbar("Your Image is being Processed", { 
-      variant: 'success',
-      autoHideDuration: 2000,
+      variant: 'info',
+      autoHideDuration: 3000,
     });
 
     const url = "http://ec2-3-235-179-211.compute-1.amazonaws.com:5000/logic/image_editor";
+    let responseStatus = 0;
     fetch(url, init)
       .then((response) => {
+        responseStatus = response.status;
         if (response.status == 200) {
           this.props.enqueueSnackbar("Ur Image has been Processed", { 
             variant: 'success',
-            autoHideDuration: 2000,
+            autoHideDuration: 3000,
           });
         } else if (response.status == 404) {
           this.props.enqueueSnackbar("Response status was 404", { 
             variant: 'error',
-            autoHideDuration: 2000,
-          });
-        } else if(response.status == 500) {
-          this.props.enqueueSnackbar(response.json().error, {
-            variant: 'error',
-            autoHideDuration: 2000,
+            autoHideDuration: 3000,
           });
         }
         return response.json(); // or .text() or .blob() ...
       })
       .then((text) => {
-        this.insertImage(text.url);
+        if(responseStatus == 500) {
+          this.props.enqueueSnackbar(text.error, {
+            variant: 'error',
+            autoHideDuration: 3000,
+          });
+        } else {
+          this.insertImage(text.url);
+        }
       })
       .catch((e) => {
-        this.props.enqueueSnackbar("Please Check ur Internet Connection", {
+        this.props.enqueueSnackbar("An Error has occured", {
           variant: 'error',
-          autoHideDuration: 2000,
+          autoHideDuration: 3000,
         });
         console.log(e);
       });
+      responseStatus = 0;
   };
 
   insertImage = (src) => {

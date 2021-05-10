@@ -29,14 +29,14 @@ const UploadNSTFilterForm = (props) => {
                 console.log(data);
                 props.enqueueSnackbar("NST Filter has been successfully uploaded", {
                     variant: 'success',
-                    autoHideDuration: 2000,
+                    autoHideDuration: 3000,
                 });
 
             }).catch(err => {
                 console.error(err)
                 props.enqueueSnackbar("Error occured uploading NST Filter", {
                     variant: 'error',
-                    autoHideDuration: 2000,
+                    autoHideDuration: 3000,
                 });
             })
     }
