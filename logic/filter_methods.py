@@ -1,5 +1,5 @@
 from PIL import Image, ImageFilter, ImageOps
-# import cv2
+import cv2
 import numpy as np
 from flask import abort
 
