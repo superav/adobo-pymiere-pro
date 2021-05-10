@@ -32,6 +32,27 @@ export default class ViewNSTFilters extends Component {
     console.log("Test URL " + this.state.newURL);
   };
 
+  handleIncrement = (event) => {
+    let maxLen = this.state.filterArray.length - 1;
+    if (this.state.generation < maxLen) {
+      this.setState({generation: this.state.generation + 1}, () => {
+        this.setState({newURL: this.state.baseURL + this.state.filterArray[this.state.generation]});
+      });
+    }
+    console.log("generation: " + this.state.generation);
+    console.log("Test URL " + this.state.newURL);
+  }
+
+  handleDecrement = (event) => {
+    if (this.state.generation > 1) {
+      this.setState({generation: this.state.generation - 1}, () => {
+        this.setState({newURL: this.state.baseURL + this.state.filterArray[this.state.generation]});
+      });
+    }
+    console.log("generation: " + this.state.generation);
+    console.log("Test URL " + this.state.newURL);
+  }
+
   confirmNSTFilter = () => {
     console.log("Filter number: " + this.state.generation);
     console.log("Filter type: " + this.state.nstType);
@@ -65,15 +86,22 @@ export default class ViewNSTFilters extends Component {
         <Paper variant="outlined">
           <img src={this.state.newURL} style={{"max-width": "600px", "max-height": "600px"}}/>
         </Paper>
-        <Slider
-          value={this.state.generation}
-          onChange={this.handleChange}
-          aria-labelledby="discrete-slider-small-steps"
-          min={1}
-          max={this.state.filterArray.length - 1}
-          step={1}
-          valueLabelDisplay="auto"
-        ></Slider>
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.handleDecrement}
+        >
+          Prev
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.handleIncrement}
+        >
+          Next
+        </Button>
         <p>{this.state.generation}</p>
         <br />
         <Button
