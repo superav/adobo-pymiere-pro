@@ -74,11 +74,16 @@ class EditingCanvas extends Component {
       body: JSON.stringify(body),
     };
 
+    this.props.enqueueSnackbar("Your Image is being Processed", { 
+      variant: 'success',
+      autoHideDuration: 2000,
+    });
+
     const url = "http://ec2-3-235-179-211.compute-1.amazonaws.com:5000/logic/image_editor";
     fetch(url, init)
       .then((response) => {
         if (response.status == 200) {
-          this.props.enqueueSnackbar("Ur Image is being processed", { 
+          this.props.enqueueSnackbar("Ur Image has been Processed", { 
             variant: 'success',
             autoHideDuration: 2000,
           });
@@ -99,7 +104,7 @@ class EditingCanvas extends Component {
         this.insertImage(text.url);
       })
       .catch((e) => {
-        this.props.enqueueSnackbar("message didn't get sent to server", {
+        this.props.enqueueSnackbar("Please Check ur Internet Connection", {
           variant: 'error',
           autoHideDuration: 2000,
         });
