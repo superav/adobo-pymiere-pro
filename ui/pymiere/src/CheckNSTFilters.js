@@ -6,7 +6,7 @@ export default function checkNSTFilters() {
         }
     };
 
-    const url = "http://localhost:5000/logic/styles_list";
+    const url = "http://ec2-3-235-179-211.compute-1.amazonaws.com:5000/logic/styles_list";
 
     return fetch(url, init)
         .then((response) => {

@@ -24,7 +24,7 @@ class ProjectSelectPage extends Component {
             }
         };
 
-        const url = "http://localhost:5000/logic/image_list_usr";
+        const url = "http://ec2-3-235-179-211.compute-1.amazonaws.com:5000/logic/image_list_usr";
 
         return fetch(url, init)
             .then((response) => {

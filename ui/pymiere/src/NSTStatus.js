@@ -8,7 +8,7 @@ export default function checkNSTStatus() {
         }
     };
 
-    const url = "http://localhost:5000/logic/temp_list";
+    const url = "http://ec2-3-235-179-211.compute-1.amazonaws.com:5000/logic/temp_list";
     
     return fetch(url, init)
         .then((response) => {
