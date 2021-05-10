@@ -18,10 +18,8 @@ export default class ViewNSTFilters extends Component {
         "styles/wave.jpg",
         "styles/wave.png",
       ],
-      newURL: "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_1.jpg"
+      newURL: ""
     };
-
-    this.setState({newURL: this.state.baseURL + this.state.filterArray[0]})
   }
 
   handleChange = (e, v) => {
@@ -31,6 +29,27 @@ export default class ViewNSTFilters extends Component {
     
     console.log("Test URL " + this.state.newURL);
   };
+
+  handleIncrement = (event) => {
+    let maxLen = this.state.filterArray.length - 1;
+    if (this.state.generation < maxLen) {
+      this.setState({generation: this.state.generation + 1}, () => {
+        this.setState({newURL: this.state.baseURL + this.state.filterArray[this.state.generation]});
+      });
+    }
+    console.log("generation: " + this.state.generation);
+    console.log("Test URL " + this.state.newURL);
+  }
+
+  handleDecrement = (event) => {
+    if (this.state.generation > 1) {
+      this.setState({generation: this.state.generation - 1}, () => {
+        this.setState({newURL: this.state.baseURL + this.state.filterArray[this.state.generation]});
+      });
+    }
+    console.log("generation: " + this.state.generation);
+    console.log("Test URL " + this.state.newURL);
+  }
 
   confirmNSTFilter = () => {
     console.log("Filter number: " + this.state.generation);
@@ -47,14 +66,16 @@ export default class ViewNSTFilters extends Component {
 
   getFilterArray = () => {
     CheckNSTFilters().then((response) => {
-      this.setState({
-          filterArray: response.list
-        })
+      this.setState({filterArray: response.list}, () => {
+        this.setState({newURL: this.state.baseURL + this.state.filterArray[1]})
       })
+    })
   }
 
   componentDidMount() {
     this.getFilterArray()
+    console.log("here");
+    console.log(this.state.filterArray);
   }
 
   render() {
@@ -65,17 +86,23 @@ export default class ViewNSTFilters extends Component {
         <Paper variant="outlined">
           <img src={this.state.newURL} style={{"max-width": "600px", "max-height": "600px"}}/>
         </Paper>
-        <Slider
-          value={this.state.generation}
-          onChange={this.handleChange}
-          aria-labelledby="discrete-slider-small-steps"
-          min={1}
-          max={this.state.filterArray.length - 1}
-          step={1}
-          valueLabelDisplay="auto"
-        ></Slider>
-        <p>{this.state.generation}</p>
         <br />
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.handleDecrement}
+        >
+          Prev
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.handleIncrement}
+        >
+          Next
+        </Button>
+        <br /><br />
         <Button
           variant="contained"
           color="primary"
@@ -83,6 +110,7 @@ export default class ViewNSTFilters extends Component {
         >
           Run NST
         </Button>
+        <h3>Your image will be displayed once the algorithm finishes</h3>
 
         <br />
       </div>
