@@ -5,10 +5,6 @@ import './ImageUIPage.css'
 
 class ImageUIPage extends Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <div id="imageUIPageMainArticle">

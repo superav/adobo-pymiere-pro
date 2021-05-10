@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { uploadFile } from 'react-s3';
 
 const S3_BUCKET ='adobo-pymiere';

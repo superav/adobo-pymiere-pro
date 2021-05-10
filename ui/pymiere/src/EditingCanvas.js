@@ -196,6 +196,7 @@ class EditingCanvas extends Component {
           this.context.drawImage(img, 0, 0, img.width, img.height, emoji[1], emoji[2], w, h);
           this.context.globalAlpha = 1;
         }
+        break;
       default:
         break;
     }

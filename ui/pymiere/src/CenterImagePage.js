@@ -4,9 +4,6 @@ import VerticalTabs from './EffectsOptionsMenu'
 import EditingCanvas from "./EditingCanvas.js"
 
 class CenterImagePage extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   // Methods for interacting with canvas. All interactions should be happend through these calls
   handleSetCanvas = (property, value) => {

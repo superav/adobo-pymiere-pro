@@ -8,7 +8,6 @@ import Box from "@material-ui/core/Box";
 import OverlayEffects from "./OverlayEffects"
 import ColorAndLightingEffects from "./ColorAndLightingEffects"
 import ViewingEffects from "./ViewingEffects";
-import UploadImageToEdit from "./UploadImageToEdit"
 import NSTEffects from "./NSTEffects";
 import FileMenu from "./FileMenu";
 

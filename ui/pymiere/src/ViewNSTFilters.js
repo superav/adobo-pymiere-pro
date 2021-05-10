@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import CheckNSTFilters from "./CheckNSTFilters";
@@ -84,7 +83,7 @@ export default class ViewNSTFilters extends Component {
         <h4>View NST Filters:</h4>
         <br />
         <Paper variant="outlined">
-          <img src={this.state.newURL} style={{"max-width": "600px", "max-height": "600px"}}/>
+          <img alt="nst filter" src={this.state.newURL} style={{"max-width": "300px", "max-height": "300px"}}/>
         </Paper>
         <br />
         <br />

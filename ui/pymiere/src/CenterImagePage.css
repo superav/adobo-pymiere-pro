@@ -9,7 +9,8 @@
 
 #imageDisplay {
     margin-left: 1%;
-    background-color: green;
+    border-style: inset;
+
     width: 55%;
 }
 

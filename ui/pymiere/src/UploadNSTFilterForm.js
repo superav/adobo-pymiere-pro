@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { uploadFile } from 'react-s3';
 import { withSnackbar } from 'notistack';
 
