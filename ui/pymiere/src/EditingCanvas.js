@@ -74,7 +74,7 @@ class EditingCanvas extends Component {
       body: JSON.stringify(body),
     };
 
-    const url = "http://http://ec2-3-239-87-251.compute-1.amazonaws.com:5000/logic/image_editor";
+    const url = "http://ec2-3-235-179-211.compute-1.amazonaws.com:5000/logic/image_editor";
     fetch(url, init)
       .then((response) => {
         if (response.status == 200) {
