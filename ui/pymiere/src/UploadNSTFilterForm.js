@@ -42,7 +42,7 @@ const UploadNSTFilterForm = (props) => {
     }
 
     return <div>
-        <div>Upload NST Style Filter</div>
+        <div>Upload NST Style Filter <b>Please ensure image is of type native PNG</b></div>
         <input type="file" onChange={handleFileInput} accept="image/*"/>
         <button onClick={() => handleUpload(selectedFile)}> Upload to S3</button>
     </div>
