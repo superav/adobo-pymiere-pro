@@ -1,38 +1,66 @@
 Image Processing Methods
 ========================
 
-Simple image processing features that are stored across different files.
+Image processing features. Methods for these features are grouped in
+separate files based on what they do.
 
-*TODO:* Group related functions into the same file
+---------------------------
 
-``as_image_proc.py``
+Canvas Editing Methods
 ----------------------------
 
-.. automodule:: logic.as_image_proc
+Methods that change the size, scale, or rotation of the image.
+
+.. automodule:: logic.canvas_editing_methods
    :members:
    :undoc-members:
    :show-inheritance:
 
-``draw_on_image.py``
-----------------------------
+---------------------------
 
-.. automodule:: logic.draw_on_image
+Color Editing Methods
+---------------------------
+
+Methods that change the color of the image.
+
+.. automodule:: logic.color_methods
    :members:
    :undoc-members:
    :show-inheritance:
 
-``john_logic.py``
+---------------------------
+
+Image Overlay Methods
+---------------------------
+
+Methods that overlay text or image(s) over the input image.
+
+.. automodule:: logic.overlay_methods
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---------------------------
+
+Filter Methods
 ------------------------
 
-.. automodule:: logic.john_logic
+Methods that generally apply a filter over an entire image. These are generally methods
+that apply a complex mathematical operation across the image.
+
+.. automodule:: logic.filter_methods
    :members:
    :undoc-members:
    :show-inheritance:
 
-``jz_image_proc.py``
+---------------------------
+
+Miscellaneous Methods
 ----------------------------
 
-.. automodule:: logic.jz_image_proc
+Methods that don't exactly fit any other category.
+
+.. automodule:: logic.misc_methods
    :members:
    :undoc-members:
    :show-inheritance:

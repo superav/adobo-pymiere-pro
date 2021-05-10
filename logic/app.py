@@ -1,20 +1,30 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from PIL.Image import Image
-from logic.asset_manager import AssetManager
-from logic.jz_image_proc import *
-from logic.as_image_proc import *
-from logic.john_logic import *
-from logic.draw_on_image import *
 from flask_cors import CORS
 
-ass_man = AssetManager("test_user_1")
+from logic.filter_methods import *
+from logic.overlay_methods import *
+from logic.canvas_editing_methods import *
+from logic.color_methods import *
+from logic.misc_methods import *
+from logic.asset_manager import AssetManager
+
+import logic.fast_nst as fast_nst
+
+import time
+
+ass_man = AssetManager("test_user_integration")
 
 
 def create_app():
     flask_app = Flask(__name__)
 
     CORS(flask_app)
-    
+
+    @flask_app.errorhandler(500)
+    def return_error_messages(e):
+        return jsonify(error=str(e)), 500
+
     @flask_app.route("/logic/image_editor", methods=["POST"])
     def get_apply_effect():
         # Receive input
@@ -23,6 +33,8 @@ def create_app():
         input_img = pull_pillow_image(ui_input)
         # Call alteration method specified by request
         var = ui_input["effect"]
+
+        print(ui_input)
         if var == "saturation":
             altered_image = change_saturation(
                 input_img, ui_input["specifications"])
@@ -37,6 +49,9 @@ def create_app():
                 input_img, ui_input["specifications"])
         elif var == "watermark":
             altered_image = add_watermark_image(
+                input_img, ui_input["specifications"])
+        elif var == "emoji":
+            altered_image = add_emoji_overlay(
                 input_img, ui_input["specifications"])
         elif var == "blur":
             altered_image = gaussian_blur(
@@ -56,8 +71,8 @@ def create_app():
         elif var == "add-text":
             altered_image = add_text_to_image(
                 input_img, ui_input["specifications"])
-        elif var == "draw-line":
-            altered_image = draw_line(
+        elif var == "draw-lines":
+            altered_image = draw_lines(
                 input_img, ui_input["specifications"])
         elif var == "mirror":
             altered_image = apply_mirror(
@@ -74,6 +89,36 @@ def create_app():
         elif var == "frame":
             altered_image = apply_frame(
                 input_img, ui_input["specifications"])
+        elif var == "contrast":
+            altered_image = apply_contrast(
+                input_img, ui_input["specifications"])
+        elif var == "autocontrast":
+            altered_image = apply_autocontrast(input_img)
+        elif var == "vignette":
+            altered_image = apply_vignette(input_img)
+        elif var == "brightness":
+            altered_image = apply_brightness(
+                input_img, ui_input["specifications"])
+        elif var == "png-to-jpg":
+            altered_image = input_img.convert("RGB")
+            ui_input["file_extension"] = "jpg"
+        elif var == "jpg-to-png":
+            ui_input["file_extension"] = "png"
+        elif var == "meme":
+            altered_image = generate_meme_text(
+                input_img, ui_input["specifications"])
+        elif var == "nst-filter":
+            input_img_url = "https://adobo-pymiere.s3.amazonaws.com/test_user_integration/image_projects/%s.%s" % (ui_input["image_name"], ui_input["file_extension"]) 
+            filter_image_url = ui_input["specifications"][0]
+            print(ui_input)
+        
+            if not type(input_img_url) == str or not type(filter_image_url) == str:
+                error = "nst: Invalid URLs"
+                abort(500, description=error)
+        
+            fast_nst.run_nst(input_img_url, filter_image_url)
+        
+            return {"image_name": ui_input["image_name"], "url": input_img_url, "file_extension": ui_input["file_extension"]}
         else:
             return None
 
@@ -83,6 +128,23 @@ def create_app():
         # Return url and image information to UI
         return {"image_name": ui_input["image_name"], "url": url,
                 "file_extension": ui_input["file_extension"]}
+    
+    @flask_app.route("/logic/nst", methods=["POST"])
+    def run_nst():
+        
+        ui_input = request.get_json()
+        input_img_url = ui_input["image_name"]
+        filter_image_url = ui_input["specifications"]
+        
+        if not type(input_img_url) == str or not type(filter_image_url) == str:
+            error = "nst: Invalid URLs"
+            abort(500, description=error)
+        
+        fast_nst.run_nst(input_img_url, filter_image_url)
+        
+        return {"image_name": ui_input["image_name"], "url": input_img_url,
+                "file_extension": ui_input["file_extension"]}
+        
 
     @flask_app.route("/logic/image_list", methods=["GET"])
     def get_list_bucket():
@@ -90,6 +152,21 @@ def create_app():
         ui_input = request.get_json()
 
         return {"list": ass_man.list_bucket(ui_input["list_everything"])}
+
+    @flask_app.route("/logic/image_list_usr", methods=["GET"])
+    def get_list_bucket_usr():
+        return{"list": ass_man.list_bucket(False)}
+
+    @flask_app.route("/logic/temp_list", methods=["GET"])
+    def get_temp_bucket():
+        # Receive input
+
+        return {"list": ass_man.list_nst_outputs()}
+
+    @flask_app.route("/logic/styles_list", methods=["GET"])
+    def get_filters_bucket():
+
+        return {"list": ass_man.list_styles()}
 
     # @flask_app.route("/logic/image_editor", methods=["GET"])
     # def get_import_image():

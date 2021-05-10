@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./EditingCanvas.css";
+import { withSnackbar } from 'notistack';
 
 class EditingCanvas extends Component {
   image_name = "";
@@ -32,9 +33,12 @@ class EditingCanvas extends Component {
           fill: [0, 0, 0],
           width: 4,
         },
+        emoji: [null, 0, 0, 0.999, 1, true]
       },
     };
     this.mousePos = [0, 0];
+
+    this.state = {selectedImage: this.props.selectedImage}
   }
 
   getCanvasState = (property) => {
@@ -70,15 +74,35 @@ class EditingCanvas extends Component {
       body: JSON.stringify(body),
     };
 
-    const url = "http://localhost:5000/logic/image_editor";
+    const url = "http://http://ec2-3-239-87-251.compute-1.amazonaws.com:5000/logic/image_editor";
     fetch(url, init)
       .then((response) => {
+        if (response.status == 200) {
+          this.props.enqueueSnackbar("Ur Image is being processed", { 
+            variant: 'success',
+            autoHideDuration: 2000,
+          });
+        } else if (response.status == 404) {
+          this.props.enqueueSnackbar("Response status was 404", { 
+            variant: 'error',
+            autoHideDuration: 2000,
+          });
+        } else if(response.status == 500) {
+          this.props.enqueueSnackbar(response.json().error, {
+            variant: 'error',
+            autoHideDuration: 2000,
+          });
+        }
         return response.json(); // or .text() or .blob() ...
       })
       .then((text) => {
         this.insertImage(text.url);
       })
       .catch((e) => {
+        this.props.enqueueSnackbar("message didn't get sent to server", {
+          variant: 'error',
+          autoHideDuration: 2000,
+        });
         console.log(e);
       });
   };
@@ -103,20 +127,27 @@ class EditingCanvas extends Component {
     this.version++;
   };
 
-  componentDidMount() {
-    // Set up references for canvas and context
-    this.canvas = this.canvasRef.current;
-    this.rect = this.canvas.getBoundingClientRect(); // bounding box of canvas
-    this.context = this.canvas.getContext("2d");
-
-    let width = this.canvas.parentElement.offsetWidth;
-    let height = this.canvas.parentElement.offsetHeight;
+  resizeCanvas() {
+    let width = this.parent.offsetWidth;
+    let height = this.parent.offsetHeight;
 
     this.canvas.width = width;
     this.canvas.height = height;
+    
+    this.draw();
+  }
+
+  componentDidMount() {
+    // Set up references for canvas and context
+    this.canvas = this.canvasRef.current;
+    this.parent = this.canvas.parentElement;
+    this.rect = this.canvas.getBoundingClientRect(); // bounding box of canvas
+    this.context = this.canvas.getContext("2d");
+
+    this.resizeCanvas();
 
     this.insertImage(
-      "https://upload.wikimedia.org/wikipedia/commons/c/c9/-Insert_image_here-.svg"
+      this.state.selectedImage
     );
   }
 
@@ -136,8 +167,11 @@ class EditingCanvas extends Component {
     this.context.setTransform(...this.canvasState.transform);
     this.context.imageSmoothingEnabled = false;
     // Repopulate the canvas
-    this.context.drawImage(...this.canvasState.image);
-    this.drawOutline();
+    if (this.canvasState.image) {
+      this.context.drawImage(...this.canvasState.image);
+      this.drawOutline();
+    }
+      
 
     // Redraw all edits the user made
     this.drawPencil();
@@ -147,6 +181,16 @@ class EditingCanvas extends Component {
       case "crop":
         this.drawCropTool();
         break;
+      case "emoji":
+        const emoji = this.canvasState.functions.emoji;
+        if (emoji[0]) {
+          const img = emoji[0];
+          const w = img.width * emoji[3];
+          const h = img.height * emoji[3];
+          this.context.globalAlpha = emoji[4];
+          this.context.drawImage(img, 0, 0, img.width, img.height, emoji[1], emoji[2], w, h);
+          this.context.globalAlpha = 1;
+        }
       default:
         break;
     }
@@ -229,17 +273,18 @@ class EditingCanvas extends Component {
   handleMouseMove = (e) => {
     // Update actual mouse position in canvas
     const canvasTransform = this.canvasState.transform;
+    const rect = this.parent.getBoundingClientRect();
     this.mousePos = [
-      (e.clientX - this.rect.left - canvasTransform[4]) / canvasTransform[0],
-      (e.clientY - this.rect.top - canvasTransform[5]) / canvasTransform[3],
+      (e.clientX - rect.x - canvasTransform[4]) / canvasTransform[0],
+      (e.clientY - rect.y - canvasTransform[5]) / canvasTransform[3],
     ];
 
     if (e.buttons === 1) {
+      const dX = e.movementX / canvasTransform[0];
+      const dY = e.movementY / canvasTransform[3];
       switch (this.canvasState.activeFunction) {
         case "crop":
           const crop = this.canvasState.functions.crop;
-          const dX = e.movementX / canvasTransform[0];
-          const dY = e.movementY / canvasTransform[3];
           switch (crop.resize) {
             case 0:
               crop.boundingBox[3] = this.clamp(
@@ -299,6 +344,13 @@ class EditingCanvas extends Component {
             this.mousePos
           );
           break;
+        case "emoji":
+          const emoji = this.canvasState.functions.emoji;
+          if (emoji[5]) {
+            emoji[1] += dX;
+            emoji[2] += dY;
+          }
+          break;
         default:
           this.canvasState.transform[4] += e.movementX;
           this.canvasState.transform[5] += e.movementY;
@@ -343,7 +395,7 @@ class EditingCanvas extends Component {
     }
   };
 
-  downloadImage = (saveName) => {
+  downloadImage = (saveName, saveExtension) => {
     const img = new Image();
     img.crossOrigin = "anonymous"; 
     img.src = this.image_sourceName;
@@ -356,8 +408,8 @@ class EditingCanvas extends Component {
       ctx.drawImage(img, 0, 0);
       // create a tag
       const a = document.createElement("a");
-      a.download = saveName + ".png";
-      a.href = canvas.toDataURL("image/png");
+      a.download = saveName + "." + saveExtension;
+      a.href = canvas.toDataURL("image/" + saveExtension);
       a.click();
     };
   };
@@ -376,4 +428,4 @@ class EditingCanvas extends Component {
   }
 }
 
-export default EditingCanvas;
+export default withSnackbar(EditingCanvas);

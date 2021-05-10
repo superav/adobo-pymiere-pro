@@ -13,8 +13,8 @@ from PIL import Image
 
 # This will take the root mean square of the 2 images.
 # If RMS == 0, the 2 images are equal
+# Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def compare_images(image_1, image_2):
-    # Reference: https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
     h1 = image_1.histogram()
     h2 = image_2.histogram()
 
@@ -48,24 +48,25 @@ class TestInitializeAssetManager(unittest.TestCase):
 
 class TestListBucket(unittest.TestCase):
     def test_list_user_files(self):
-        asset_manager = AssetManager('test_user_1')
-        expected_list = ["test_user_1/",
-                         "test_user_1/image_projects/",
-                         "test_user_1/image_projects/assets/",
-                         "test_user_1/image_projects/assets/test_1.png",
-                         "test_user_1/image_projects/assets/test_2.png",
-                         "test_user_1/image_projects/assets/test_3.png",
-                         "test_user_1/image_projects/working_copy.png",
-                         "test_user_1/video_projects/",
-                         "test_user_1/video_projects/assets/"]
+        asset_manager = AssetManager('test_asset_manager')
+        expected_list = ["test_asset_manager/",
+                         "test_asset_manager/image_projects/",
+                         "test_asset_manager/image_projects/assets/",
+                         "test_asset_manager/image_projects/assets/test_1.png",
+                         "test_asset_manager/image_projects/assets/test_2.png",
+                         "test_asset_manager/image_projects/assets/test_3.png",
+                         "test_asset_manager/image_projects/working_copy.png"]
 
+        asset_manager.clear_temps()
         output = asset_manager.list_bucket(list_everything=False)
 
         self.assertEqual(expected_list, output)
 
     def test_list_all_files(self):
-        asset_manager = AssetManager('test_user_1')
-        client = boto3.client('s3')
+        asset_manager = AssetManager('test_asset_manager')
+        client = boto3.client('s3',
+                              aws_access_key_id='AKIAYA22OMIBDDNHCQWM',
+                              aws_secret_access_key='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')
         expected_list = []
 
         for key in client.list_objects(Bucket='adobo-pymiere')['Contents']:
@@ -77,17 +78,15 @@ class TestListBucket(unittest.TestCase):
 
 
 class TestImportImages(unittest.TestCase):
-    asset_manager = AssetManager('test_user_1')
+    asset_manager = AssetManager('test_asset_manager')
 
     def test_import_existing_image(self):
-        expected_image = Image.open('test_assets/images/working_copy.png')
+        expected_image =\
+            Image.open('test_assets/images/working_copy.png').convert('RGBA')
 
         image = self.asset_manager.import_image_from_s3('test_1.png', False)
 
-        image.save('./test_assets/output.png')
-
-        output = Image.open('./test_assets/output.png')
-        root_mean_square = compare_images(expected_image, output)
+        root_mean_square = compare_images(expected_image, image)
 
         self.assertEqual(0, root_mean_square)
 
@@ -96,66 +95,71 @@ class TestImportImages(unittest.TestCase):
         location_two = 'test_1.png'
         location_three = 'working_copy.png'
 
-        image_one = self.asset_manager.import_image_from_s3(location_one, False)
-        image_two = self.asset_manager.import_image_from_s3(location_two)
-        image_three = self.asset_manager.import_image_from_s3(location_three, False)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_one, False)
 
-        self.assertEqual(None, image_one)
-        self.assertEqual(None, image_two)
-        self.assertEqual(None, image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_two)
+
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_three, False)
 
     def test_import_invalid_image_extension(self):
-        location_one = 'test_user_1/image_projects/assets/bad'
-        location_two = 'test_user_1/image_projects/assets/bad.txt'
-        location_three = 'test_user_1/image_projects/assets/bad.'
+        location_one = 'test_asset_manager/image_projects/assets/bad'
+        location_two = 'test_asset_manager/image_projects/assets/bad.txt'
+        location_three = 'test_asset_manager/image_projects/assets/bad.'
 
-        image_one = self.asset_manager.import_image_from_s3(location_one)
-        image_two = self.asset_manager.import_image_from_s3(location_two)
-        image_three = self.asset_manager.import_image_from_s3(location_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_one)
 
-        self.assertEqual(None, image_one)
-        self.assertEqual(None, image_two)
-        self.assertEqual(None, image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_two)
+
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.import_image_from_s3(location_three)
 
 
 class TestUploadImages(unittest.TestCase):
-    asset_manager = AssetManager('test_user_1')
+    asset_manager = AssetManager('test_asset_manager')
 
     def test_upload_invalid_image_extension(self):
-        image = Image.open('test_assets/images/test_2.png')
+        image = Image.open('test_assets/images/test_2.png').convert('RGBA')
 
-        location_one = 'test_user_1/image_projects/assets/bad'
-        location_two = 'test_user_1/image_projects/assets/bad.txt'
-        location_three = 'test_user_1/image_projects/assets/bad.'
+        location_one = 'test_asset_manager/image_projects/assets/bad'
+        location_two = 'test_asset_manager/image_projects/assets/bad.txt'
+        location_three = 'test_asset_manager/image_projects/assets/bad.'
 
-        image_one = self.asset_manager.upload_image_to_s3(image, location_one)
-        image_two = self.asset_manager.upload_image_to_s3(image, location_two, False)
-        image_three = self.asset_manager.upload_image_to_s3(image, location_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_image_to_s3(image, location_one)
 
-        self.assertEqual("Missing \".png\" extension!", image_one)
-        self.assertEqual("Missing \".png\" extension!", image_two)
-        self.assertEqual("Missing \".png\" extension!", image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_image_to_s3(image, location_two,
+                                                          False)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_image_to_s3(image, location_three)
 
     def test_upload_valid_image_asset(self):
-        image_one = Image.open('test_assets/images/test_2.png')
-        image_two = Image.open('test_assets/images/test_3.png')
+        image_one = Image.open('test_assets/images/test_2.png').convert('RGBA')
+        image_two = Image.open('test_assets/images/test_3.png').convert('RGBA')
 
-        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/test_2.png"
-        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/test_3.png"
+        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/assets/test_2.png"
+        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/assets/test_3.png"
 
-        url_one = self.asset_manager.upload_image_to_s3(image_one, "test_2.png", False)
-        url_two = self.asset_manager.upload_image_to_s3(image_two, "test_3.png", False)
+        url_one = self.asset_manager.upload_image_to_s3(image_one,
+                                                        "test_2.png", False)
+        url_two = self.asset_manager.upload_image_to_s3(image_two,
+                                                        "test_3.png", False)
 
-        r = requests.get(url_one)
-        output = Image.open(BytesIO(r.content))
+        request = requests.get(url_one)
+        output = Image.open(BytesIO(request.content))
 
         root_mean_square = compare_images(output, image_one)
 
         self.assertEqual(0, root_mean_square)
         self.assertEqual(expected_url_one, url_one)
 
-        r = requests.get(url_two)
-        output = Image.open(BytesIO(r.content))
+        request = requests.get(url_two)
+        output = Image.open(BytesIO(request.content))
 
         root_mean_square = compare_images(output, image_two)
 
@@ -163,14 +167,14 @@ class TestUploadImages(unittest.TestCase):
         self.assertEqual(expected_url_two, url_two)
 
     def test_upload_valid_working_copy(self):
-        image = Image.open('test_assets/images/test_1.png')
+        image = Image.open('test_assets/images/test_1.png').convert('RGBA')
 
-        expected_url = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/working_copy.png"
+        expected_url = "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/working_copy.png"
 
         url = self.asset_manager.upload_image_to_s3(image)
 
-        r = requests.get(url)
-        output = Image.open(BytesIO(r.content))
+        request = requests.get(url)
+        output = Image.open(BytesIO(request.content))
 
         root_mean_square = compare_images(output, image)
 
@@ -179,59 +183,64 @@ class TestUploadImages(unittest.TestCase):
 
 
 class TestUploadTempImages(unittest.TestCase):
-    asset_manager = AssetManager('test_user_1')
+    asset_manager = AssetManager('test_asset_manager')
 
     def test_upload_invalid_image_extension(self):
-        image = Image.open('test_assets/images/test_2.png')
+        image = Image.open('test_assets/images/test_2.png').convert('RGBA')
 
-        location_one = 'test_user_1/image_projects/assets/bad'
-        location_two = 'test_user_1/image_projects/assets/bad.txt'
-        location_three = 'test_user_1/image_projects/assets/bad.'
+        location_one = 'test_asset_manager/image_projects/assets/bad'
+        location_two = 'test_asset_manager/image_projects/assets/bad.txt'
+        location_three = 'test_asset_manager/image_projects/assets/bad.'
 
-        image_one = self.asset_manager.upload_temp_image_to_s3(image, location_one)
-        image_two = self.asset_manager.upload_temp_image_to_s3(image, location_two)
-        image_three = self.asset_manager.upload_temp_image_to_s3(image, location_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_temp_image_to_s3(image, location_one)
 
-        self.assertEqual("Missing \".png\" extension!", image_one)
-        self.assertEqual("Missing \".png\" extension!", image_two)
-        self.assertEqual("Missing \".png\" extension!", image_three)
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_temp_image_to_s3(image, location_two)
 
-    def test_upload_valid_image_asset(self):
-        image_one = Image.open('test_assets/images/test_2.png')
-        image_two = Image.open('test_assets/images/test_3.png')
+        with self.assertRaises(Exception):
+            _ = self.asset_manager.upload_temp_image_to_s3(image, location_three)
 
-        expected_url_one = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_2.png"
-        expected_url_two = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_3.png"
+    def test_upload_valid_temp_image_asset(self):
+        image_one = 'test_assets/images/test_2.png'
+        image_two = 'test_assets/images/test_3.png'
 
-        url_one = self.asset_manager.upload_temp_image_to_s3(image_one, "test_2.png")
-        url_two = self.asset_manager.upload_temp_image_to_s3(image_two, "test_3.png")
+        expected_url_one = \
+            "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/assets/temp/test_2.png"
+        expected_url_two = \
+            "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/assets/temp/test_3.png"
 
-        r = requests.get(url_one)
-        output = Image.open(BytesIO(r.content))
+        url_one = self.asset_manager.upload_temp_image_to_s3(image_one,
+                                                             "test_2.png")
+        url_two = self.asset_manager.upload_temp_image_to_s3(image_two,
+                                                             "test_3.png")
 
-        root_mean_square = compare_images(output, image_one)
+        request = requests.get(url_one)
+        output = Image.open(BytesIO(request.content))
+
+        root_mean_square = compare_images(output, Image.open(image_one))
 
         self.assertEqual(0, root_mean_square)
         self.assertEqual(expected_url_one, url_one)
 
-        r = requests.get(url_two)
-        output = Image.open(BytesIO(r.content))
+        request = requests.get(url_two)
+        output = Image.open(BytesIO(request.content))
 
-        root_mean_square = compare_images(output, image_two)
+        root_mean_square = compare_images(output, Image.open(image_two))
 
         self.assertEqual(0, root_mean_square)
         self.assertEqual(expected_url_two, url_two)
 
 
 class TestClearTempFolders(unittest.TestCase):
-    asset_manager = AssetManager('test_user_1')
+    asset_manager = AssetManager('test_asset_manager')
 
     def test_clear_temp_images(self):
-        image_one = Image.open('test_assets/images/test_2.png')
-        image_two = Image.open('test_assets/images/test_3.png')
+        image_one = 'test_assets/images/test_2.png'
+        image_two = 'test_assets/images/test_3.png'
 
-        _ = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_2.png"
-        _ = "https://adobo-pymiere.s3.amazonaws.com/test_user_1/image_projects/assets/temp/test_3.png"
+        _ = "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/assets/temp/test_2.png"
+        _ = "https://adobo-pymiere.s3.amazonaws.com/test_asset_manager/image_projects/assets/temp/test_3.png"
 
         _ = self.asset_manager.upload_temp_image_to_s3(image_one, "test_2.png")
         _ = self.asset_manager.upload_temp_image_to_s3(image_two, "test_3.png")

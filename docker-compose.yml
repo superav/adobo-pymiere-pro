@@ -5,9 +5,13 @@ services:
             dockerfile: ./docker/ui.Dockerfile
         ports:
             - "3000:3000"
+        volumes:
+            - ./ui/pymiere:/docker_root/ui
     logic:
         build: 
             context: .
             dockerfile: ./docker/logic.Dockerfile
         ports:
             - "5000:5000"
+        volumes:
+            - ./logic:/docker_root/logic

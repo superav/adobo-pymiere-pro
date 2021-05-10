@@ -6,8 +6,6 @@ RUN mkdir ui
 
 WORKDIR /docker_root/ui
 
-ADD /ui/pymiere /docker_root/ui
-
 RUN npm install
 
 EXPOSE 3000

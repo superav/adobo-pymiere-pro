@@ -12,46 +12,64 @@ stages:
   - test
   - deploy
 
-# build-job:
-#   stage: build
-#   script:
-#     - echo "Hello, $GITLAB_USER_LOGIN!"
-
-# test-job1:
-#   stage: test
-#   script:
-#     - echo "This job does nothing :D"
-
-pytest-aidan:
+pytest-ass-man:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the tests in the logic folder for Aidan"
     - cd tests
-    - python -m pytest as_image_proc_tests.py -v --cov
+    - python -m pytest test_asset_manager.py -v --cov
 
-pytest-jessica:
+pytest-canvas-editing:
   stage: test
+  tags:
+    - tensorflow
   script:
-    - echo "This job runs the tests in the logic folder"
+    - echo "This job runs the tests for crop, rotate, and scale"
     - cd tests
-    - python -m pytest jz_image_proc_tests.py -v --cov
+    - python -m pytest test_canvas_editing_methods.py -v --cov
 
-pytest-john:
+pytest-color-methods:
   stage: test
+  tags:
+    - tensorflow
   script:
-    - echo "This job runs the tests in the logic folder for John"
+    - echo "This job runs the tests for saturation, hue, opacity, recoloration, and gradient"
     - cd tests
-    - python -m pytest john_logic_test.py -v --cov
+    - python -m pytest test_color_methods.py -v --cov
 
-pytest-draw-on-:
+pytest-filter-methods:
   stage: test
+  tags:
+    - tensorflow
   script:
-    - echo "This job runs the tests in the logic folder for John"
+    - echo "This job runs the tests for gaussian blur, solarize, red eye, and mosaic"
     - cd tests
-    - python -m pytest test_draw_on_image.py -v --cov
+    - python -m pytest test_filter_methods.py -v --cov
+
+pytest-misc-methods:
+  stage: test
+  tags:
+    - tensorflow
+  script:
+    - echo "This job runs the tests for frame, mirror, and draw on image"
+    - cd tests
+    - python -m pytest test_misc_methods.py -v --cov
+
+pytest-overlay-methods:
+  stage: test
+  tags:
+    - tensorflow
+  script:
+    - echo "This job runs the tests for watermark, and add text"
+    - cd tests
+    - python -m pytest test_overlay_methods.py -v --cov
 
 pytest-feature:
   stage: test
+  tags:
+    - tensorflow
   script:
     - echo "This job runs the flask server, testing the post and get endpoints"
     - chmod +x ./feature_tests.sh

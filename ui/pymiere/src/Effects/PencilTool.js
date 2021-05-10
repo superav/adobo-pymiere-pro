@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import { withSnackbar } from 'notistack';
 
 class PencilTool extends Component {
   constructor(props) {
@@ -29,8 +30,10 @@ class PencilTool extends Component {
   }
 
   componentWillUnmount() {
-    if (this.pencilTool)
+    if (this.pencilTool) {
       this.TogglePencilTool();
+      this.confirmPencilChanges();
+    }
   }
 
   TogglePencilTool = () => {
@@ -91,7 +94,27 @@ class PencilTool extends Component {
   }
 
   confirmPencilChanges = () => {
+    const functions = this.props.getCanvas("functions");
+    const strokes = functions.pencil.strokes;
     
+    const filter = [];
+    strokes.reduce((acc, stroke) => {
+      stroke.points.map((point) => {
+        point[0] = parseInt(point[0]);
+        point[1] = parseInt(point[1]);
+        return point;
+      });
+      stroke.fill.map((num) => {return parseInt(num)});
+      acc.push([stroke.points, parseInt(stroke.width), stroke.fill]);
+      return acc;
+    }, filter);
+
+    this.props.applyFilter("draw-lines", filter);
+    functions.pencil.strokes = [];
+    this.props.enqueueSnackbar("Saving your beautiful strokes...", { 
+      variant: 'info',
+      autoHideDuration: 2000,
+    });
   }
 
   render() {
@@ -157,9 +180,9 @@ class PencilTool extends Component {
 
       <canvas ref={this.canvas} width={100} height={100}/>
       <br></br>
-      <Button variant="contained" color="primary" disabled = "true" onClick={this.confirmPencilChanges}>Save Drawing</Button>
+      <Button variant="contained" color="primary" onClick={this.confirmPencilChanges}>Save Drawing</Button>
     </div>
   }
 }
 
-export default PencilTool;
+export default withSnackbar(PencilTool);

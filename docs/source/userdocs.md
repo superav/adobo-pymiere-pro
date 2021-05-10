@@ -1,5 +1,10 @@
 # User Documentation
 
+Adobo Pymiere Pro is a web-based image editing platform with the latest
+image processing features to support your image editing needs. We support both
+casual and advanced users with amazing, high tech features from automated meme
+generation to neural style transfer!
+
 ## Getting Started
 
 Clone the git repository through:
@@ -28,11 +33,11 @@ UI will be on port 3000 and backend will be on port 5000.
 
 To build the logic docker image:
 
-```docker build -f ./docker/logic.Dockerfile -t pymiere-logic . ```
+```docker build -f ./docker/logic.Dockerfile -t adobo-pymiere-pro_logic . ```
 
 Running the logic image:
 
-```docker run -d -p 5000:5000 pymiere-logic```
+```docker run -d -p 5000:5000 -v "$(pwd)"/logic:/docker_root/logic adobo-pymiere-pro_logic```
 
 The container will accessible on port 3000
 
@@ -42,11 +47,11 @@ The container will accessible on port 3000
 
 Building the UI docker image:
 
-```docker build -f ./docker/ui.Dockerfile -t pymiere-ui . ```
+```docker build -f ./docker/ui.Dockerfile -t adobo-pymiere-pro_web . ```
 
 Running the UI docker image:
 
-```docker run -d -p 3000:3000 pymiere-ui```
+```docker run -d -p 3000:3000 -v "$(pwd)"/ui/pymiere:/docker_root/ui adobo-pymiere-pro_web```
 
 The container will be accessible on port 3000
 
@@ -56,21 +61,25 @@ The container will be accessible on port 3000
 
 In the top-level directory, run: `python -m pip install -r requirements.txt`
 
-To run test suites, in `tests/`, you can run:
+To run test suites, navigate to `tests/`. Unit tests are labelled with the
+`test_` prefix. You can run any unit test file individually as such:
 
 ```
-python -m pytest as_image_proc_tests.py -v --cov
-
-python -m pytest jz_image_proc_tests.py -v --cov
-
-python -m pytest john_logic_test.py -v --cov
+python -m pytest test_asset_manager.py -v --cov
 ``` 
+
+Feature tests can be run in the top-level directory through:
+
+```
+./feature_tests.sh
+```
 
 ## How to Use
 
-When you first open the web app, you must upload you own PNG image to S3 first through the "Upload Image" tab.
+[Tutorials Videos](https://youtube.com/playlist?list=PLQjWzm6-0M1GTdSGCUaUetnYN8Pmpy4lj)
 
-You can edit your image by clicking through different editing tabs on the left-hand side.
-After you edit the image, you can view the results on the right.
+## Notes
 
-A test image `insta_test.png` is provided for you to upload and test with.
+- The vignette feature works when running the server outside of Docker. However,
+there are issues with certain graphics libraries missing when installing OpenCV
+on Docker. We've left the UI for the feature in, but have left it disabled for now.

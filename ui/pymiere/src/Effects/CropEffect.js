@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import { withSnackbar } from 'notistack';
 
 class CropEffect extends Component {
   constructor(props) {
@@ -33,7 +34,11 @@ class CropEffect extends Component {
     const crop = this.props.getCanvas("functions").crop.boundingBox;
     let right = crop[0] + crop[2];
     let bottom = crop[1] + crop[3];
-    this.props.applyFilter("crop", [crop[2], crop[3], right, bottom]);
+    this.props.applyFilter("crop", [parseInt(crop[0]), parseInt(crop[1]), parseInt(right), parseInt(bottom)]);
+    this.props.enqueueSnackbar("Cropping...", { 
+      variant: 'info',
+      autoHideDuration: 2000,
+    });
   }
 
   Crop = () => {
@@ -65,11 +70,11 @@ class CropEffect extends Component {
   render() {
     return (
       <div>
-        <Button variant="contained" color="primary" disabled="true" onClick={this.ToggleCropFrame}>{this.state.cropFrameText}</Button><br/>
-        <Button variant="contained" color="primary" disabled="true" onClick={this.Crop}>Crop</Button>
+        <Button variant="contained" color="primary" onClick={this.ToggleCropFrame}>{this.state.cropFrameText}</Button><br/>
+        <Button variant="contained" color="primary" onClick={this.Crop}>Crop</Button>
       </div>
     );
   }
 }
 
-export default CropEffect;
+export default withSnackbar(CropEffect);

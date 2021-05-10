@@ -24,12 +24,43 @@
     display: inline-block !important; 
     margin: 0.5% !important;
     white-space: normal !important;
-    width: 15% !important
+    width: 200px !important;
+    height: 350px !important;
 }
 
 @media (max-width: 1024px) {
     .card {
-        width: 40% !important;
+        width: 350px !important;
+        height: 500px !important;
         margin: 2% !important;
     }
+    .header {
+        font-size: 3em !important;
+    }
+
+    .description {
+        font-size: 2em !important;
+        line-height: 1em !important;
+    }
+}
+
+.content {
+    overflow: hidden !important;
+    height: 15% !important;
+}
+
+.header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display:block;
+    width:100%;
+    min-width:1px;
+    
+}
+
+.image {
+    height: 65%;
+    width: 100%;
+    object-fit:scale-down;
 }
