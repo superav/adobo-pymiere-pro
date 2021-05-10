@@ -1,5 +1,9 @@
 # Adobo Pymiere Pro
 
+## Project URL
+
+ec2-3-235-179-211.compute-1.amazonaws.com
+
 ## Setting up Sphinx
 
 Run `python -m pip install -r sphinx-requirements.txt` to install necessary Sphinx extensions.
@@ -19,69 +23,56 @@ opening `index.html` in a browser.
 
 ## Tasks
 
-Jessica 17.55%
+Jessica 14.28%
 
-- user and dev docs
-- migrated docs to Sphinx
-- Sprint planning and user stories
-- added draw on image support
-- refactored asset manager to support temp projects
-- refactored nst.py to save output images
-- fixed nst.py
-- git support
+- Refactored logic code from previous and current sprint
+- User/Dev docs
+- Helped with integrating backend and frontend
+- Debugged NST code
+- Managed S3 bucket
 
-Arush 15.09%
+Arush 14.28%
 
-- Text overlay integration
-- Color menu UI & integration (Saturation, Hue, Gradient)
-- Brightness UI
-- Mosaic filter UI & integration
-- Solarize filter and auto-contrast filter UI
-- UI polishing
+- organized UI menus
+- integrated sprint 3 features
+- MR reviews
+- NST integration
 
-Avi 14.09%
+Avi 14.28%
 
-- Sprint Planning
-- Designed Integration Workflow
-- Wrote boilerplate code for integration requests and responses to update image
-- Helped solve bugs across all integration issues
-- Wrote components to upload NST filters and Images to S3
-- Wrote Faster NST algorithm that will allow for a quicker NST
-- Reviewed Merge Requests for UI
+- Worked on fixing bugs
+- Deployed on AWS
+- Wrote code to help handle NST integration
+- Implemented Snack bar
+- Reviewed Merge Requests
 
-Aidan 13.09%
+Aidan 14.28%
 
-- logic function and testing for code to remove red eye effects, apply solarize effect, apply mirror/flip effect,
-  apply mosaic effect, and adding a frame
-- Updating flask for new features being added
-- Tested the flask endpoints with bash script feature tests, testing and sending get/post requests, and pulling/pushing
-  to s3 buckets
-- Improving variable names, making methods to prevent complicated if statements, and checking PEP8 through codebase
-- Update CI to properly run new tests and fix its installations
+- logic function and testing for contrast, autocontrast, brightness, and vignette(removed)
+- added tests for nst via flask
+- more tests to test sprint 3 additions
+- debugging pipeline errors
+- MR review
   
-Phong 15.29%
+Phong 14.28%
 
-- Revamp canvas for rendering image by streamlining the event loop
-- Implemented front end pen functionality
-- Implemented front end cropping functionality
-- Implemented UI for viewing NST algorithm outputs
-- Cropping functionality integration with backend
-- Help with fetching image to the s3 bucket
-- Fix bugs for pen tool, cropping and support for all canvas related issues
+- Integrate emoji, cropping and pen tool UI with backend
+- Created UI for viewing slowing NST output
+- Fixing bugs for integrated features
 
-John 13.60%
+John 14.28%
 
-- Implemented ui for transformation menu, size editing menu, and storing into local filesystem 
-- Used Avi's method to integrate menus with backend requests
-- Fixed comments and PEP8 violations from Sprint 1
-- Approved merge requests for other ui tasks
-- Wrote and posted scrum logs for Sprint 2
+- Record tutorials for user docs
+- Implemented meme generator backend
+- UI to convert file between filetypes
+- UI for changing contrast
+- UI for uploading NST filters
 
-Eric 11.29%
+Eric 14.28%
 
-- ui for vignette and meme generator
-- Dockerized Node server
-- added support for docker compose
-- assisted with feature testing
-- general bugfixes
-- assisting with CI
+- Docker Refactoring
+- Project Persistence
+- Backend for getting temp files from slow NST
+- Selecting slow NST output
+- Backend and integration for applying NST filter
+- Fixing Docker for Tensorflow
