@@ -18,10 +18,8 @@ export default class ViewNSTFilters extends Component {
         "styles/wave.jpg",
         "styles/wave.png",
       ],
-      newURL: "https://adobo-pymiere.s3.amazonaws.com/styles/test_style_1.jpg"
+      newURL: ""
     };
-
-    this.setState({newURL: this.state.baseURL + this.state.filterArray[0]})
   }
 
   handleChange = (e, v) => {
@@ -68,14 +66,16 @@ export default class ViewNSTFilters extends Component {
 
   getFilterArray = () => {
     CheckNSTFilters().then((response) => {
-      this.setState({
-          filterArray: response.list
-        })
+      this.setState({filterArray: response.list}, () => {
+        this.setState({newURL: this.state.baseURL + this.state.filterArray[1]})
       })
+    })
   }
 
   componentDidMount() {
     this.getFilterArray()
+    console.log("here");
+    console.log(this.state.filterArray);
   }
 
   render() {
@@ -102,8 +102,7 @@ export default class ViewNSTFilters extends Component {
         >
           Next
         </Button>
-        <p>{this.state.generation}</p>
-        <br />
+        <br /><br />
         <Button
           variant="contained"
           color="primary"
@@ -111,6 +110,7 @@ export default class ViewNSTFilters extends Component {
         >
           Run NST
         </Button>
+        <h3>Your image will be displayed once the algorithm finishes</h3>
 
         <br />
       </div>
