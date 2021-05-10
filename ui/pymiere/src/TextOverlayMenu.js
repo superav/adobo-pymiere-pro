@@ -16,7 +16,7 @@ export default function TextOverlayMenu(props) {
     const [colorBlue, setColorBlue] = useState(0);
     const [locationX, setLocationX] = useState(0);
     const [locationY, setLocationY] = useState(0);
-    var colorStr = "";
+    let colorStr = "";
 
 
     const useStyles = makeStyles(theme => ({

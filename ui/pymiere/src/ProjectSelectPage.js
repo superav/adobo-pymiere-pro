@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import "./ProjectSelectPage.css";
 import ProjectCard from "./ProjectCard.js";
-import ImageUIPage from "./ImageUIPage.js";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
 } from "react-router-dom";
 
@@ -63,7 +59,7 @@ class ProjectSelectPage extends Component {
 
     loadImages() {
         this.getProjects().then(res => {
-            var filteredList = this.filterProjects(res.list)
+            let filteredList = this.filterProjects(res.list)
             filteredList.splice(0, 0, "/images/new.svg")
             this.setState({ projects: filteredList })
             console.log(this.state.projects)

@@ -1,7 +1,6 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Radio from '@material-ui/core/Radio'
 import Button from '@material-ui/core/Button'
@@ -51,13 +50,13 @@ export function SpecialEffectsOptions (props) {
     else if (effectChoice === "solarize") {
       props.applyFilter("solarize", parseInt(solarizeValue));
     }
-    else if (effectChoice == "red-eye-remover") {
+    else if (effectChoice === "red-eye-remover") {
       props.applyFilter("red-eye-remover", [parseInt(topLeftX), parseInt(topLeftY), parseInt(bottomRightX), parseInt(bottomRightY)]);
     }
-    else if (effectChoice == "autocontrast") {
+    else if (effectChoice === "autocontrast") {
       props.applyFilter("autocontrast");
     }
-    else if (effectChoice == "vignette") {
+    else if (effectChoice === "vignette") {
       //props.applyFilter("vignette");
     }
   }

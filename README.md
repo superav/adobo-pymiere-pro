@@ -2,7 +2,7 @@
 
 ## Project URL
 
-[ec2-3-235-179-211.compute-1.amazonaws.com](ec2-3-235-179-211.compute-1.amazonaws.com)
+[ec2-3-235-179-211.compute-1.amazonaws.com](http://ec2-3-235-179-211.compute-1.amazonaws.com)
 
 ## Setting up Sphinx
 

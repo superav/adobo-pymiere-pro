@@ -113,7 +113,7 @@ class PencilTool extends Component {
     functions.pencil.strokes = [];
     this.props.enqueueSnackbar("Saving your beautiful strokes...", { 
       variant: 'info',
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   }
 

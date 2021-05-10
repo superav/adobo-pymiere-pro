@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { uploadFile } from 'react-s3';
 
 const S3_BUCKET ='adobo-pymiere';
@@ -35,7 +35,7 @@ const UploadImageToEdit = (props) => {
     }
 
     return <div>
-        <div>Upload Image</div>
+        <div>Upload Image <b>Please ensure image is of type (image.png)</b></div>
         <input type="file" onChange={handleFileInput} accept="image/*"/>
         <button onClick={() => handleUpload(selectedFile)}> Upload to S3</button>
     </div>
