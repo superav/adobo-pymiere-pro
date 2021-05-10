@@ -1,4 +1,4 @@
-import React, { Component, useState} from 'react';
+import React, { useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';

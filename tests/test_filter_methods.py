@@ -98,9 +98,9 @@ class TestFilterInputValidation(unittest.TestCase):
 
         self.assertTrue(isinstance(im2, Image.Image))
 
-    def test_vignette_invalid_value(self):
-        with self.assertRaises(Exception):
-            _ = apply_vignette("test")
+    # def test_vignette_invalid_value(self):
+    #     with self.assertRaises(Exception):
+    #         _ = apply_vignette("test")
 
 
 class TestFilterImageProc(unittest.TestCase):
@@ -148,10 +148,10 @@ class TestFilterImageProc(unittest.TestCase):
 
         self.assertEqual(compare_images(fin, im2), 0)
 
-    def test_vignette_correct_output(self):
-        im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
-        fin = ASSET_MANAGER.import_image_from_s3('vignette_expected.png', False)
-
-        im2 = apply_vignette(im1)
-
-        self.assertTrue(compare_images(fin, im2) < 1)
+    # def test_vignette_correct_output(self):
+    #     im1 = ASSET_MANAGER.import_image_from_s3('image.png', False)
+    #     fin = ASSET_MANAGER.import_image_from_s3('vignette_expected.png', False)
+    #
+    #     im2 = apply_vignette(im1)
+    #
+    #     self.assertTrue(compare_images(fin, im2) < 1)

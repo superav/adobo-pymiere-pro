@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { uploadFile } from 'react-s3';
 import { withSnackbar } from 'notistack';
 
@@ -29,20 +29,20 @@ const UploadNSTFilterForm = (props) => {
                 console.log(data);
                 props.enqueueSnackbar("NST Filter has been successfully uploaded", {
                     variant: 'success',
-                    autoHideDuration: 2000,
+                    autoHideDuration: 3000,
                 });
 
             }).catch(err => {
                 console.error(err)
                 props.enqueueSnackbar("Error occured uploading NST Filter", {
                     variant: 'error',
-                    autoHideDuration: 2000,
+                    autoHideDuration: 3000,
                 });
             })
     }
 
     return <div>
-        <div>Upload NST Style Filter</div>
+        <div>Upload NST Style Filter <b>Please ensure image is of type native PNG</b></div>
         <input type="file" onChange={handleFileInput} accept="image/*"/>
         <button onClick={() => handleUpload(selectedFile)}> Upload to S3</button>
     </div>

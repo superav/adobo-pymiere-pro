@@ -67,7 +67,7 @@ class TransformationEditingMenu extends Component {
   onApply = () => {
     this.props.enqueueSnackbar("Applying watermark...", {
       variant: 'info',
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
     this.updateEmojiBackend();
   }

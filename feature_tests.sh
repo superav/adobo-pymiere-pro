@@ -11,9 +11,9 @@ answ2=$(curl --silent --location --request POST 'localhost:5000/logic/image_edit
 
 echo $answ2
 
-answ3=$(curl --silent --location --request POST 'localhost:5000/logic/image_editor' --header 'Content-Type: application/json' --data-raw '{"effect": "vignette", "image_name": "image", "file_extension": "png", "is_working_copy": false'})
+#answ3=$(curl --silent --location --request POST 'localhost:5000/logic/image_editor' --header 'Content-Type: application/json' --data-raw '{"effect": "vignette", "image_name": "image", "file_extension": "png", "is_working_copy": false'})
 
-echo $answ3
+#echo $answ3
 
 answ4=$(curl --silent --location --request POST 'localhost:5000/logic/nst' --header 'Content-Type: application/json' --data-raw '{"effect": "nst", "image_name": "image", "file_extension": "png", "is_working_copy": false, "input_image_url": "https://adobo-pymiere.s3.amazonaws.com/blurry_turtle.png", "filter_image_url": "https://adobo-pymiere.s3.amazonaws.com/styles/wave.png"'})
 

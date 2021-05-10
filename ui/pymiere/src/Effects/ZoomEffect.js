@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import { Autorenew } from '@material-ui/icons';
 
 class ZoomEffect extends Component {
   constructor(props) {
@@ -22,14 +21,14 @@ class ZoomEffect extends Component {
   }
 
   zoomIn = () => {
-    var newZoomLvl = this.state.zoomLvl + this.zoomStep;
+    let newZoomLvl = this.state.zoomLvl + this.zoomStep;
     if (newZoomLvl <= this.maxZoom) {
       this.updateZoom(newZoomLvl);
     }
   }
 
   zoomOut = () => {
-    var newZoomLvl = this.state.zoomLvl - this.zoomStep;
+    let newZoomLvl = this.state.zoomLvl - this.zoomStep;
     if (newZoomLvl >= this.minZoom) {
       this.updateZoom(newZoomLvl);
     }

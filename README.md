@@ -2,7 +2,7 @@
 
 ## Project URL
 
-ec2-3-235-179-211.compute-1.amazonaws.com
+[ec2-3-235-179-211.compute-1.amazonaws.com](http://ec2-3-235-179-211.compute-1.amazonaws.com)
 
 ## Setting up Sphinx
 
@@ -23,7 +23,7 @@ opening `index.html` in a browser.
 
 ## Tasks
 
-Jessica 14.28%
+###Jessica 14.28%
 
 - Refactored logic code from previous and current sprint
 - User/Dev docs
@@ -31,14 +31,14 @@ Jessica 14.28%
 - Debugged NST code
 - Managed S3 bucket
 
-Arush 14.28%
+###Arush 14.28%
 
 - organized UI menus
 - integrated sprint 3 features
 - MR reviews
 - NST integration
 
-Avi 14.28%
+###Avi 14.28%
 
 - Worked on fixing bugs
 - Deployed on AWS
@@ -46,7 +46,7 @@ Avi 14.28%
 - Implemented Snack bar
 - Reviewed Merge Requests
 
-Aidan 14.28%
+###Aidan 14.28%
 
 - logic function and testing for contrast, autocontrast, brightness, and vignette(removed)
 - added tests for nst via flask
@@ -54,13 +54,13 @@ Aidan 14.28%
 - debugging pipeline errors
 - MR review
   
-Phong 14.28%
+###Phong 14.28%
 
 - Integrate emoji, cropping and pen tool UI with backend
 - Created UI for viewing slowing NST output
 - Fixing bugs for integrated features
 
-John 14.28%
+###John 14.28%
 
 - Record tutorials for user docs
 - Implemented meme generator backend
@@ -68,7 +68,7 @@ John 14.28%
 - UI for changing contrast
 - UI for uploading NST filters
 
-Eric 14.28%
+###Eric 14.28%
 
 - Docker Refactoring
 - Project Persistence
